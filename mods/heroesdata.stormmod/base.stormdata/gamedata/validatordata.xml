@@ -1251,6 +1251,10 @@
     <CombineArray value="TargetNotDead" />
     <CombineArray value="TargetNotSpecialDeathState" />
   </CValidatorCombine>
+  <CValidatorCombine id="TargetIsDeadOrSpecialDeathState">
+    <CombineArray value="TargetIsDead" />
+    <CombineArray value="TargetIsSpecialDeathState" />
+  </CValidatorCombine>
   <CValidatorUnitCompareVital id="CasterLifeGE25Percent" parent="CasterLifePercent">
     <Compare value="GE" />
     <Value value="0.25" />

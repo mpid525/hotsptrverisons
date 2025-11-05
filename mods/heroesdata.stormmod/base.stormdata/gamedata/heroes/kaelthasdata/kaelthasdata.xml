@@ -888,6 +888,19 @@
     <Host Subject="_Unit" />
     <Scale value="1.200000" />
   </CActorModel>
+  <CActorModel id="KaelthasLivingBombInstantlyExplosionModel" parent="StormModelAnimationStyleOneShot">
+    <On Terms="ActorCreation" Send="Create KaelthasLivingBombExplosionSound" />
+    <On Terms="Effect.KaelthasLivingBombTargetDeadSet.Start; At Effect" Send="Create" />
+    <On Terms="Effect.KaelthasLivingBombTargetDeadSet.Start; At Effect" Send="Create KaelthasLivingBombInstantExplosionRing" />
+    <Remove Terms="ActorOrphan" Send="AnimBracketStop BSD" />
+    <Model value="KaelthasLivingBombExplosion" />
+    <Scale value="1.200000" />
+  </CActorModel>
+  <CActorModel id="KaelthasLivingBombInstantExplosionRing" parent="StormModelAnimationStyleOneShot">
+    <Remove Terms="ActorOrphan" Send="AnimBracketStop BSD" />
+    <Model value="KaelthasLivingBombExplosionRing" />
+    <HostSiteOps Ops="SOpTargetPoint" HoldPosition="1" HoldRotation="1" />
+  </CActorModel>
   <CActorSound id="KaelthasLivingBombExplosionSound" parent="SoundOneShot">
     <Sound value="Kaelthas_LivingBomb_Explode" />
     <Host Subject="::Creator" />
@@ -2511,15 +2524,24 @@
   <CEffectApplyBehavior id="KaelthasLivingBombApplyTargetBehavior">
     <ValidatorArray index="0" value="TargetNotDead" />
     <ValidatorArray value="TargetDoesNotAnyLivingBombVariation" />
+    <ValidatorArray value="TargetNotInvulnerableExceptTimeStop" />
+    <ValidatorArray value="TargetNotStasisExceptTimeStop" />
+    <ValidatorArray value="TargetDoesNotHaveImmuneToDoTBehavior" />
     <Behavior value="KaelthasLivingBombTarget" />
   </CEffectApplyBehavior>
   <CEffectCreatePersistent id="KaelthasLivingBombApplyTargetBehaviorCP">
     <WhichLocation Value="TargetUnit" />
-    <PeriodCount value="2" />
-    <PeriodicEffectArray value="KaelthasLivingBombApplyTargetBehavior" />
-    <PeriodicPeriodArray value="0.125" />
-    <PeriodicPeriodArray value="0" />
+    <ExpireDelay value="0.125" />
+    <ExpireEffect value="KaelthasLivingBombApplySwitch" />
   </CEffectCreatePersistent>
+  <CEffectSwitch id="KaelthasLivingBombApplySwitch">
+    <CaseArray Validator="TargetIsDeadOrSpecialDeathState" Effect="KaelthasLivingBombTargetDeadSet" />
+    <CaseDefault value="KaelthasLivingBombApplyTargetBehavior" />
+  </CEffectSwitch>
+  <CEffectSet id="KaelthasLivingBombTargetDeadSet">
+    <EffectArray value="KaelthasLivingBombChainBombSearchAreaTargetDead" />
+    <EffectArray value="KaelthasLivingBombExplosionSearchAreaTargetDead" />
+  </CEffectSet>
   <CEffectApplyBehavior id="KaelthasLivingBombBackdraftApplyBehavior">
     <Chance value="0" />
     <Behavior value="KaelthasLivingBombBackdraft" />
@@ -2607,6 +2629,32 @@
       <SortArray value="TSHeroic" />
       <SortArray value="TSDistanceToTarget" />
     </TargetSorts>
+  </CEffectEnumArea>
+  <CEffectEnumArea id="KaelthasLivingBombChainBombSearchAreaTargetDead">
+    <ExcludeArray Effect="KaelthasLivingBombTargetDeadSet" Value="Target" />
+    <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Stasis,Dead,Hidden,Invulnerable" />
+    <SearchFlags index="DoActorSearch" value="1" />
+    <AreaArray Effect="KaelthasLivingBombChainBombApplyTargetBehaviorDelayPersistent">
+      <Radius value="3.3" />
+    </AreaArray>
+    <RevealerParams HeightMap="Ground" Duration="0.5" ShapeExpansion="0.5">
+      <RevealFlags index="Unfog" value="1" />
+    </RevealerParams>
+    <TargetSorts>
+      <SortArray value="TSHeroic" />
+      <SortArray value="TSDistanceToTarget" />
+    </TargetSorts>
+  </CEffectEnumArea>
+  <CEffectEnumArea id="KaelthasLivingBombExplosionSearchAreaTargetDead">
+    <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Stasis,Dead,Hidden,Invulnerable" />
+    <SearchFlags index="DoActorSearch" value="1" />
+    <AreaArray Effect="KaelthasLivingBombExplosionImpactSet">
+      <Radius value="3.3" />
+    </AreaArray>
+    <ExcludeArray Effect="KaelthasLivingBombTargetDeadSet" Value="Target" />
+    <RevealerParams HeightMap="Ground" Duration="0.5" ShapeExpansion="0.5">
+      <RevealFlags index="Unfog" value="1" />
+    </RevealerParams>
   </CEffectEnumArea>
   <CEffectModifyUnit id="KaelthasLivingBombCriticalMassModifyCooldowns">
     <Chance value="0" />
@@ -4251,6 +4299,20 @@
         <Type value="MultiplyLevelModification" />
         <Catalog value="Effect" />
         <Entry value="KaelthasLivingBombChainBombSearchAreaTarget" />
+        <Field value="AreaArray[0].Radius" />
+        <Value value="1.200000" />
+      </Modifications>
+      <Modifications>
+        <Type value="MultiplyLevelModification" />
+        <Catalog value="Effect" />
+        <Entry value="KaelthasLivingBombChainBombSearchAreaTargetDead" />
+        <Field value="AreaArray[0].Radius" />
+        <Value value="1.200000" />
+      </Modifications>
+      <Modifications>
+        <Type value="MultiplyLevelModification" />
+        <Catalog value="Effect" />
+        <Entry value="KaelthasLivingBombExplosionSearchAreaTargetDead" />
         <Field value="AreaArray[0].Radius" />
         <Value value="1.200000" />
       </Modifications>

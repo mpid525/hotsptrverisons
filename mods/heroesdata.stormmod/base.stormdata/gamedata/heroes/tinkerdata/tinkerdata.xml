@@ -413,6 +413,8 @@
     <HostImpactSiteOps Ops="SOpTargetUnit SOpGazloweDethLazorFirinMahLazorCastForward GazloewDethLazorFirinMahLazorzRangeOffset SOpMoveUpByDot5" />
     <Model value="TinkerDethLazorFirinMahLazorzTalentBeam" />
     <ModelFlags index="AllowHitTest" value="0" />
+    <On Terms="ActorCreation" Send="TimerSet $GazloweDethLazorCastTime Destroy" />
+    <On Terms="TimerExpired; TimerName Destroy" Send="Destroy" />
   </CActorBeamSimple>
   <CActorModel id="GazloweDethLazorFirinMahLazorsCastOffsetDummy">
     <On Terms="Effect.GazloweDethLazorInitialSet.Start; At Effect" Send="Create" />
@@ -2266,14 +2268,12 @@
     <EffectArray value="GazloweDethLazorFirinMahLazorzTurretTargetSetFacingPersistent" />
     <EffectArray value="GazloweDethLazorFirinMahLazorzWarningPersistent" />
     <EffectArray value="GazloweDethLazorFirinMahLazorsApplyChannel" />
-    <TargetLocationType value="Point" />
   </CEffectSet>
   <CEffectCreatePersistent id="GazloweDethLazorFirinMahLazorzWarningPersistent">
     <WhichLocation Value="TargetUnit" />
     <OffsetVectorStartLocation Value="TargetPoint" />
     <OffsetVectorEndLocation Effect="GazloweDethLazorPrepSet" />
     <InitialEffect value="GazloweDethLazorFirinMahLazorzWarningDummy" />
-    <InitialOffset Y="-$GazloweDethLazorFirinMahLazorzRange" />
   </CEffectCreatePersistent>
   <CEffectModifyUnit id="GazloweDethLazorFirinMahLazorzWarningDummy" />
   <CEffectApplyBehavior id="GazloweDethLazorFirinMahLazorsApplyChannel">

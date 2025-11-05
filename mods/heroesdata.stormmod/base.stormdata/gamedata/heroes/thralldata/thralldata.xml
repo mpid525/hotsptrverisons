@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
-  <const id="$ThrallSpiritShieldCooldownReductionValue" value="-10" />
   <CAbilEffectTarget id="ThrallAncestralWrath">
     <PrepEffect value="DismountDecloakCasterSet" />
     <Effect value="ThrallAncestralWrathCastSet" />
@@ -40,7 +39,7 @@
   <CAbilEffectTarget id="ThrallWindRush" parent="HeroGenericSelfTeleportAbility">
     <Effect value="ThrallWindRushTeleport" />
     <Cost>
-      <Cooldown TimeUse="80" />
+      <Cooldown TimeUse="90" />
     </Cost>
     <Range value="7.2" />
     <CmdButtonArray index="Execute" DefaultButtonFace="ThrallWindRush" />
@@ -172,12 +171,13 @@
     <MinAccumulation value="0" />
     <MaxAccumulation value="3000" />
     <TokenId value="ThrallMaelstromWeaponTokenCounter" />
+    <Scale value="0" />
   </CAccumulatorToken>
   <CAccumulatorToken id="ThrallCrashLightningBounceDamageAccumulator" parent="BaseTokenAccumulator">
     <MinAccumulation value="0" />
     <ApplicationRule value="Add" />
     <TokenId value="ThrallCrashLightningTokenCounter" />
-    <Scale value="12" />
+    <Scale value="0" />
   </CAccumulatorToken>
   <CActorModel id="ThrallAncestralWrathTargetModel" parent="StormModelAnimationStyleOneShotUnit">
     <On Terms="Effect.ThrallAncestralWrathDamage.Start; At Target" Send="Create" />
@@ -387,7 +387,7 @@
     <On Terms="UnitDeath.ThrallFeralSpiritMissile" Send="Create" />
     <Sound value="Thrall_FeralSpirit_End" />
   </CActorSound>
-  <CActorModel id="ThrallFeralSpiritRoot" parent="StormModelRoot" effect="ThrallFeralSpiritApplyRootBehavior" behavior="ThrallFeralSpiritRoot">
+  <CActorModel id="ThrallFeralSpiritRoot" parent="StormModelRoot" behavior="ThrallFeralSpiritRoot" effect="ThrallFeralSpiritApplyRootBehavior">
     <HostSiteOps Ops="SOpAttachOriginSoft SOpRotationRandomDisc" HoldRotation="1" />
   </CActorModel>
   <CActorSound id="ThrallChainLightningVOX" parent="SoundOneShot">
@@ -1173,9 +1173,10 @@
       <Event EventId="QuestMilestone" Effect="ThrallWindfuryMaelstromWeaponTalent1stQuestCompletionModifyPlayer" />
     </ConditionalEvents>
     <ConditionalEvents Compare="GE" CompareValue="40">
-      <Event EventId="QuestComplete" Effect="ThrallWindfuryMaelstromWeaponTalent2ndQuestCompletionApplyCarry" />
+      <Event EventId="QuestComplete" Effect="MaelstromWeapon2ndQuestCompletionSet" />
     </ConditionalEvents>
-    <Max value="1000" />
+    <Max value="100" />
+    <AtMaxEvents index="0" EventId="QuestComplete" Effect="ThrallWindfuryMaelstromWeaponTalentFinalQuestCompletionModifyPlayer" />
   </CBehaviorTokenCounter>
   <CBehaviorBuff id="ThrallWindfuryMaelstromWeaponTalentTargetMarker">
     <RemoveValidatorArray value="HasWindfuryEnabled" />
@@ -1216,11 +1217,11 @@
       <Chance value="1" />
       <Handled value="ThrallFeralSpiritFeralResilienceTalentRemoveBlockSet" />
       <TargetFilters value="Heroic;Structure" />
+      <ValidateEffectAliasesOp value="ExcludeHasAny" />
       <Priority value="55" />
+      <ValidateEffectAliases value="IgnorePositiveArmor" />
       <Kind index="Ability" value="0" />
       <ProvideCategories index="Proc" value="1" />
-      <ValidateEffectAliasesOp value="ExcludeHasAny" />
-      <ValidateEffectAliases value="IgnorePositiveArmor" />
     </DamageResponse>
     <ArmorModification>
       <ArmorSet index="Hero">
@@ -1234,16 +1235,23 @@
   </CBehaviorBuff>
   <CBehaviorTokenCounter id="ThrallEchooftheElementsTokenCounter" parent="StormQuestToken">
     <Face value="ThrallEchooftheElementsToken" />
-    <ConditionalEvents Compare="GE" CompareValue="10">
-      <Event EventId="QuestMilestone" Effect="ThrallChainLightningEchooftheElementsTalent1stQuestModifyPlayer" />
+    <ConditionalEvents Compare="GE" CompareValue="20">
+      <Event EventId="QuestMilestone" Effect="ThrallChainLightningEchooftheElementsTalentQuestModifyPlayer" />
+    </ConditionalEvents>
+    <ConditionalEvents Compare="GE" CompareValue="40">
+      <Event EventId="QuestMilestone" Effect="ThrallChainLightningEchooftheElementsTalent2ndQuestModifyPlayer" />
     </ConditionalEvents>
     <AtMaxEvents index="0" EventId="QuestComplete" Effect="ThrallChainLightningEchooftheElementsTalentCompletionModifyPlayer" />
-    <Max value="20" />
+    <Max value="100" />
   </CBehaviorTokenCounter>
   <CBehaviorTokenCounter id="ThrallCrashLightningTokenCounter" parent="StormQuestToken">
     <Face value="ThrallCrashLightningToken" />
     <Max value="30" />
     <AtMaxEvents index="0" EventId="QuestComplete" Effect="ThrallChainLightningEndlessConductionTalentCompletionModifyPlayer" ValidRange="30,30" />
+    <AtMaxEvents EventId="QuestComplete" Effect="ThrallChainLightningCrashLightningTalentQuestModifyPlayer" ValidRange="30,30" />
+    <ConditionalEvents Compare="GE" CompareValue="15">
+      <Event Effect="ThrallChainLightningCrashLightningTalentQuestModifyPlayer" />
+    </ConditionalEvents>
   </CBehaviorTokenCounter>
   <CBehaviorBuff id="ThrallFeralSpiritDummyMissileDeathFX">
     <Duration value="0.1875" />
@@ -1535,6 +1543,51 @@
     <Variations Model="ThrallPortrait" Actor="ThrallPortrait" />
     <Unit value="HeroThrall" />
   </CCharacter>
+  <CEffectSet id="MaelstromWeapon2ndQuestCompletionSet">
+    <EffectArray value="ThrallWindfuryMaelstromWeaponTalent2ndQuestCompletionModifyPlayer" />
+    <EffectArray value="ThrallWindfuryMaelstromWeaponTalent2ndQuestCompletionApplyCarry" />
+  </CEffectSet>
+  <CEffectModifyPlayer id="ThrallWindfuryMaelstromWeaponTalentFinalQuestCompletionModifyPlayer">
+    <EffectArray Reference="Effect,ThrallWeaponAttackDamage,AmountArray" Value="75" />
+    <EffectArray Operation="Set" Reference="Effect,ThrallFrostwolfResilienceCreateHealer,MultiplicativeModifierArray[MaelstromWeaponComplete].Modifier" Value="2" />
+    <EffectArray Operation="Set" Reference="Effect,ThrallFrostwolfsGraceCreateHealer,MultiplicativeModifierArray[ThrallFrostwolfsGrace].Modifier" Value="2" />
+  </CEffectModifyPlayer>
+  <CEffectModifyPlayer id="ThrallWindfuryMaelstromWeaponTalent2ndQuestCompletionModifyPlayer">
+    <EffectArray Operation="Set" Reference="Behavior,WindfurySpeedBuff,Modification.UnifiedMoveSpeedFactor" Value=".4" />
+    <EffectArray Reference="Effect,ThrallWeaponAttackDamage,AmountArray" Value="40" />
+  </CEffectModifyPlayer>
+  <CEffectModifyPlayer id="ThrallChainLightningEchooftheElementsTalent2ndQuestModifyPlayer">
+    <EffectArray Operation="Set" Reference="Effect,ThrallChainLightningBounce3Persistent,Chance" Value="1" />
+    <EffectArray Operation="Set" Reference="Effect,ThrallChainLightningRollingThunderTalentBounce6Persistent,Chance" Value="1" />
+    <EffectArray Operation="Set" Reference="Effect,ThrallChainLightningBounce4Persistent,Chance" Value="1" />
+    <EffectArray Operation="Set" Reference="Effect,ThrallChainLightningRollingThunderTalentBounce5Persistent,Chance" Value="1" />
+    <EffectArray Operation="Set" Reference="Abil,ThrallChainLightning,Cost.Charge.CountMax" Value="2" />
+    <EffectArray Operation="Set" Reference="Abil,ThrallChainLightning,Cost.Charge.HideCount" Value="0" />
+  </CEffectModifyPlayer>
+  <CEffectModifyPlayer id="ThrallChainLightningCrashLightningTalentQuestModifyPlayer">
+    <EffectArray Reference="Effect,ThrallChainLightningInitialDamage,AmountArray" Value="270" />
+    <EffectArray Reference="Effect,ThrallChainLightningBounce1Damage,AmountArray" Value="270" />
+    <EffectArray Reference="Effect,ThrallChainLightningBounce2Damage,AmountArray" Value="270" />
+    <EffectArray Reference="Effect,ThrallChainLightningBounce3Damage,AmountArray" Value="270" />
+    <EffectArray Reference="Effect,ThrallChainLightningBounce4Damage,AmountArray" Value="270" />
+    <EffectArray Reference="Effect,ThrallChainLightningBounce5Damage,AmountArray" Value="270" />
+    <EffectArray Reference="Effect,ThrallChainLightningBounce6Damage,AmountArray" Value="270" />
+  </CEffectModifyPlayer>
+  <CEffectModifyTokenCount id="ThrallWindfuryMaelstromWeaponTalentModifyTokenCountDeath" parent="BaseEffectModifyTokenCount">
+    <Marker Link="Effect/ThrallWindfuryMaelstromWeaponTalentModifyTokenCount" />
+    <EffectCategory index="Quest" value="1" />
+    <CollationId value="ThrallWindfuryMaelstromWeaponTalentModifyTokenCount" />
+    <TokenId value="ThrallMaelstromWeaponTokenCounter" />
+    <Value value="-8" />
+  </CEffectModifyTokenCount>
+  <CEffectModifyTokenCount id="ChainLightningCrashLightningTalentDeathLoss" parent="BaseEffectModifyTokenCount">
+    <ValidatorArray value="ThrallCasterHasLT30CrashLightningTokens" />
+    <Marker Link="Effect/ThrallChainLightningCrashLightningTalentModifyToken" />
+    <EffectCategory index="Quest" value="1" />
+    <CollationId value="ThrallChainLightningCrashLightningTalentModifyToken" />
+    <TokenId value="ThrallCrashLightningTokenCounter" />
+    <Value value="-6" />
+  </CEffectModifyTokenCount>
   <CEffectModifyUnit id="ThrallElementalMomentumModifyCooldowns">
     <ImpactUnit Value="Caster" />
     <Cost Abil="ThrallChainLightning,Execute" ChargeTimeUse="-0.25" CooldownOperation="Add" />
@@ -1696,7 +1749,7 @@
   <CEffectApplyBehavior id="ThrallWindfuryMaelstromWeaponTalent2ndQuestCompletionApplyCarry">
     <Behavior value="ThrallWindfuryMaelstromWeapon2ndQuestCompletionMoveSpeedCarry" />
   </CEffectApplyBehavior>
-  <CEffectModifyPlayer id="ThrallChainLightningEchooftheElementsTalent1stQuestModifyPlayer">
+  <CEffectModifyPlayer id="ThrallChainLightningEchooftheElementsTalentQuestModifyPlayer">
     <EffectArray Operation="Set" Reference="Abil,ThrallChainLightning,Cost.Vital[Energy]" Value="20" />
   </CEffectModifyPlayer>
   <CEffectCreateHealer id="ThrallAncestralWrathDummyHealer">
@@ -1789,6 +1842,7 @@
   </CEffectSet>
   <CEffectModifyPlayer id="ThrallWindfuryMaelstromWeaponTalent1stQuestCompletionModifyPlayer">
     <EffectArray Operation="Set" Reference="Behavior,WindfurySpeedBuff,Modification.UnifiedMoveSpeedFactor" Value=".4" />
+    <EffectArray Reference="Effect,ThrallWeaponAttackDamage,AmountArray" Value="20" />
   </CEffectModifyPlayer>
   <CEffectSet id="ThrallSunderingWorldbreakerTalentRefreshSet">
     <EffectArray value="ThrallSunderingWorldbreakerTalentRefreshModifyPlayer" />
@@ -1842,10 +1896,10 @@
     <MaxCount value="1" />
   </CEffectEnumArea>
   <CEffectCreatePersistent id="ThrallChainLightningRollingThunderTalentBounce6Persistent">
-    <ValidatorArray value="ThrallHasRollingThunderTalent" />
     <WhichLocation Value="TargetUnit" />
     <ExpireDelay value="0.375" />
     <FinalEffect value="ThrallChainLightningRollingThunderTalentBounce6Search" />
+    <Chance value="0" />
   </CEffectCreatePersistent>
   <CEffectModifyUnit id="ThrallChainLightningRollingThunderTalentDummy6">
     <ValidatorArray value="ThrallChainLightningDistanceCheck6GE4" />
@@ -1874,10 +1928,10 @@
     <EffectArray value="ThrallChainLightningTalentProcSet" />
   </CEffectSet>
   <CEffectCreatePersistent id="ThrallChainLightningRollingThunderTalentBounce5Persistent">
-    <ValidatorArray value="ThrallHasRollingThunderTalent" />
     <WhichLocation Value="TargetUnit" />
     <ExpireDelay value="0.375" />
     <FinalEffect value="ThrallChainLightningRollingThunderTalentBounce5Search" />
+    <Chance value="0" />
   </CEffectCreatePersistent>
   <CEffectEnumArea id="ThrallChainLightningRollingThunderTalentBounce5Search">
     <ImpactLocation Value="TargetPoint" />
@@ -1985,18 +2039,12 @@
     <ValidatorArray value="ThrallHasSpiritShieldTalent" />
     <WhichPlayer Value="Caster" />
     <Cost Abil="ThrallSpiritShield">
-      <Cooldown>
-        <Link value="Abil/ThrallSpiritShield" />
-        <Location value="Player" />
-        <Operation value="Add" />
-        <TimeUse value="$ThrallSpiritShieldCooldownReductionValue" />
-      </Cooldown>
+      <Cooldown Link="Abil/ThrallSpiritShield" Location="Player" Operation="Add" />
     </Cost>
   </CEffectModifyPlayer>
   <CEffectModifyBehaviorBuffDuration id="ThrallSpiritShieldModifyCooldownDuration">
     <ValidatorArray value="ThrallHasSpiritShieldTalent" />
     <Behavior value="ThrallSpiritShieldCooldown" />
-    <Value value="$ThrallSpiritShieldCooldownReductionValue" />
   </CEffectModifyBehaviorBuffDuration>
   <CEffectSet id="ThrallSpiritShieldProcSet">
     <EffectArray value="ThrallSpiritShieldApplyActiveBehavior" />
@@ -2118,6 +2166,7 @@
   <CEffectSet id="ThrallHeroDeathSet">
     <EffectArray value="ThrallFeralSpiritFrostwolfPackTalentDeathResetTokenCount" />
     <EffectArray value="ThrallChainLightningThunderstormResetTokenCount" />
+    <EffectArray value="ChainLightningCrashLightningTalentDeathLoss" />
   </CEffectSet>
   <CEffectApplyBehavior id="ThrallFeralSpiritFeralResilienceTalentApplyBlockBehavior">
     <ValidatorArray index="0" value="ThrallHasFeralResilienceTalent" />
@@ -2171,8 +2220,10 @@
     <CaseDefault value="ThrallChainLightningCrashLightningTalentApplyHeroHitMarker" />
   </CEffectSwitch>
   <CEffectModifyPlayer id="ThrallChainLightningEchooftheElementsTalentCompletionModifyPlayer">
-    <EffectArray Operation="Set" Reference="Abil,ThrallChainLightning,Cost.Charge.CountMax" Value="2" />
-    <EffectArray Operation="Set" Reference="Abil,ThrallChainLightning,Cost.Charge.HideCount" Value="0" />
+    <EffectArray Reference="Effect,ThrallChainLightningBounce1Search,MaxCount" Value="1" />
+    <EffectArray Reference="Effect,ThrallChainLightningBounce2Search,MaxCount" Value="1" />
+    <EffectArray Reference="Effect,ThrallChainLightningBounce3Search,MaxCount" Value="1" />
+    <EffectArray Reference="Effect,ThrallChainLightningBounce4Search,MaxCount" Value="1" />
     <EffectArray Operation="Set" Reference="Effect,ThrallChainLightningEchooftheElementsTalentApplyDebuff,Chance" Value="0" />
     <EffectArray Operation="Set" Reference="Effect,ThrallChainLightningEchooftheElementsTalentModifyToken,Chance" Value="0" />
   </CEffectModifyPlayer>
@@ -2332,6 +2383,7 @@
     <ImpactUnit Value="Caster" />
     <RechargeVitalRate value="240" />
     <SourceButtonFace value="ThrallFrostwolfResilience" />
+    <MultiplicativeModifierArray index="MaelstromWeaponComplete" />
   </CEffectCreateHealer>
   <CEffectCreateHealer id="ThrallFrostwolfResilienceCreateEarthenBlessingMasteryHealer" parent="StormSelfOnlyHealingSpell">
     <ImpactUnit Value="Caster" />
@@ -2891,7 +2943,6 @@
   <CEffectSet id="ThrallWindfuryExtraHitsPostImpactSet">
     <EffectArray value="ThrallFrostwolfResilienceWindfuryImpactSwitchNoValidator" />
     <EffectArray value="ThrallElementalAssaultRemoveBuff" />
-    <EffectArray value="ThrallWindfuryMaelstromWeaponTalentModifyTokenCount" />
   </CEffectSet>
   <CEffectSwitch id="ThrallHeroWeaponSwitch">
     <CaseArray Validator="TempestFuryCombine" Effect="ThrallWindfuryTempestFuryMasteryPersistent" />
@@ -2900,7 +2951,6 @@
   <CEffectSet id="ThrallWindfuryTempestFuryAttackImpactNoTraitSet">
     <EffectArray value="ThrallWindfuryTempestFuryDamage" />
     <EffectArray value="ThrallChainLightningRollingThunderMasteryProcSet" />
-    <EffectArray value="ThrallWindfuryMaelstromWeaponTalentModifyTokenCount" />
   </CEffectSet>
   <CEffectDamage id="ThrallWindfuryTempestFuryDamage" parent="StormWeapon">
     <Amount value="173" />
@@ -2993,10 +3043,10 @@
     <WhichLocation Value="TargetUnit" />
     <ExpireDelay value="0.375" />
     <FinalEffect value="ThrallChainLightningBounce4Search" />
-    <ValidatorArray value="ThrallHasRollingThunderTalent" />
     <AINotifySettings AreaEffect="ThrallChainLightningBounce3Search">
       <Flags index="Disabled" value="1" />
     </AINotifySettings>
+    <Chance value="0" />
   </CEffectCreatePersistent>
   <CEffectEnumArea id="ThrallChainLightningBounce2Search">
     <ImpactLocation Value="TargetPoint" />
@@ -3013,7 +3063,7 @@
     <Marker Link="Effect/DoomhammersWrathInitialDamage" />
     <Amount value="85" />
     <FlatModifierArray index="EndlessConduction" Validator="ThrallHasCrashLightningTalent" Accumulator="ThrallCrashLightningBounceDamageAccumulator" />
-    <MultiplicativeModifierArray index="Thunderstorm" Validator="ThrallHas5ThunderstormTokens" Modifier="0.25" Crit="1" />
+    <MultiplicativeModifierArray index="Thunderstorm" Validator="ThrallHas5ThunderstormTokens" Modifier="0.3" Crit="1" />
   </CEffectDamage>
   <CEffectApplyBehavior id="WindfuryApplySpeedBuff">
     <WhichUnit Value="Caster" />
@@ -3050,7 +3100,7 @@
     <WhichLocation Value="TargetUnit" />
     <ExpireDelay value="0.375" />
     <FinalEffect value="ThrallChainLightningRollingThunderTalentBounce5Search" />
-    <ValidatorArray value="ThrallHasRollingThunderTalent" />
+    <Chance value="0" />
   </CEffectCreatePersistent>
   <CEffectEnumArea id="ThrallChainLightningBounce3Search">
     <ImpactLocation Value="TargetPoint" />
@@ -3067,7 +3117,7 @@
     <Marker Link="Effect/DoomhammersWrathInitialDamage" />
     <Amount value="85" />
     <FlatModifierArray index="EndlessConduction" Validator="ThrallHasCrashLightningTalent" Accumulator="ThrallCrashLightningBounceDamageAccumulator" />
-    <MultiplicativeModifierArray index="Thunderstorm" Validator="ThrallHas5ThunderstormTokens" Modifier="0.25" Crit="1" />
+    <MultiplicativeModifierArray index="Thunderstorm" Validator="ThrallHas5ThunderstormTokens" Modifier="0.3" Crit="1" />
   </CEffectDamage>
   <CEffectEnumArea id="ThrallChainLightningBounce4Search">
     <ImpactLocation Value="TargetPoint" />
@@ -3084,16 +3134,16 @@
     <Marker Link="Effect/DoomhammersWrathInitialDamage" />
     <Amount value="85" />
     <FlatModifierArray index="EndlessConduction" Validator="ThrallHasCrashLightningTalent" Accumulator="ThrallCrashLightningBounceDamageAccumulator" />
-    <MultiplicativeModifierArray index="Thunderstorm" Validator="ThrallHas5ThunderstormTokens" Modifier="0.25" Crit="1" />
+    <MultiplicativeModifierArray index="Thunderstorm" Validator="ThrallHas5ThunderstormTokens" Modifier="0.3" Crit="1" />
   </CEffectDamage>
   <CEffectDamage id="ThrallChainLightningInitialDamage" parent="StormSpell">
     <Amount value="170" />
-    <MultiplicativeModifierArray index="Thunderstorm" Validator="ThrallHas5ThunderstormTokens" Modifier="0.25" Crit="1" />
+    <MultiplicativeModifierArray index="Thunderstorm" Validator="ThrallHas5ThunderstormTokens" Modifier="0.3" Crit="1" />
   </CEffectDamage>
   <CEffectDamage id="ThrallChainLightningBounce1Damage" parent="StormSpell">
     <Amount value="85" />
     <FlatModifierArray index="EndlessConduction" Validator="ThrallHasCrashLightningTalent" Accumulator="ThrallCrashLightningBounceDamageAccumulator" />
-    <MultiplicativeModifierArray index="Thunderstorm" Validator="ThrallHas5ThunderstormTokens" Modifier="0.25" Crit="1" />
+    <MultiplicativeModifierArray index="Thunderstorm" Validator="ThrallHas5ThunderstormTokens" Modifier="0.3" Crit="1" />
   </CEffectDamage>
   <CEffectSet id="ThrallChainLightningCastSet">
     <EffectArray value="ThrallChainLightningInitialPersistent" />
@@ -3255,7 +3305,7 @@
   </CEffectSet>
   <CEffectCreatePersistent id="ThrallSunderingRightPushCreationPersistent">
     <OffsetVectorStartLocation Effect="ThrallSunderingInitialSet" Value="OriginPoint" />
-    <OffsetVectorEndLocation Effect="ThrallSunderingLaunchPersistent" Value="TargetPoint" />
+    <OffsetVectorEndLocation Effect="ThrallSunderingLaunchPersistent" />
     <WhichLocation Effect="ThrallSunderingKnockbackInitialSetRight" Value="TargetUnit" />
     <InitialEffect value="ThrallSunderingRightPushApply" />
     <InitialOffset X="5" />
@@ -3277,7 +3327,7 @@
   </CEffectSet>
   <CEffectCreatePersistent id="ThrallSunderingLeftPushCreationPersistent">
     <OffsetVectorStartLocation Effect="ThrallSunderingInitialSet" Value="OriginPoint" />
-    <OffsetVectorEndLocation Effect="ThrallSunderingLaunchPersistent" Value="TargetPoint" />
+    <OffsetVectorEndLocation Effect="ThrallSunderingLaunchPersistent" />
     <WhichLocation Effect="ThrallSunderingKnockbackInitialSetLeft" Value="TargetUnit" />
     <InitialEffect value="ThrallSunderingLeftPushApply" />
     <InitialOffset X="-5" />
@@ -3503,11 +3553,11 @@
     </LevelScalingArray>
     <TalentTreeArray Talent="ThrallEchooftheElements" Tier="1" Column="1" />
     <TalentTreeArray Talent="ThrallCrashLightning" Tier="1" Column="2" />
-    <TalentTreeArray Talent="ThrallMasteryRollingThunder" Tier="1" Column="3" />
+    <TalentTreeArray Talent="ThrallMaelstromWeapon" Tier="1" Column="3" />
     <TalentTreeArray Talent="ThrallFeralResilience" Tier="2" Column="1" />
     <TalentTreeArray Talent="ThrallFrostwolfPack" Tier="2" Column="2" />
     <TalentTreeArray Talent="ThrallMasteryManaTide" Tier="2" Column="3" />
-    <TalentTreeArray Talent="ThrallMaelstromWeapon" Tier="3" Column="1" />
+    <TalentTreeArray Talent="ThrallMasteryRollingThunder" Tier="3" Column="1" />
     <TalentTreeArray Talent="ThrallAncestralWrath" Tier="3" Column="2" />
     <TalentTreeArray Talent="ThrallElementalAssault" Tier="3" Column="3" />
     <TalentTreeArray Talent="ThrallHeroicAbilitySundering" Tier="4" Column="1" />
@@ -3564,9 +3614,9 @@
       <TalentsArray value="ThrallWindRush" />
     </TalentAIBuildsArray>
     <TalentAIBuildsArray AIOnly="1" ChanceToPick="16">
-      <TalentsArray value="ThrallMasteryRollingThunder" />
-      <TalentsArray value="ThrallMasteryManaTide" />
       <TalentsArray value="ThrallMaelstromWeapon" />
+      <TalentsArray value="ThrallMasteryManaTide" />
+      <TalentsArray value="ThrallMasteryRollingThunder" />
       <TalentsArray value="ThrallHeroicAbilityEarthquake" />
       <TalentsArray value="ThrallMasteryFrostwolfsGrace" />
       <TalentsArray value="ThrallAlphaWolf" />
@@ -3575,7 +3625,7 @@
     <TalentAIBuildsArray AIOnly="1" ChanceToPick="16">
       <TalentsArray value="ThrallCrashLightning" />
       <TalentsArray value="ThrallMasteryManaTide" />
-      <TalentsArray value="ThrallMaelstromWeapon" />
+      <TalentsArray value="ThrallMasteryRollingThunder" />
       <TalentsArray value="ThrallHeroicAbilitySundering" />
       <TalentsArray value="ThrallMasteryFrostwolfsGrace" />
       <TalentsArray value="ThrallMasteryTempestFury" />
@@ -3796,7 +3846,7 @@
         <Field value="Modification.UnifiedMoveSpeedFactor" />
       </Modifications>
     </AbilityModificationArray>
-    <QuestData StackBehavior="ThrallMaelstromWeaponTokenCounter" TargetCount="40" />
+    <QuestData StackBehavior="ThrallMaelstromWeaponTokenCounter" TargetCount="60" />
   </CTalent>
   <CTalent id="ThrallWindStalker">
     <Face value="ThrallWindStalker" />
@@ -3834,6 +3884,7 @@
       <BehaviorArray value="ThrallEchooftheElementsTokenCounter" />
     </RankArray>
     <AbilityModificationArray>
+      <Modifications Type="FlatModification" Entry="ThrallChainLightning" Field="Cost[0].Vital[Energy]" />
       <Modifications>
         <Type value="FlatModification" />
         <Entry value="ThrallChainLightning" />
@@ -3846,7 +3897,6 @@
         <Field value="Cost[0].Charge.HideCount" />
         <FieldIsInteger value="1" />
       </Modifications>
-      <Modifications Type="FlatModification" Entry="ThrallChainLightning" Field="Cost[0].Vital[Energy]" />
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Effect" />
@@ -3859,6 +3909,40 @@
         <Catalog value="Effect" />
         <Entry value="ThrallChainLightningEchooftheElementsTalentModifyToken" />
         <Field value="Chance" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Effect" />
+        <Entry value="ThrallChainLightningBounce3Persistent" />
+        <Field value="Chance" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Effect" />
+        <Entry value="ThrallChainLightningBounce1Search" />
+        <Field value="MaxCount" />
+        <FieldIsInteger value="1" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Effect" />
+        <Entry value="ThrallChainLightningBounce2Search" />
+        <Field value="MaxCount" />
+        <FieldIsInteger value="1" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Effect" />
+        <Entry value="ThrallChainLightningBounce3Search" />
+        <Field value="MaxCount" />
+        <FieldIsInteger value="1" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Effect" />
+        <Entry value="ThrallChainLightningBounce4Search" />
+        <Field value="MaxCount" />
+        <FieldIsInteger value="1" />
       </Modifications>
     </AbilityModificationArray>
     <QuestData StackBehavior="ThrallEchooftheElementsTokenCounter" TargetCount="100" />

@@ -165,9 +165,9 @@
     <Effect value="StukovWeightedPustuleReactiveBallistosporesSet" />
     <Flags index="Transient" value="1" />
     <Cost>
-      <Cooldown Location="Player" TimeUse="75" />
+      <Cooldown TimeUse="75" />
     </Cost>
-    <CmdButtonArray index="Execute" DefaultButtonFace="StukovReactiveBallistosporesHotbar" />
+    <CmdButtonArray index="Execute" DefaultButtonFace="StukovReactiveBallistosporesTalent" />
     <PrepEffect value="DismountDecloakCasterSet" />
   </CAbilEffectInstant>
   <CAccumulatorTrackedUnitCount id="StukovHealingPathogenTrackingUIAccumulator" parent="BaseAccumulator">
@@ -1158,7 +1158,7 @@
     </Modification>
   </CBehaviorBuff>
   <CBehaviorAbility id="StukovReactiveBallistosporesItem">
-    <Buttons Face="StukovReactiveBallistosporesHotbar" Type="AbilCmd" AbilCmd="StukovWeightedPustuleReactiveBallistospores,Execute" />
+    <Buttons Face="StukovReactiveBallistosporesTalent" Type="AbilCmd" AbilCmd="StukovWeightedPustuleReactiveBallistospores,Execute" />
   </CBehaviorAbility>
   <CBehaviorAbility id="StukovSpineLauncherItem">
     <Buttons Face="StukovSpineLauncherTalentDisabled" Type="AbilCmd" AbilCmd="StukovSpineLauncher,Off" />
@@ -2568,8 +2568,6 @@
   <CEffectSet id="StukovWeightedPustuleReactiveBallistosporesSet">
     <EffectArray value="StukovWeightedPustuleReactiveBallistosporesSplashSearch" />
     <EffectArray value="StukovReactiveBallistosporesResetCooldown" />
-    <EffectArray value="StukovReactiveBallistosporesModifyDummyCooldown" />
-    <EffectArray value="StukovWeightedPustuleReactiveBallistosporesApplyCooldownBehavior" />
   </CEffectSet>
   <CEffectSet id="StukovWeightedPustuleInitialSet">
     <EffectArray value="StukovWeightedPustuleLaunchMissile" />

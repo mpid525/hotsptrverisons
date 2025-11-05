@@ -10440,11 +10440,7 @@ bool libGDHL_gt_HeroFalstadDishonorableDischargeHeroKillRefreshCooldown_Func (bo
 
     // Conditions
     if (testConds) {
-        if (!((PlayerHasTalent(lv_localPlayer, "FalstadLightningRodDishonorableDischarge") == true))) {
-            return false;
-        }
-
-        if (!((UnitHasBehavior2(lv_Falstad, "FalstadDishonorableDischargeQuestCompleteCarryBehavior") == true))) {
+        if (!((UnitHasBehavior2(lv_Falstad, "ChargedUpDeathResetCarryBehavior") == true))) {
             return false;
         }
 
