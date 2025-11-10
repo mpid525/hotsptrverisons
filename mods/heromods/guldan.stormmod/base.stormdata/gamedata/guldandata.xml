@@ -1,5 +1,11 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
+  <const id="$GuldanUnitRadius" value="0.8125" />
+  <const id="$GuldanDrainLifeRange" value="7" />
+  <const id="$GuldanDrainLifeRangeSlop" value="3.5" />
+  <const id="$GuldanDrainLifeActiveActorRange" value="-(-(+($GuldanDrainLifeRange $GuldanDrainLifeRangeSlop) $GuldanUnitRadius) 0.4375)" evaluateAsExpression="1" />
+  <const id="$GuldanChaoticEnergyRangeModifier" value="0.25" />
+  <const id="$GuldanChaoticEnergyRangeIncrease" value="*($GuldanDrainLifeRange $GuldanChaoticEnergyRangeModifier)" evaluateAsExpression="1" />
   <CAbilEffectInstant id="GuldanLifeTapFree">
     <Effect value="GuldanLifeTapCastSet" />
     <Cost>
@@ -48,11 +54,12 @@
     <PrepEffect value="GuldanDrainLifePrepareSet" />
     <Effect value="GuldanDrainLifeChannelCreatePersistent" />
     <Flags index="ClearLastMoveTarget" value="1" />
+    <Flags index="RangeUseCasterRadius" value="0" />
     <Cost>
       <Cooldown TimeUse="10" />
     </Cost>
     <TargetFilters value="Visible;Self,Player,Ally,ImmuneToAOE,Structure,User1,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
-    <Range value="6.5" />
+    <Range value="$GuldanDrainLifeRange" />
     <RangeSlop value="3.5" />
     <CmdButtonArray index="Execute" DefaultButtonFace="GuldanDrainLife">
       <Flags index="AllowMinimap" value="1" />
@@ -541,7 +548,7 @@
     <HostSiteOps Ops="SOpBasicScopeFollow" />
   </CActorModel>
   <CActorSplat id="GuldanDrainLifeRangeSplat" parent="StormRangeSplat">
-    <Scale value="7.250000" />
+    <Scale value="$GuldanDrainLifeRange" />
   </CActorSplat>
   <CActorRange id="GuldanDrainLifeRange" parent="StormRangeAbilPlusSplat" abil="GuldanDrainLife" />
   <CActorRange id="GuldanDrainLifeChannelRange">
@@ -551,7 +558,7 @@
     <Inherits index="TeamColor" value="1" />
     <On Terms="Effect.GuldanDrainLifeChannelCreatePersistent.Start; At Caster" Send="Create" />
     <On Terms="Behavior.GuldanDrainLifeChannel.Off" Send="Destroy" />
-    <Range value="10.000000" />
+    <Range value="$GuldanDrainLifeActiveActorRange" />
     <Icon value="Assets\Textures\storm_fx_kingleoric_base_drainhope_range.dds" />
     <IconArcLength value="3.500000" />
   </CActorRange>
@@ -650,6 +657,7 @@
     <On Terms="Effect.GuldanCorruptionRuinousAfflictionDamage.Start" Send="AnimPlay Spell Spell,T" />
     <On Terms="Effect.GuldanCorruptionRuinousAfflictionThreeHitDamage.Start" Send="AnimPlay Spell Spell,T" />
     <On Terms="Behavior.GuldanCorruptionDoTBehavior.Off" Send="AnimBracketStop BSD" />
+    <On Terms="Behavior.GuldanEchoedCorruptionDoTBehavior" Send="Create" />
     <HostSiteOps Ops="SOpAttachCenter" />
   </CActorModel>
   <CActorModel id="GuldanCorruptionWarningModel" parent="StormModelAnimationStyleContinuous">
@@ -859,6 +867,31 @@
     <Driver value="GuldanWeaponLaunchMissile" />
     <Keyword value="CustomA" />
   </CAttachMethodPattern>
+  <CBehaviorBuff id="GuldanEchoedCorruptionDoTBehavior" parent="StormDot">
+    <Cost>
+      <Charge Link="Behavior/GuldanCorruptionDoTBehavior" />
+      <Cooldown Link="Behavior/GuldanCorruptionDoTBehavior" />
+    </Cost>
+    <BuffFlags index="RefreshStack" value="1" />
+    <MaxStackCount value="3" />
+    <Duration value="6" />
+    <Period value="1" />
+    <PeriodCount value="6" />
+    <PeriodicEffect value="GuldanEchoedCorruptionDoTDamage" />
+    <PeriodicDisplayEffect value="GuldanEchoedCorruptionDoTDamage" />
+    <DamageResponse>
+      <Cost>
+        <Charge Link="Behavior/GuldanCorruptionDoTBehavior" />
+        <Cooldown Link="Behavior/GuldanCorruptionDoTBehavior" />
+      </Cost>
+    </DamageResponse>
+    <HealResponse>
+      <Cost>
+        <Charge Link="Behavior/GuldanCorruptionDoTBehavior" />
+        <Cooldown Link="Behavior/GuldanCorruptionDoTBehavior" />
+      </Cost>
+    </HealResponse>
+  </CBehaviorBuff>
   <CBehaviorBuff id="GuldanLifeTapDarknessWithinAbilityPowerBuff" parent="StormDamageIncrease">
     <Alignment value="Positive" />
     <InfoFlags index="Hidden" value="0" />
@@ -887,10 +920,10 @@
     <Buttons Face="GuldanHealthstone" Type="AbilCmd" AbilCmd="GuldanHealthstone,Execute" />
   </CBehaviorAbility>
   <CBehaviorTokenCounter id="GuldanCorruptionEchoedCorruptionQuestToken" parent="StormQuestToken">
-    <AtMaxEvents index="0" EventId="QuestComplete" Effect="GuldanCorruptionEchoedCorruptionQuestMilestoneModifyPlayer" />
+    <AtMaxEvents index="0" EventId="QuestComplete" Effect="GuldanCorruptionEchoedCorruptionQuestCompleteModifyPlayer" />
     <Max value="100" />
-    <ConditionalEvents Compare="GE" CompareValue="60">
-      <Event Effect="GuldanCorruptionEchoedCorruptionQuestMilestoneModifyPlayer" ValidRange="0,0" />
+    <ConditionalEvents Compare="GE" CompareValue="40">
+      <Event Effect="GuldanCorruptionEchoedCorruptionQuestMilestoneModifyPlayer" />
     </ConditionalEvents>
   </CBehaviorTokenCounter>
   <CBehaviorBuff id="GuldanDarkBargainDuration">
@@ -1401,6 +1434,17 @@
     <Image value="Assets\Textures\ui_targetportrait_hero_guldan.dds" />
     <Variations Model="GuldanPortrait" Actor="GuldanPortrait" />
   </CCharacter>
+  <CEffectApplyBehavior id="GuldanEchoedCorruptionApplyDoTBehavior">
+    <ValidatorArray index="0" value="GuldanCorruptionApplyDoTBehaviorTargetFilters" />
+    <Marker Link="Effect/GuldanCorruptionApplyDoTBehavior" />
+    <Behavior value="GuldanEchoedCorruptionDoTBehavior" />
+  </CEffectApplyBehavior>
+  <CEffectDamage id="GuldanEchoedCorruptionDoTDamage" parent="StormSpellDot">
+    <Marker Link="Effect/GuldanCorruptionDoTDamage" />
+    <Amount value="27" />
+    <LeechValidator index="Life" value="GuldanCorruptionEchoedCorruptionComplete" />
+    <LeechFraction index="Life" value="0.5" />
+  </CEffectDamage>
   <CEffectModifyTokenCount id="GuldanCorruptionEchoedCorruptionQuestDecreaseTokenDeath" parent="BaseEffectModifyTokenCount">
     <Marker Link="Effect/GuldanCorruptionEchoedCorruptionQuestIncrementToken" />
     <EffectCategory index="Quest" value="1" />
@@ -1413,7 +1457,6 @@
     <ValidatorArray value="GuldanCorruptionEchoedCorruptionMilestoneGained" />
     <Marker Link="Effect/GuldanCorruptionEchoedCorruptionQuestMilestoneModifyPlayer" />
     <WhichPlayer Value="Caster" />
-    <EffectArray Operation="Set" Reference="Effect,GuldanCorruptionDoTDamage,Flags[NoVitalLeechLife]" Value="0" />
   </CEffectModifyPlayer>
   <CEffectSet id="GuldanDeathSet">
     <EffectArray value="GuldanFelFlamePursuitOfFlameQuestIncrementToken2" />
@@ -1449,7 +1492,6 @@
   <CEffectModifyPlayer id="GuldanCorruptionEchoedCorruptionQuestMilestoneModifyPlayer">
     <ValidatorArray value="GuldanCorruptionEchoedCorruptionMilestoneGained" />
     <WhichPlayer Value="Caster" />
-    <EffectArray Operation="Set" Reference="Effect,GuldanCorruptionEchoedCorruptionQuestIncrementToken,Chance" Value="0" />
   </CEffectModifyPlayer>
   <CEffectSet id="GuldanCorruptionInitialSet">
     <EffectArray value="GuldanLifeTapDarknessWithinCorruptionRemoveBehavior" />
@@ -2151,9 +2193,10 @@
     <RevealFlags index="Unfog" value="1" />
   </CEffectCreatePersistent>
   <CEffectSet id="GuldanCorruptionEchoedCorruptionImpactSet">
-    <EffectArray value="GuldanCorruptionApplyDoTBehavior" />
+    <EffectArray value="GuldanEchoedCorruptionApplyDoTBehavior" />
     <EffectArray value="GuldanCorruptionRuinousAfflictionDamageSwitch" />
     <EffectArray value="GuldanLifeTapDarknessWithinRemoveBehavior" />
+    <EffectArray value="GuldanCorruptionEchoedCorruptionQuestIncrementToken" />
     <EffectArray value="GuldanCorruptionDemonicSightApplyReveal" />
     <EffectArray value="ApplyAbilityImpactReveal" />
   </CEffectSet>
@@ -2203,6 +2246,8 @@
     <ValidatorArray value="GuldanHasCorruptionRuinousAfflictionTalent" />
     <ValidatorArray value="GuldanCorruptionRuinousAfflictionStackDummyBehaviorNE2" />
     <Amount value="78" />
+    <LeechValidator index="Life" value="GuldanCorruptionEchoedCorruptionComplete" />
+    <LeechFraction index="Life" value="0.5" />
   </CEffectDamage>
   <CEffectModifyUnit id="GuldanDrainLifeCancelModifyCooldown">
     <ImpactUnit Value="Caster" />
@@ -2693,14 +2738,21 @@
         <Type value="FlatModification" />
         <Entry value="GuldanDrainLife" />
         <Field value="Range[0]" />
-        <Value value="1.625000" />
+        <Value value="$GuldanChaoticEnergyRangeIncrease" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="GuldanDrainLifeRangeSplat" />
         <Field value="Scale" />
-        <Value value="1.625000" />
+        <Value value="$GuldanChaoticEnergyRangeIncrease" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Actor" />
+        <Entry value="GuldanDrainLifeChannelRange" />
+        <Field value="Range" />
+        <Value value="$GuldanChaoticEnergyRangeIncrease" />
       </Modifications>
       <Modifications Type="FlatModification" Entry="GuldanFelFlame" Field="Cost[0].Vital[Energy]" />
       <Modifications Type="FlatModification" Entry="GuldanCorruption" Field="Cost[0].Vital[Energy]" />
@@ -2990,8 +3042,8 @@
     <BehaviorArray Link="GuldanVeterancyMana" />
     <BehaviorArray Link="GuldanHasMaxLife" />
     <WeaponArray Link="HeroGuldan" />
-    <Radius value="0.8125" />
-    <InnerRadius value="0.8125" />
+    <Radius value="$GuldanUnitRadius" />
+    <InnerRadius value="$GuldanUnitRadius" />
     <CardLayouts index="0">
       <LayoutButtons Face="GuldanHorrify" Type="AbilCmd" AbilCmd="GuldanHorrify,Execute" Slot="Heroic" />
       <LayoutButtons Face="GuldanRainOfDestruction" Type="AbilCmd" AbilCmd="GuldanRainOfDestruction,Execute" Slot="Heroic" />
@@ -3087,13 +3139,14 @@
   </CValidatorUnitCompareBehaviorCount>
   <CValidatorUnitCompareBehaviorCount id="GuldanCorruptionEchoedCorruptionMilestoneGained">
     <WhichUnit Value="Caster" />
-    <Value value="60" />
+    <Value value="40" />
     <Behavior value="GuldanCorruptionEchoedCorruptionQuestToken" />
+    <Compare value="GE" />
   </CValidatorUnitCompareBehaviorCount>
   <CValidatorUnitCompareBehaviorCount id="GuldanCorruptionEchoedCorruptionNoMilestone">
     <WhichUnit Value="Caster" />
     <Compare value="LT" />
-    <Value value="60" />
+    <Value value="40" />
     <Behavior value="GuldanCorruptionEchoedCorruptionQuestToken" />
   </CValidatorUnitCompareBehaviorCount>
   <CValidatorUnitCompareBehaviorCount id="GuldanFelFlamePursuitOfFlameComplete">

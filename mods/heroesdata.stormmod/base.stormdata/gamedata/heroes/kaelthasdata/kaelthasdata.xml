@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
+  <const id="$KaelthasFlamestrikeRange" value="10.75" />
+  <const id="$KaelthasFlamethrowerRangeModifier" value="0.4" />
+  <const id="$KaelthasFlamethrowerRangeIncrease" value="*($KaelthasFlamestrikeRange $KaelthasFlamethrowerRangeModifier)" evaluateAsExpression="1" />
+  <const id="$KaelthasConvectionFlamestrikeDamageBonusPerStack" value="5" />
+  <const id="$KaelthasConvectionHitsNeededToMilestone" value="20" />
+  <const id="$KaelthasConvectionFlamestrikeDamageBonusPerMilestone" value="30" />
+  <const id="$KalthasConvectionHealthBonusPerMilestone" value="50" />
   <const id="$KaelthasPhoenixWeaponDamageAmount" value="84" />
   <const id="$KaelthasPhoenixWeaponSplashModifier" value="0.5" />
   <const id="$KaelthasPhoneixWeaponSplashDamageAmount" value="*($KaelthasPhoenixWeaponDamageAmount $KaelthasPhoenixWeaponSplashModifier)" evaluateAsExpression="1" />
@@ -38,11 +45,12 @@
     <Effect value="KaelthasFlamestrikeInitialSet" />
     <Flags index="ClearLastMoveTarget" value="1" />
     <Flags index="RequireTargetVision" value="0" />
+    <Flags index="RangeUseCasterRadius" value="0" />
     <Cost>
       <Vital index="Energy" value="70" />
       <Cooldown TimeUse="7" />
     </Cost>
-    <Range value="10" />
+    <Range value="$KaelthasFlamestrikeRange" />
     <RangeSlop value="5" />
     <Arc value="360" />
     <CastIntroTime value="0.25" />
@@ -224,12 +232,17 @@
     <MinAccumulation value="0" />
   </CAccumulatorToken>
   <CAccumulatorToken id="KaelthasFlamestrikeConvectionAccumulator" parent="BaseTokenAccumulator">
-    <MaxAccumulation value="200" />
+    <MaxAccumulation value="65535" />
     <ApplicationRule value="Add" />
     <TokenId value="KaelthasFlamestrikeConvectionQuestToken" />
-    <Scale value="5" />
+    <Scale value="$KaelthasConvectionFlamestrikeDamageBonusPerStack" />
     <UnitSource Value="Source" />
     <MinAccumulation value="0" />
+  </CAccumulatorToken>
+  <CAccumulatorToken id="KaelthasFlamestrikeConvectionMilestoneTokenCountAccumulator" parent="BaseTokenAccumulator">
+    <ApplicationRule value="Add" />
+    <TokenId value="KaelthasFlamestrikeConvectionMilestoneToken" />
+    <UnitSource Value="Caster" />
   </CAccumulatorToken>
   <CActorQuad id="KaelthasPhoenixRetargetGuide" parent="StormGuideVisualQuadDownScaled" abil="KaelthasPhoenixRetargetPhoenixAbility">
     <Height value="10.000000" />
@@ -703,7 +716,7 @@
   </CActorSplat>
   <CActorRange id="KaelthasFlamestrikeRange" parent="StormRangeAbilPlusSplat" abil="KaelthasFlamestrike" />
   <CActorSplat id="KaelthasFlamestrikeRangeSplat" parent="StormRangeSplat">
-    <Scale value="11.125000" />
+    <Scale value="$KaelthasFlamestrikeRange" />
   </CActorSplat>
   <CActorModel id="KaelthasFlamestrikeWarning" parent="StormModelAnimationStyleContinuous">
     <On Terms="Effect.KaelthasFlamestrikeCreatePersistent.Start" Send="Create" />
@@ -1701,10 +1714,18 @@
     </Modification>
   </CBehaviorBuff>
   <CBehaviorTokenCounter id="KaelthasFlamestrikeConvectionQuestToken" parent="StormQuestToken">
-    <AtMaxEvents index="0" EventId="QuestComplete" Effect="KaelthasFlamestrikeConvectionTalentCompletionModifyPlayer" />
-    <Max value="20" />
+    <Max value="65535" />
     <SortIndex value="10" />
+    <DeltaEvents Delta="$KaelthasConvectionHitsNeededToMilestone" OnlyIncrease="1" FireForEachDelta="1">
+      <Event Effect="KaelthasFlamestrikeConvectionMilestoneIncreaseHealthCatalog" />
+    </DeltaEvents>
+    <IncreaseEvents index="0" EventId="QuestIncrease" Effect="KaelthasFlamestrikeIncreaseMilestoneToken" />
   </CBehaviorTokenCounter>
+  <CBehaviorTokenCounter id="KaelthasFlamestrikeConvectionMilestoneToken" parent="StormGenericToken">
+    <AtMaxEvents Effect="KaelthasFlamestrikeConvectionMilestoneCompleteSet" />
+    <Max value="$KaelthasConvectionHitsNeededToMilestone" />
+  </CBehaviorTokenCounter>
+  <CBehaviorBuff id="KaelthasFlamestrikeConvectionLifeCarry" parent="CarryBehaviorParent" />
   <CButton id="KaelthasLivingBombIgnite" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_kaelthas_livingbomb.dds" />
   </CButton>
@@ -1972,11 +1993,25 @@
   <CEffectSet id="RegenGlobeImpactSet">
     <EffectArray value="KaelthasManaAddictQuestIncrement" />
   </CEffectSet>
-  <CEffectModifyTokenCount id="KaelthasFlamestrikeConvectionResetQuestToken">
-    <ValidatorArray value="KaelthasFlamestrikeConvectionCasterHasLessThanMaxStacks" />
-    <Chance value="0" />
+  <CEffectCreatePersistent id="KaelthasFlamestrikeConvectionQuestResetToLastMilestonePersistent">
+    <WhichLocation value="CasterUnit" />
+    <InitialEffect value="KaelthasFlamestrikeConvectionResetMilestoneTokenCounter" />
+    <PeriodCount value="0">
+      <AccumulatorArray value="KaelthasFlamestrikeConvectionMilestoneTokenCountAccumulator" />
+    </PeriodCount>
+    <PeriodicEffectArray value="KaelthasFlamestrikeConvectionRemoveQuestTokenSingular" />
+  </CEffectCreatePersistent>
+  <CEffectModifyTokenCount id="KaelthasFlamestrikeConvectionRemoveQuestTokenSingular" parent="BaseEffectModifyTokenCount">
     <TokenId value="KaelthasFlamestrikeConvectionQuestToken" />
+    <Value value="-1" />
+  </CEffectModifyTokenCount>
+  <CEffectModifyTokenCount id="KaelthasFlamestrikeConvectionResetMilestoneTokenCounter">
+    <TokenId value="KaelthasFlamestrikeConvectionMilestoneToken" />
     <Operation value="Set" />
+  </CEffectModifyTokenCount>
+  <CEffectModifyTokenCount id="KaelthasFlamestrikeIncreaseMilestoneToken" parent="BaseEffectModifyTokenCount">
+    <ContextUnit Value="Caster" />
+    <TokenId value="KaelthasFlamestrikeConvectionMilestoneToken" />
   </CEffectModifyTokenCount>
   <CEffectModifyTokenCount id="KaelthasFlamestrikeConvectionModifyQuestToken" parent="BaseEffectModifyTokenCount">
     <ValidatorArray value="TargetIsHero" />
@@ -2026,11 +2061,17 @@
   <CEffectApplyBehavior id="KaelthasVerdantSpheresApplyMasterOfFlamesBehavior">
     <Behavior value="KaelthasVerdantSpheresMasterOfFlame" />
   </CEffectApplyBehavior>
-  <CEffectModifyPlayer id="KaelthasFlamestrikeConvectionTalentCompletionModifyPlayer">
+  <CEffectModifyPlayer id="KaelthasFlamestrikeConvectionMilestoneIncreaseHealthCatalog">
     <WhichPlayer Value="Caster" />
-    <EffectArray Operation="Set" Reference="Accumulator,KaelthasFlamestrikeConvectionAccumulator,Scale" Value="10" />
-    <EffectArray Operation="Set" Reference="Effect,KaelthasFlamestrikeConvectionResetQuestToken,Chance" Value="0" />
-    <EffectArray Operation="Set" Reference="Effect,KaelthasFlamestrikeConvectionModifyQuestToken,Chance" Value="0" />
+    <EffectArray Reference="Behavior,KaelthasFlamestrikeConvectionLifeCarry,Modification.VitalMaxArray[Life]" Value="$KalthasConvectionHealthBonusPerMilestone" />
+  </CEffectModifyPlayer>
+  <CEffectSet id="KaelthasFlamestrikeConvectionMilestoneCompleteSet">
+    <EffectArray value="KaelthasFlamestrikeConvectionResetMilestoneTokenCounter" />
+    <EffectArray value="KaelthasFlamestrikeConvectionMilestoneCompleteModifyPlayer" />
+  </CEffectSet>
+  <CEffectModifyPlayer id="KaelthasFlamestrikeConvectionMilestoneCompleteModifyPlayer">
+    <WhichPlayer Value="Caster" />
+    <EffectArray Operation="Add" Reference="Accumulator,KaelthasFlamestrikeConvectionAccumulator,Offset" Value="$KaelthasConvectionFlamestrikeDamageBonusPerMilestone" />
   </CEffectModifyPlayer>
   <CEffectSet id="KaelthasVerdantSpheresCooldownEndSet">
     <EffectArray value="KaelthasVerdantSpheresChargeRefund" />
@@ -4043,19 +4084,14 @@
     <Abil value="KaelthasFlamestrike" />
     <RankArray>
       <BehaviorArray value="KaelthasFlamestrikeConvectionQuestToken" />
+      <BehaviorArray value="KaelthasFlamestrikeConvectionMilestoneToken" />
+      <BehaviorArray value="KaelthasFlamestrikeConvectionLifeCarry" />
     </RankArray>
     <AbilityModificationArray>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Effect" />
         <Entry value="KaelthasFlamestrikeConvectionModifyQuestToken" />
-        <Field value="Chance" />
-        <Value value="1.000000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="KaelthasFlamestrikeConvectionResetQuestToken" />
         <Field value="Chance" />
         <Value value="1.000000" />
       </Modifications>
@@ -4069,10 +4105,16 @@
         <Type value="FlatModification" />
         <Catalog value="Accumulator" />
         <Entry value="KaelthasFlamestrikeConvectionAccumulator" />
-        <Field value="Scale" />
+        <Field value="Offset" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Behavior" />
+        <Entry value="KaelthasFlamestrikeConvectionLifeCarry" />
+        <Field value="Modification.VitalMaxArray[Life]" />
       </Modifications>
     </AbilityModificationArray>
-    <QuestData StackBehavior="KaelthasFlamestrikeConvectionQuestToken" TargetCount="20" />
+    <QuestData StackBehavior="KaelthasFlamestrikeConvectionQuestToken" />
   </CTalent>
   <CTalent id="KaelthasFlamestrikeFuryOfTheSunwell">
     <Face value="KaelthasFlamestrikeFuryOfTheSunwellTalent" />
@@ -4355,14 +4397,14 @@
         <Type value="FlatModification" />
         <Entry value="KaelthasFlamestrike" />
         <Field value="Range[0]" />
-        <Value value="4.000000" />
+        <Value value="$KaelthasFlamethrowerRangeIncrease" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="KaelthasFlamestrikeRangeSplat" />
         <Field value="Scale" />
-        <Value value="4.000000" />
+        <Value value="$KaelthasFlamethrowerRangeIncrease" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>
@@ -4524,7 +4566,7 @@
     <InitializerFunction value="libGDHL_gf_HeroKaelthasIncrementHeroCountFunction" />
     <DestructionFunction value="libGDHL_gf_HeroKaelthasDecrementHeroCountFunction" />
     <EffectArray index="Birth" value="KaelthasVerdantSpheresRefreshAllStack" />
-    <EffectArray index="Death" value="KaelthasFlamestrikeConvectionResetQuestToken" />
+    <EffectArray index="Death" value="KaelthasFlamestrikeConvectionQuestResetToLastMilestonePersistent" />
     <EffectArray index="Revive" value="KaelthasVerdantSpheresRefreshAllStack" />
     <HeroPlaystyleFlags index="EnergyImportant" value="1" />
     <HeroPlaystyleFlags index="Ganker" value="1" />

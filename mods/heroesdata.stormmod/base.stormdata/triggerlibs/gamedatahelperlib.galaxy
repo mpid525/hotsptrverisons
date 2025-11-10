@@ -3898,7 +3898,6 @@ void libGDHL_gf_HeroTychusIncrementHeroCountFunction () {
     libGDHL_gv_heroTychusTriggerRegistrationVariable += 1;
     if ((libGDHL_gv_heroTychusTriggerRegistrationVariable == 1)) {
         TriggerEnable(libGDHL_gt_HeroTychusUpdateOrdersOnIssueOrderAbility, true);
-        TriggerEnable(libGDHL_gt_HeroTychusOverkillTargetedRetargetvH16, true);
         TriggerEnable(libGDHL_gt_HeroTychusOverkillRollingReload, true);
         TriggerEnable(libGDHL_gt_HeroTychusMasterAssassinHeroTakedownProc, true);
         TriggerEnable(libGDHL_gt_HeroTychusRelentlessSoldierTalentProc, true);
@@ -3919,7 +3918,6 @@ void libGDHL_gf_HeroTychusDecrementHeroCountFunction () {
 
     if ((libGDHL_gv_heroTychusTriggerRegistrationVariable == 0)) {
         TriggerEnable(libGDHL_gt_HeroTychusUpdateOrdersOnIssueOrderAbility, false);
-        TriggerEnable(libGDHL_gt_HeroTychusOverkillTargetedRetargetvH16, false);
         TriggerEnable(libGDHL_gt_HeroTychusOverkillRollingReload, false);
         TriggerEnable(libGDHL_gt_HeroTychusMasterAssassinHeroTakedownProc, false);
         TriggerEnable(libGDHL_gt_HeroTychusRelentlessSoldierTalentProc, false);

@@ -1,5 +1,12 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
+  <const id="$FalstadUnitRadius" value="0.8125" />
+  <const id="$FalstadLightningRodRange" value="6.5" />
+  <const id="$FalstadLightningRodRangeSlop" value="2.5" />
+  <const id="$FalstadLightningRodChannelRange" value="+($FalstadLightningRodRange $FalstadLightningRodRangeSlop)" evaluateAsExpression="1" />
+  <const id="$FalstadLightingRodActiveActorRange" value="-(-($FalstadLightningRodChannelRange $FalstadUnitRadius) 0.4375)" evaluateAsExpression="1" />
+  <const id="$FalstadChargedUpRangeModifier" value="0.25" />
+  <const id="$FalstadChargedUpRangeIncrease" value="*($FalstadLightningRodRange $FalstadChargedUpRangeModifier)" evaluateAsExpression="1" />
   <const id="$FalstadMightyGustSlowDuration" value="4" />
   <const id="$FalstadMightyGustSlowAmountPos" value="0.4" />
   <const id="$FalstadMightyGustSlowMultiplierPerStep" value="/($FalstadMightyGustSlowAmountPos *($FalstadMightyGustSlowDuration 16))" evaluateAsExpression="1" />
@@ -127,10 +134,11 @@
       <Vital index="Energy" value="60" />
       <Cooldown TimeUse="13" />
     </Cost>
-    <Range value="5.5" />
+    <Range value="$FalstadLightningRodRange" />
     <PrepEffect value="DismountDecloakCasterSet" />
     <TargetFilters value="Visible;Player,Ally,Neutral,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
     <Arc value="360" />
+    <Flags index="RangeUseCasterRadius" value="0" />
     <Flags index="TransientPreferred" value="1" />
     <Flags index="UninterruptibleTurn" value="0" />
   </CAbilEffectTarget>
@@ -625,7 +633,7 @@
     <On Terms="Effect.FalstadLightningRodInitialSet.Start; At Caster" Send="Create" />
     <On Terms="Behavior.FalstadLightningRodCasterBehavior.Off" Send="Destroy" />
     <On Terms="Behavior.Dead.On" Send="Destroy" />
-    <Range value="7.500000" />
+    <Range value="$FalstadLightingRodActiveActorRange" />
     <Inherits index="CloakEffect" value="1" />
     <Inherits index="TeamColor" value="1" />
     <Filter index="All" value="1" />
@@ -675,7 +683,7 @@
   </CActorModel>
   <CActorRange id="FalstadLightningRodRange" parent="StormRangeAbilPlusSplat" abil="FalstadLightningRod" />
   <CActorSplat id="FalstadLightningRodRangeSplat" parent="StormRangeSplat">
-    <Scale value="6.500000" />
+    <Scale value="$FalstadLightningRodRange" />
     <HostSiteOps Ops="SOpBasicScopeFollow" />
     <HostForProps Subject="PropsHost" />
   </CActorSplat>
@@ -952,6 +960,24 @@
   <CActorSound id="PulledSoundHeroFalstad" parent="SoundOneShot">
     <Sound value="Falstad_VOX_Pulled" />
   </CActorSound>
+  <CBehaviorBuff id="FalstadDishonorableDischargeStun" parent="StormStun">
+    <Duration value="1.25" />
+  </CBehaviorBuff>
+  <CBehaviorBuff id="FalstadLightningRodDishonorableDischargeStacking">
+    <Alignment value="Negative" />
+    <BuffFlags index="RefreshStack" value="1" />
+    <MaxStackCount value="7" />
+    <Duration value="8" />
+  </CBehaviorBuff>
+  <CBehaviorBuff id="DishonorableDischargeFatalResponse" parent="CarryBehaviorParent">
+    <Duration value="1.1" />
+    <DamageResponse>
+      <Chance value="1" />
+      <Handled value="DishonorableDischargeAddTokenHeroKill" />
+      <Priority value="15" />
+      <Fatal value="1" />
+    </DamageResponse>
+  </CBehaviorBuff>
   <CBehaviorTokenCounter id="FalstadHammerangGatheringStormDamageToken" parent="StormQuestToken">
     <Face value="FalstadHammerangGatheringStormQuestToken" />
     <InfoFlags index="Hidden" value="1" />
@@ -1530,6 +1556,30 @@
     <Age value="40" />
     <Unit value="HeroFalstad" />
   </CCharacter>
+  <CEffectModifyTokenCount id="DishonorableDischargeAddTokenHeroKill" parent="BaseEffectModifyTokenCount">
+    <ContextUnit Value="Caster" />
+    <TokenId value="FalstadDishonorableDischargeToken" />
+    <Value value="2" />
+  </CEffectModifyTokenCount>
+  <CEffectRemoveBehavior id="LightningRodRemoveDishonorableDischargeBehavior">
+    <WhichUnit Value="Caster" />
+    <BehaviorLink value="FalstadLightningRodDishonorableDischargeStacking" />
+    <Count value="7" />
+  </CEffectRemoveBehavior>
+  <CEffectApplyBehavior id="LightningRodApplyDishonorableDischargeDamageResponse">
+    <Behavior value="DishonorableDischargeFatalResponse" />
+  </CEffectApplyBehavior>
+  <CEffectApplyBehavior id="FalstadDishonorableDischargeApplyStun">
+    <ValidatorArray index="0" value="FalstadCasterHasLightningRodDishonorableDischarge7Stacks" />
+    <Marker Link="Effect/FalstadLightningRodApplyStaticShield" />
+    <Behavior value="FalstadDishonorableDischargeStun" />
+  </CEffectApplyBehavior>
+  <CEffectApplyBehavior id="LightningRodApplyDishonorableDischargeStacks">
+    <ValidatorArray index="0" removed="1" />
+    <Marker Link="Effect/FalstadLightningRodApplyThunderstrikesDelay" />
+    <WhichUnit Value="Caster" />
+    <Behavior value="FalstadLightningRodDishonorableDischargeStacking" />
+  </CEffectApplyBehavior>
   <CEffectModifyTokenCount id="FalstadHammerangGatheringStormQuestMilestoneModifyQuestToken2" parent="BaseEffectModifyTokenCount">
     <Marker Link="Effect/FalstadHammerangGatheringStormQuestMilestoneModifyQuestToken" />
     <EffectCategory index="Quest" value="1" />
@@ -1648,10 +1698,9 @@
     <Marker Link="Effect/FalstadLightningRodConductorTargetSearch" />
     <SearchFilters value="-;Player,Ally,Neutral,Item,Stasis,Dead,Invulnerable" />
     <AreaArray MaxCount="1" Effect="FalstadLightningRodConfirmSet">
-      <Radius value="8" />
+      <Radius value="$FalstadLightningRodChannelRange" />
     </AreaArray>
     <SearchFlags index="CenterAtLaunch" value="1" />
-    <SearchFlags index="ExtendByUnitRadius" value="1" />
     <SearchFlags index="OffsetAreaByAngle" value="0" />
   </CEffectEnumArea>
   <CEffectModifyTokenCount id="FalstadThunderstrikesAddToken" parent="BaseEffectModifyTokenCount">
@@ -1664,7 +1713,7 @@
     <Operation value="Set" />
     <Value value="0" />
   </CEffectModifyTokenCount>
-  <CEffectModifyUnit id="FalstadDishonorableDischargeHeroTakedownCooldownRefresh">
+  <CEffectModifyUnit id="FalstadChargedUpHeroTakedownCooldownRefresh">
     <Cost Abil="FalstadLightningRod,Execute" CooldownOperation="Set" />
   </CEffectModifyUnit>
   <CEffectSwitch id="FalstadDishonorableDischargeStrikesSwitch">
@@ -2027,10 +2076,9 @@
   <CEffectEnumArea id="FalstadLightningRodConductorTargetSearch">
     <SearchFilters value="-;Player,Ally,Neutral,Item,Stasis,Dead,Invulnerable" />
     <AreaArray MaxCount="1" Effect="FalstadLightningRodImpactSet">
-      <Radius value="8" />
+      <Radius value="$FalstadLightningRodChannelRange" />
     </AreaArray>
     <SearchFlags index="CenterAtLaunch" value="1" />
-    <SearchFlags index="ExtendByUnitRadius" value="1" />
     <SearchFlags index="OffsetAreaByAngle" value="0" />
     <ValidatorArray value="CasterNotStasis" />
   </CEffectEnumArea>
@@ -2047,13 +2095,17 @@
   <CEffectSet id="FalstadLightningRodImpactSet">
     <ValidatorArray value="FalstadTargetHasLightningRodConductor" />
     <EffectArray value="ApplyAbilityImpactReveal" />
+    <EffectArray value="LightningRodApplyDishonorableDischargeDamageResponse" />
     <EffectArray value="FalstadLightningRodDamage" />
     <EffectArray value="FalstadLightningRodApplyThunderstrikesDelay" />
     <EffectArray value="FalstadLightningRodApplyStaticShield" />
     <EffectArray value="FalstadLightningRodPersistentRevealer" />
+    <EffectArray value="LightningRodApplyDishonorableDischargeStacks" />
+    <EffectArray value="FalstadDishonorableDischargeApplyStun" />
     <EffectArray value="FalstadDishonorableDischargeStrikesSwitch" />
   </CEffectSet>
   <CEffectSet id="FalstadLightningRodInitialSet">
+    <EffectArray value="LightningRodRemoveDishonorableDischargeBehavior" />
     <EffectArray value="FalstadThunderstrikesResetToken" />
     <EffectArray value="FalstadLightningRodApplyConductorBehavior" />
     <EffectArray value="FalstadLightningRodApplyCasterBehavior" />
@@ -2063,6 +2115,7 @@
     <EffectArray value="FalstadLightningRodInitialSetSecondary" />
     <EffectArray value="FalstadLightningRodApplyThunderstrikesDelay" />
     <EffectArray value="FalstadDishonorableDischargeStrikesSwitch" />
+    <EffectArray value="LightningRodApplyDishonorableDischargeDamageResponse" />
   </CEffectSet>
   <CEffectDamage id="FalstadLightningRodDamage" parent="StormSpell">
     <Amount value="75" />
@@ -3418,38 +3471,38 @@
     <Face value="FalstadChargedUpTalent" />
     <AbilityModificationArray ModifyAbil="FalstadLightningRod" OriginalAbilButton="FalstadLightningRod" ModifiedAbilButton="FalstadLightningRod">
       <Modifications>
-        <Type value="MultiplyLevelModification" />
+        <Type value="FlatModification" />
         <Entry value="FalstadLightningRod" />
         <Field value="Range[0]" />
-        <Value value="1.250000" />
+        <Value value="$FalstadChargedUpRangeIncrease" />
       </Modifications>
       <Modifications>
-        <Type value="MultiplyLevelModification" />
+        <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="FalstadLightningRodRangeModel" />
         <Field value="Range" />
-        <Value value="1.250000" />
+        <Value value="$FalstadChargedUpRangeIncrease" />
       </Modifications>
       <Modifications>
-        <Type value="MultiplyLevelModification" />
+        <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="FalstadLightningRodRangeSplat" />
         <Field value="Scale" />
-        <Value value="1.250000" />
+        <Value value="$FalstadChargedUpRangeIncrease" />
       </Modifications>
       <Modifications>
-        <Type value="MultiplyLevelModification" />
+        <Type value="FlatModification" />
         <Catalog value="Effect" />
         <Entry value="FalstadLightningRodConductorTargetSearch" />
         <Field value="AreaArray[0].Radius" />
-        <Value value="1.250000" />
+        <Value value="$FalstadChargedUpRangeIncrease" />
       </Modifications>
       <Modifications>
-        <Type value="MultiplyLevelModification" />
+        <Type value="FlatModification" />
         <Catalog value="Effect" />
         <Entry value="FalstadLightningRodConfirmTargetSearch" />
         <Field value="AreaArray[0].Radius" />
-        <Value value="1.250000" />
+        <Value value="$FalstadChargedUpRangeIncrease" />
       </Modifications>
     </AbilityModificationArray>
     <Abil value="FalstadLightningRod" />
@@ -3689,6 +3742,11 @@
     <Mover value="HeroMissileSpeed25" />
   </CUnit>
   <CUnit id="FalstadHammerangMissile" parent="MISSILE_INVULNERABLE" />
+  <CValidatorUnitCompareBehaviorCount id="FalstadCasterHasLightningRodDishonorableDischarge7Stacks">
+    <WhichUnit Value="Caster" />
+    <Value value="6" />
+    <Behavior value="FalstadLightningRodDishonorableDischargeStacking" />
+  </CValidatorUnitCompareBehaviorCount>
   <CValidatorUnitCompareBehaviorCount id="FalstadCasterGE3StacksDishonorableDischarge">
     <WhichUnit Value="Caster" />
     <Compare value="GE" />

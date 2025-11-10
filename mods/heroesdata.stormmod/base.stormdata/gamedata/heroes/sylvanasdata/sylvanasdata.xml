@@ -27,9 +27,9 @@
   <CAbilEffectInstant id="SylvanasBlackArrowsActive">
     <Effect value="SylvanasBlackArrowsActiveDurationApplyBehavior" />
     <Flags index="TransientPreferred" value="1" />
-    <CmdButtonArray index="Execute" DefaultButtonFace="SylvanasBlackArrows" Requirements="SylvanasHasBlackArrowCasterBehavior" />
+    <CmdButtonArray index="Execute" DefaultButtonFace="SylvanasBlackArrows" ShowValidator="SylvanasHasHauntingArrows" UseValidator="SylvanasHasHauntingArrowsTalentAndDoesNotHaveBlackArrowsActive" />
     <Cost>
-      <Cooldown TimeUse="1" />
+      <Cooldown TimeUse="90" />
     </Cost>
   </CAbilEffectInstant>
   <CAbilEffectInstant id="SylvanasMindControlCancel">
@@ -1061,7 +1061,9 @@
     <DisplayDuration index="Enemy" value="1" />
     <DisplayPriority value="1" />
     <Duration value="10" />
-    <FinalEffect value="BlackArrowsStartCooldown" />
+    <Period value="0.125" />
+    <PeriodicEffect value="SylvanasBlackArrowsSetCooldown" />
+    <FinalEffect value="SylvanasBlackArrowsSetCooldown" />
   </CBehaviorBuff>
   <CBehaviorBuff id="SylvanasMindControlDarkLadysCallVisionReduction">
     <DisplayDuration index="Self" value="1" />
@@ -1402,16 +1404,14 @@
       <AllArmorBonus value="-25" />
     </ArmorModification>
   </CBehaviorBuff>
-  <CButton id="SylvanasBlackArrows2" parent="StormButtonParentTrait">
-    <TooltipAppender Validator="HasSylvanasOverwhelmingAffliction" Face="SylvanasBlackArrowsOverwhelmingAfflictionTalent" />
-    <TooltipAppender Validator="SylvanasHasMercenaryQueen" Face="SylvanasMercenaryQueenTalent" />
-    <TooltipAppender Validator="HasSylvanasLifeDrain" Face="SylvanasBlackArrowsLifeDrainTalent" />
-    <Icon value="Assets\Textures\storm_ui_icon_sylvanas_blackarrows.dds" />
-    <HotkeyAlias value="SylvanasBlackArrows" />
+  <CButton id="SylvanasBlackArrowsHauntingArrowsTalent" parent="StormButtonParent">
+    <Icon value="Assets\Textures\storm_ui_icon_sylvanas_blackarrows_b.dds" />
   </CButton>
   <CButton id="SylvanasBlackArrowsPassive" parent="StormButtonParentTrait">
     <TooltipAppender Validator="HasSylvanasOverwhelmingAffliction" Face="SylvanasBlackArrowsOverwhelmingAfflictionTalent" />
     <TooltipAppender Validator="SylvanasHasMercenaryQueen" Face="SylvanasMercenaryQueenTalent" />
+    <TooltipAppender Validator="SylvanasHasHauntingArrows" Face="SylvanasBlackArrowsHauntingArrowsTalent" />
+    <TooltipAppender Validator="HasSylvanasTalentRemorseless" Face="SylvanasRemorselessTalent" />
     <TooltipAppender Validator="HasSylvanasLifeDrain" Face="SylvanasBlackArrowsLifeDrainTalent" />
     <TooltipFlags index="ShowHotkey" value="0" />
     <TooltipFlags index="ShowUsage" value="0" />
@@ -1440,7 +1440,7 @@
     <HotkeyAlias value="SylvanasMightOfTheBansheeQueenWitheringFireTalent" />
   </CButton>
   <CButton id="SylvanasShadowDaggerUnfurlingShadowsQuestToken" parent="StormButtonParent">
-    <Icon value="Assets\Textures\storm_ui_icon_sylvanas_shadowdagger.dds" />
+    <Icon value="Assets\Textures\storm_ui_icon_sylvanas_blackarrows.dds" />
     <HotkeyAlias value="SylvanasShadowDaggerUnfurlingShadows" />
   </CButton>
   <CButton id="SylvanasShadowDaggerUnfurlingShadows" parent="StormButtonParent">
@@ -1549,9 +1549,11 @@
     <Icon value="Assets\Textures\storm_ui_icon_sylvanas_hauntingwave.dds" />
     <HotkeyAlias value="SylvanasHauntingWaveSoulReaverTalent" />
   </CButton>
-  <CButton id="SylvanasBlackArrows" parent="StormButtonParentTrait">
+  <CButton id="SylvanasBlackArrows" parent="StormButtonParent">
     <TooltipAppender Validator="HasSylvanasOverwhelmingAffliction" Face="SylvanasBlackArrowsOverwhelmingAfflictionTalent" />
     <TooltipAppender Validator="SylvanasHasMercenaryQueen" Face="SylvanasMercenaryQueenTalent" />
+    <TooltipAppender Validator="SylvanasHasHauntingArrows" Face="SylvanasBlackArrowsHauntingArrowsTalent" />
+    <TooltipAppender Validator="HasSylvanasTalentRemorseless" Face="SylvanasRemorselessTalent" />
     <TooltipAppender Validator="HasSylvanasLifeDrain" Face="SylvanasBlackArrowsLifeDrainTalent" />
     <Icon value="Assets\Textures\storm_ui_icon_sylvanas_blackarrows.dds" />
   </CButton>
@@ -1610,17 +1612,25 @@
     <WhichUnit Value="Caster" />
     <Behavior value="SylvanasUnfurlingShadowsQuestMilestone" />
   </CEffectApplyBehavior>
-  <CEffectModifyUnit id="SylvanasShadowDaggerLostSoulModifyCooldownHero">
-    <ValidatorArray value="SylvanasTargetHas3StacksOfBlackArrowsStackingBehaviorAndTargetIsHero" />
+  <CEffectSwitch id="SylvanasLostSoulModifyCooldownSwitch">
+    <ValidatorArray value="SylvanasTargetHas3StacksOfBlackArrowsStackingBehaviorAndTargetIsValidUnitType" />
     <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
-    <Marker Link="Effect/SylvanasShadowDaggerLostSoulModifyCooldown" />
-    <Chance value="0" />
+    <ValidatorArray value="HasSylvanasShadowDaggerLostSoul" />
+    <CaseArray Validator="TargetIsHero" Effect="SylvanasShadowDaggerLostSoulModifyCooldownHero" />
+    <CaseDefault value="SylvanasShadowDaggerLostSoulModifyCooldown" />
+  </CEffectSwitch>
+  <CEffectModifyUnit id="SylvanasShadowDaggerLostSoulModifyCooldown">
     <ImpactUnit Value="Caster" />
     <Cost Abil="SylvanasShadowDagger,Execute" CooldownOperation="Add" CooldownTimeUse="-0.75" />
   </CEffectModifyUnit>
-  <CEffectModifyUnit id="BlackArrowsStartCooldown">
+  <CEffectModifyUnit id="SylvanasShadowDaggerLostSoulModifyCooldownHero">
     <ImpactUnit Value="Caster" />
-    <Cost Abil="SylvanasBlackArrowsActive,Execute" CooldownOperation="Set" CooldownTimeUse="90" />
+    <Cost Abil="SylvanasShadowDagger,Execute" CooldownOperation="Add" CooldownTimeUse="-1.5" />
+  </CEffectModifyUnit>
+  <CEffectModifyUnit id="SylvanasBlackArrowsSetCooldown">
+    <Cost Abil="SylvanasBlackArrowsActive,Execute" CooldownOperation="Set">
+      <Fraction Cooldown="1" />
+    </Cost>
   </CEffectModifyUnit>
   <CEffectModifyTokenCount id="ShadowDaggerUnfurlingShadowsReduceTokenCountDeath" parent="BaseEffectModifyTokenCount">
     <EffectCategory index="Quest" value="1" />
@@ -1629,8 +1639,8 @@
     <Operation value="Multiply" />
   </CEffectModifyTokenCount>
   <CEffectModifyUnit id="BlackArrowsAttackReduceCooldown">
-    <ValidatorArray value="IsEnemyStructure" />
-    <ValidatorArray value="TargetIsNotTownWall" />
+    <ValidatorArray value="TargetIsEnemyStructureAndNotTownWall" />
+    <ValidatorArray value="SylvanasDoesNotHaveBlackArrowsActiveSelfDurationBuff" />
     <ImpactUnit Value="Caster" />
     <Cost Abil="SylvanasBlackArrowsActive,Execute" CooldownOperation="Add" CooldownTimeUse="-3" />
   </CEffectModifyUnit>
@@ -1998,14 +2008,19 @@
   </CEffectDamage>
   <CEffectModifyTokenCount id="SylvanasShadowDaggerUnfurlingShadowsModifyTokenCount" parent="BaseEffectModifyTokenCount">
     <ValidatorArray value="SylvanasTargetHas3StacksOfBlackArrowsStackingBehavior" />
-    <ValidatorArray value="TargetNotMinionOrMerc" />
-    <ValidatorArray value="NotSummonedUnit" />
+    <ValidatorArray value="SylvanasBlackArrowsQuestTargetIsValidUnitType" />
     <EffectCategory index="Quest" value="1" />
     <TokenId value="SylvanasShadowDaggerUnfurlingShadowsQuestToken" />
   </CEffectModifyTokenCount>
   <CEffectModifyTokenCount id="SylvanasShadowDaggerUnfurlingShadowsModifyTokenCountBasicAttack" parent="SylvanasShadowDaggerUnfurlingShadowsModifyTokenCount">
     <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
   </CEffectModifyTokenCount>
+  <CEffectModifyUnit id="SylvanasLifeDrainLeechModifierReference">
+    <XP value="$SylvanasLifeDrainLeechModifier" />
+  </CEffectModifyUnit>
+  <CEffectModifyUnit id="SylvanasBlackArrowsLeechModifierReference">
+    <XP value="$SylvanasBlackArrowsPinnacleLeechValue" />
+  </CEffectModifyUnit>
   <CEffectCreatePersistent id="SylvanasWitheringFireConsumeAllCharges">
     <WhichLocation Value="CasterUnit" />
     <TimeScaleSource Value="Caster" />
@@ -2035,13 +2050,6 @@
     <CaseArray Validator="SylvanasDreadfulWakeTalentCombine" Effect="SylvanasHauntingWaveDreadfulWakeTalentProcSet" />
     <CaseDefault value="SylvanasBlackArrowsApplyStackingBehavior" />
   </CEffectSwitch>
-  <CEffectModifyUnit id="SylvanasShadowDaggerLostSoulModifyCooldown">
-    <ValidatorArray value="SylvanasTargetHas3StacksOfBlackArrowsStackingBehaviorAndTargetIsNotMinionOrHero" />
-    <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
-    <Chance value="0" />
-    <ImpactUnit Value="Caster" />
-    <Cost Abil="SylvanasShadowDagger,Execute" CooldownOperation="Add" CooldownTimeUse="-0.75" />
-  </CEffectModifyUnit>
   <CEffectModifyUnit id="SylvanasHauntingWaveDreadfulWakeTalentModifyMana">
     <ImpactUnit Value="Caster" />
     <VitalArray index="Energy">
@@ -2338,8 +2346,7 @@
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
   <CEffectSet id="SylvanasWeaponPreImpactSet">
-    <EffectArray value="SylvanasShadowDaggerLostSoulModifyCooldown" />
-    <EffectArray value="SylvanasShadowDaggerLostSoulModifyCooldownHero" />
+    <EffectArray value="SylvanasLostSoulModifyCooldownSwitch" />
     <EffectArray value="SylvanasWitheringFireEvasiveFireBasicAttackBuffRefresh" />
     <EffectArray value="SylvanasBlackArrowsWeaponDamageOverwhelmingAfflictionPercentBonusDamage" />
   </CEffectSet>
@@ -2849,7 +2856,6 @@
     <EffectArray value="SylvanasShadowDaggerUnfurlingShadowsModifyTokenCount" />
     <EffectArray value="ApplyAbilityImpactReveal" />
     <EffectArray value="StylvanasBlackArrowsMercMinionOrStructureStunApplyBehavior" />
-    <EffectArray value="SylvanasShadowDaggerUnfurlingShadowsModifyTokenCount" />
   </CEffectSet>
   <CEffectSet id="SylvanasWailingArrowDeafeningBlastActivateImpactSet">
     <EffectArray value="SylvanasWailingArrowDeafeningBlastDamage" />
@@ -3327,9 +3333,8 @@
       <Flags index="ShowInHeroSelect" value="1" />
       <Flags index="AffectedByCooldownReduction" value="1" />
     </HeroAbilArray>
-    <HeroAbilArray Abil="SylvanasBlackArrowsPassive" Button="SylvanasBlackArrows">
+    <HeroAbilArray Button="SylvanasBlackArrows">
       <Flags index="ShowInHeroSelect" value="1" />
-      <Flags index="AffectedByCooldownReduction" value="1" />
       <Flags index="Trait" value="1" />
     </HeroAbilArray>
     <HeroAbilArray Abil="SylvanasHauntingWaveWindrunnerTalent" />
@@ -3758,7 +3763,7 @@
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Behavior" />
-        <Entry value="SylvanasShadowDaggerTargetEnemyDamage" />
+        <Entry value="SylvanasShadowDaggerDummyBuffSpreadBehavior" />
         <Field value="Duration" />
         <Value value="1.000000" />
       </Modifications>
@@ -3808,11 +3813,8 @@
     <Active value="1" />
   </CTalent>
   <CTalent id="SylvanasHauntingArrows">
-    <Face value="SylvanasBlackArrows2" />
+    <Face value="SylvanasBlackArrowsHauntingArrowsTalent" />
     <Abil value="SylvanasBlackArrowsActive" />
-    <RankArray>
-      <BehaviorArray value="SylvanasHauntingArrows" />
-    </RankArray>
     <Active value="1" />
   </CTalent>
   <CTalent id="SylvanasTalentWitheringFireBarbedShot">
@@ -4004,15 +4006,6 @@
   <CTalent id="SylvanasTalentLostSoul">
     <Face value="SylvanasShadowDaggerLostSoulTalent" />
     <Abil value="SylvanasShadowDagger" />
-    <AbilityModificationArray>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="SylvanasShadowDaggerLostSoulModifyCooldown" />
-        <Field value="Chance" />
-        <Value value="1.000000" />
-      </Modifications>
-    </AbilityModificationArray>
   </CTalent>
   <CTalent id="SylvanasTalentUnstablePoison">
     <Face value="SylvanasBlackArrowsUnstablePoisonTalent" />
@@ -4136,7 +4129,6 @@
     <AbilArray Link="SylvanasMindControlMissile" />
     <AbilArray Link="SylvanasMindControlCancel" />
     <AbilArray Link="SylvanasPossession" />
-    <AbilArray Link="SylvanasBlackArrowsPassive" />
     <WeaponArray Link="SylvanasHeroWeapon" />
     <CardLayouts index="0">
       <LayoutButtons Face="SylvanasWailingArrowActivate" Type="AbilCmd" AbilCmd="SylvanasWailingArrowActivate,Execute" Slot="Heroic" />
@@ -4328,9 +4320,18 @@
     <CombineArray value="TargetIsVisible" />
     <CombineArray value="NotSummonedUnit" />
   </CValidatorCombine>
+  <CValidatorCombine id="SylvanasHasHauntingArrowsTalentAndDoesNotHaveBlackArrowsActive">
+    <Type value="And" />
+    <CombineArray value="SylvanasHasHauntingArrows" />
+    <CombineArray value="SylvanasDoesNotHaveBlackArrowsActiveSelfDurationBuff" />
+  </CValidatorCombine>
   <CValidatorUnitCompareBehaviorCount id="SylvanasHasBlackArrowsActiveSelfDurationBuff">
     <WhichUnit Value="Caster" />
     <Value value="1" />
+    <Behavior value="SylvanasBlackArrowsActiveSelfDurationBuff" />
+  </CValidatorUnitCompareBehaviorCount>
+  <CValidatorUnitCompareBehaviorCount id="SylvanasDoesNotHaveBlackArrowsActiveSelfDurationBuff">
+    <WhichUnit Value="Caster" />
     <Behavior value="SylvanasBlackArrowsActiveSelfDurationBuff" />
   </CValidatorUnitCompareBehaviorCount>
   <CValidatorCombine id="SylvanasMindControlMissilePeriodicValidator">
@@ -4408,6 +4409,10 @@
     <Type value="And" />
     <CombineArray value="SylvanasTargetHas3StacksOfBlackArrowsStackingBehavior" />
     <CombineArray value="IsMercMinionorStructureANDNotMapBoss" />
+  </CValidatorCombine>
+  <CValidatorCombine id="SylvanasBlackArrowsQuestTargetIsValidUnitType">
+    <CombineArray value="TargetIsHero" />
+    <CombineArray value="TargetIsEnemyStructureAndNotTownWall" />
   </CValidatorCombine>
   <CValidatorIsUnitTracked id="SylvanasWitheringFireTargetIsInBarbedShotUnitTracker">
     <Find value="1" />
@@ -4833,6 +4838,15 @@
     <Find value="1" />
     <Value value="SylvanasTalentLostSoul" />
   </CValidatorPlayerTalent>
+  <CValidatorCombine id="SylvanasTargetHas3StacksOfBlackArrowsStackingBehaviorAndTargetIsValidUnitType">
+    <Type value="And" />
+    <CombineArray value="SylvanasTargetHas3StacksOfBlackArrowsStackingBehavior" />
+    <CombineArray value="SylvanasLostSoulTargetValidUnitType" />
+  </CValidatorCombine>
+  <CValidatorCombine id="SylvanasLostSoulTargetValidUnitType">
+    <CombineArray value="TargetIsHero" />
+    <CombineArray value="TargetIsEnemyStructureAndNotTownWall" />
+  </CValidatorCombine>
   <CValidatorUnitCompareBehaviorCount id="HasWailingArrowActivateBehavior">
     <WhichUnit Value="Caster" />
     <Value value="1" />

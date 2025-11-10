@@ -5572,6 +5572,11 @@
     <CombineArray value="TargetIsNotTownWall" />
     <Type value="And" />
   </CValidatorCombine>
+  <CValidatorCombine id="TargetIsEnemyStructureAndNotTownWall">
+    <Type value="And" />
+    <ValidatorArray value="IsEnemyStructure" />
+    <ValidatorArray value="TargetIsNotTownWall" />
+  </CValidatorCombine>
   <CValidatorUnitCompareBehaviorCount id="SourceHasSuppressRegenGlobeCreation">
     <WhichUnit Value="Source" />
     <Value value="1" />

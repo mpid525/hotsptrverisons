@@ -2,6 +2,7 @@
 <Catalog>
   <const id="$AmazonFendCastRange" value="6" />
   <const id="$AmazonFendChannelRadius" value="6" />
+  <const id="$AmazonFendChannelArc" value="45" />
   <const id="$AmazonImpaleModifier" value="0.25" />
   <const id="$AmazonImpaleCastRangeIncrease" value="*($AmazonFendCastRange $AmazonImpaleModifier)" evaluateAsExpression="1" />
   <const id="$AmazonImpaleChannelRadiusIncrease" value="*($AmazonFendChannelRadius $AmazonImpaleModifier)" evaluateAsExpression="1" />

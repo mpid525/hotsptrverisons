@@ -9,6 +9,9 @@
   <const id="$StukovWeightedPustuleSlowMultiplierPerStep75PercentCCReduction" value="/($StukovWeightedPustuleSlowMultiplierPerStep 0.25)" evaluateAsExpression="1" />
   <const id="$StukovWeightedPustuleInitialSlowAmount" value="negate($StukovWeightedPustuleInitialSlowAmountPos)" evaluateAsExpression="1" />
   <const id="$StukovWeightedPustuleMinSlowAccumulated" value="negate(-($StukovWeightedPustuleTotalSlowAmountPos $StukovWeightedPustuleInitialSlowAmountPos))" evaluateAsExpression="1" />
+  <const id="$StukovLurkingArmRange" value="11.5" />
+  <const id="$StukovItHungersRangeModifier" value="0.3" />
+  <const id="$StukovItHungersRangeIncrease" value="*($StukovLurkingArmRange $StukovItHungersRangeModifier)" evaluateAsExpression="1" />
   <CAbilEffectTarget id="StukovHealingPathogen">
     <PrepEffect value="DismountDecloakCasterSet" />
     <Effect value="StukovHealingPathogenInitialCastSet" />
@@ -28,11 +31,12 @@
     <Flags index="ClearLastAttackTarget" value="1" />
     <Flags index="ClearLastMoveTarget" value="1" />
     <Flags index="RequireTargetVision" value="0" />
+    <Flags index="RangeUseCasterRadius" value="0" />
     <Cost>
       <Vital index="Energy" value="60" />
       <Cooldown TimeUse="10" />
     </Cost>
-    <Range value="11" />
+    <Range value="$StukovLurkingArmRange" />
     <RangeSlop value="5" />
     <Arc value="360" />
     <CastIntroTime value="0.75" />
@@ -848,7 +852,7 @@
   </CActorModel>
   <CActorRange id="StukovLurkingArmRange" parent="StormRangeAbilPlusSplat" abil="StukovLurkingArm" />
   <CActorSplat id="StukovLurkingArmRangeSplat" parent="StormRangeSplat">
-    <Scale value="11.750000" />
+    <Scale value="$StukovLurkingArmRange" />
   </CActorSplat>
   <CActorModel id="StukovHealingPathogenImpact" parent="StormModelAnimationStyleOneShotUnit">
     <On Terms="Behavior.StukovHealingPathogenHealerBehavior.On" Send="Create" />
@@ -4633,14 +4637,14 @@
         <Type value="FlatModification" />
         <Entry value="StukovLurkingArm" />
         <Field value="Range[0]" />
-        <Value value="3.300000" />
+        <Value value="$StukovItHungersRangeIncrease" />
       </Modifications>
       <Modifications>
         <Type value="MultiplyLevelModification" />
         <Catalog value="Actor" />
         <Entry value="StukovLurkingArmRangeSplat" />
         <Field value="Scale" />
-        <Value value="1.300000" />
+        <Value value="$StukovItHungersRangeIncrease" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>
