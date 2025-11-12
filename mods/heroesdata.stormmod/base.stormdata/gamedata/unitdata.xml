@@ -2544,7 +2544,6 @@
     <FlagArray index="CreateAITreeOnSpawn" value="1" />
     <FlagArray index="TownStructureCannonTower" value="1" />
     <Attributes index="Tower" value="1" />
-    <Attributes index="NoMinionAggro" value="0" />
     <LifeStart value="6000" />
     <LifeMax value="6000" />
     <AbilArray Link="stop" />

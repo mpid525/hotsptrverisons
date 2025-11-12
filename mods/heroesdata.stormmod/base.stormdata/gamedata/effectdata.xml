@@ -1561,7 +1561,7 @@
   </CEffectSet>
   <CEffectSet id="HeroGenericMountAbilityUsePrepareEffectSet">
     <EffectArray value="DecloakCasterSet" />
-    <EffectArray value="TychusAbilityUseRemoveTychusOverkill" />
+    <EffectArray value="TychusOverkillRemoveActiveBehavior" />
   </CEffectSet>
   <CEffectApplyBehavior id="ImmuneToStasisApplyBehaviorCaster">
     <WhichUnit Value="Caster" />

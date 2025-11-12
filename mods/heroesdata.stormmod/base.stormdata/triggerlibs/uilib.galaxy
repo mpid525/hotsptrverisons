@@ -5810,6 +5810,7 @@ void libUIUI_gf_KillLogAnnounceQuestMilestone (int lp_player, string lp_questTok
     }
     lv_icon = CatalogFieldValueGet(c_gameCatalogButton, CatalogFieldValueGet(c_gameCatalogBehavior, lp_questToken, "Face", c_playerAny), "Icon", c_playerAny);
     lv_questName = StringExternal(CatalogFieldValueGet(c_gameCatalogButton, CatalogFieldValueGet(c_gameCatalogBehavior, lp_questToken, "Face", c_playerAny), "Name", c_playerAny));
+    SoundPlayForPlayer(SoundLink("TalentQuestLogCompleteAlly", -1), c_maxPlayers, libCore_gv_playerGroupFromPlayer[lp_player], 100.0, 0.0);
     libGame_gf_AnnouncementAddItemForPlayerGroup(libCore_gv_playerGroupFromPlayer[lp_player], libGame_ge_AnnouncementPriorities_Normal, libCore_ge_AnnouncerVOEvents_Null, "ShowQuestNotification", StringExternal("Param/Value/lib_UIUI_F7FD8E35"), lv_questName, null, null, (lv_icon), libGame_gv_announcement_LongAnnouncementDuration_C, false);
 }
 

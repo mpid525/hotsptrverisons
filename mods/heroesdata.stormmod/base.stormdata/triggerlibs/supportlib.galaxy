@@ -3352,7 +3352,7 @@ bool libSprt_gt_QACheatsVisionCheckboxClicked_Func (bool testConds, bool runActi
     }
 
     libNtve_gf_AddPlayerGroupToPlayerGroup(libGame_gf_PlayersOnTeamHeroes(libGame_gf_EnemyTeamNumberOfPlayer(EventPlayer()), false), lv_playerGroup);
-    autoFA5F1A65_g = PlayerGroupAll();
+    autoFA5F1A65_g = lv_playerGroup;
     autoFA5F1A65_var = -1;
     while (true) {
         	autoFA5F1A65_var = PlayerGroupNextPlayer(autoFA5F1A65_g, autoFA5F1A65_var);

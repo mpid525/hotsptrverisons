@@ -21416,7 +21416,8 @@ bool libGame_gt_KillStandaloneTowers_Func (bool testConds, bool runActions) {
             auto61769700_var = UnitGroupUnitFromEnd(auto61769700_g, auto61769700_u);
             if (auto61769700_var == null) { break; }
             if ((UnitGetType(auto61769700_var) == "TownCannonTowerL3Standalone")) {
-                UnitKill(auto61769700_var);
+                UnitDamage(auto61769700_var, "TowerDeathDamage", auto61769700_var, 20000.0);
+                break;
             }
 
         }

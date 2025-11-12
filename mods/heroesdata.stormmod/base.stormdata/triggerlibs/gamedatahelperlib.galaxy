@@ -10259,6 +10259,52 @@ void libGDHL_gt_HeroFaerieDragonPixieCharmChargeCountProc_Init () {
 }
 
 //--------------------------------------------------------------------------------------------------
+// Trigger: Hero - Falstad - Dishonorable Discharge Hero Kill Refresh Cooldown
+//--------------------------------------------------------------------------------------------------
+bool libGDHL_gt_HeroFalstadDishonorableDischargeHeroKillRefreshCooldown_Func (bool testConds, bool runActions) {
+    // Variable Declarations
+    int lv_localPlayer;
+    unit lv_Falstad;
+
+    // Automatic Variable Declarations
+    // Variable Initialization
+    lv_localPlayer = libGame_gf_HeroParticipatedInTakedownKillingPlayer();
+    lv_Falstad = libGame_gv_players[lv_localPlayer].lv_heroUnit;
+
+    // Conditions
+    if (testConds) {
+        if (!((UnitHasBehavior2(lv_Falstad, "ChargedUpDeathResetCarryBehavior") == true))) {
+            return false;
+        }
+
+        if (!(((UnitGetType(libGame_gv_players[libGame_gf_HeroParticipatedInTakedownKillingPlayer()].lv_heroUnit) == "HeroFalstad") || (UnitGetType(libGame_gv_players[libGame_gf_HeroParticipatedInTakedownKillingPlayer()].lv_activeVehicle) == "HeroFalstad")))) {
+            return false;
+        }
+    }
+
+    // Actions
+    if (!runActions) {
+        return true;
+    }
+
+    if ((UnitGetType(libGame_gv_players[libGame_gf_HeroParticipatedInTakedownKillingPlayer()].lv_heroUnit) == "HeroFalstad")) {
+        lv_Falstad = libGame_gv_players[libGame_gf_HeroParticipatedInTakedownKillingPlayer()].lv_heroUnit;
+    }
+    else {
+        lv_Falstad = libGame_gv_players[libGame_gf_HeroParticipatedInTakedownKillingPlayer()].lv_activeVehicle;
+    }
+    UnitCreateEffectUnit(lv_Falstad, "FalstadChargedUpHeroTakedownCooldownRefresh", lv_Falstad);
+    return true;
+}
+
+//--------------------------------------------------------------------------------------------------
+void libGDHL_gt_HeroFalstadDishonorableDischargeHeroKillRefreshCooldown_Init () {
+    libGDHL_gt_HeroFalstadDishonorableDischargeHeroKillRefreshCooldown = TriggerCreate("libGDHL_gt_HeroFalstadDishonorableDischargeHeroKillRefreshCooldown_Func");
+    TriggerEnable(libGDHL_gt_HeroFalstadDishonorableDischargeHeroKillRefreshCooldown, false);
+    libGame_gf_HeroParticipatedInTakedown(libGDHL_gt_HeroFalstadDishonorableDischargeHeroKillRefreshCooldown);
+}
+
+//--------------------------------------------------------------------------------------------------
 // Trigger: Hero - Falstad - Flight Ping
 //--------------------------------------------------------------------------------------------------
 bool libGDHL_gt_HeroFalstadFlightPing_Func (bool testConds, bool runActions) {
@@ -10421,52 +10467,6 @@ void libGDHL_gt_HeroFalstadFrequentFlyerNPCKill_Init () {
     libGDHL_gt_HeroFalstadFrequentFlyerNPCKill = TriggerCreate("libGDHL_gt_HeroFalstadFrequentFlyerNPCKill_Func");
     TriggerEnable(libGDHL_gt_HeroFalstadFrequentFlyerNPCKill, false);
     libGame_gf_HeroParticipatedInNPCTakedown(libGDHL_gt_HeroFalstadFrequentFlyerNPCKill);
-}
-
-//--------------------------------------------------------------------------------------------------
-// Trigger: Hero - Falstad - Dishonorable Discharge Hero Kill Refresh Cooldown
-//--------------------------------------------------------------------------------------------------
-bool libGDHL_gt_HeroFalstadDishonorableDischargeHeroKillRefreshCooldown_Func (bool testConds, bool runActions) {
-    // Variable Declarations
-    int lv_localPlayer;
-    unit lv_Falstad;
-
-    // Automatic Variable Declarations
-    // Variable Initialization
-    lv_localPlayer = libGame_gf_HeroParticipatedInTakedownKillingPlayer();
-    lv_Falstad = libGame_gv_players[lv_localPlayer].lv_heroUnit;
-
-    // Conditions
-    if (testConds) {
-        if (!((UnitHasBehavior2(lv_Falstad, "ChargedUpDeathResetCarryBehavior") == true))) {
-            return false;
-        }
-
-        if (!(((UnitGetType(libGame_gv_players[libGame_gf_HeroParticipatedInTakedownKillingPlayer()].lv_heroUnit) == "HeroFalstad") || (UnitGetType(libGame_gv_players[libGame_gf_HeroParticipatedInTakedownKillingPlayer()].lv_activeVehicle) == "HeroFalstad")))) {
-            return false;
-        }
-    }
-
-    // Actions
-    if (!runActions) {
-        return true;
-    }
-
-    if ((UnitGetType(libGame_gv_players[libGame_gf_HeroParticipatedInTakedownKillingPlayer()].lv_heroUnit) == "HeroFalstad")) {
-        lv_Falstad = libGame_gv_players[libGame_gf_HeroParticipatedInTakedownKillingPlayer()].lv_heroUnit;
-    }
-    else {
-        lv_Falstad = libGame_gv_players[libGame_gf_HeroParticipatedInTakedownKillingPlayer()].lv_activeVehicle;
-    }
-    UnitCreateEffectUnit(lv_Falstad, "FalstadDishonorableDischargeHeroTakedownCooldownRefresh", lv_Falstad);
-    return true;
-}
-
-//--------------------------------------------------------------------------------------------------
-void libGDHL_gt_HeroFalstadDishonorableDischargeHeroKillRefreshCooldown_Init () {
-    libGDHL_gt_HeroFalstadDishonorableDischargeHeroKillRefreshCooldown = TriggerCreate("libGDHL_gt_HeroFalstadDishonorableDischargeHeroKillRefreshCooldown_Func");
-    TriggerEnable(libGDHL_gt_HeroFalstadDishonorableDischargeHeroKillRefreshCooldown, false);
-    libGame_gf_HeroParticipatedInTakedown(libGDHL_gt_HeroFalstadDishonorableDischargeHeroKillRefreshCooldown);
 }
 
 //--------------------------------------------------------------------------------------------------
@@ -26854,11 +26854,11 @@ void libGDHL_InitTriggers () {
     libGDHL_gt_HeroFaerieDragonPhaseShiftPing_Init();
     libGDHL_gt_HeroFaerieDragonPhaseShiftCamera_Init();
     libGDHL_gt_HeroFaerieDragonPixieCharmChargeCountProc_Init();
+    libGDHL_gt_HeroFalstadDishonorableDischargeHeroKillRefreshCooldown_Init();
     libGDHL_gt_HeroFalstadFlightPing_Init();
     libGDHL_gt_HeroFalstadFlightCameraHeightRestore_Init();
     libGDHL_gt_HeroFalstadFrequentFlyerHeroTakedown_Init();
     libGDHL_gt_HeroFalstadFrequentFlyerNPCKill_Init();
-    libGDHL_gt_HeroFalstadDishonorableDischargeHeroKillRefreshCooldown_Init();
     libGDHL_gt_HeroFalstadWingmanVariables_Init();
     libGDHL_gt_HeroIllidanApplyFotBCooldownonInventoryUse_Init();
     libGDHL_gt_HeroIllidanMetamorphosisAvatarApplyHealthBuff_Init();
