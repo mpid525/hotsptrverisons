@@ -261,6 +261,7 @@
   <CEffectApplyBehavior id="TombCoreDeathWaveSlowApplyBehavior">
     <Behavior value="TombKingsCoreDeathWaveSlow" />
   </CEffectApplyBehavior>
+  <CEffectDamage id="TowerDeathDamage" />
   <CEffectApplyBehavior id="TownApplyArmorShred">
     <Behavior value="TownRampingArmorShred" />
     <ValidatorArray value="IsHeroAndNotVehicle" />

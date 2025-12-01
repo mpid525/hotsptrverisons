@@ -388,7 +388,7 @@
     <Remove Terms="Signal.*.PlayBuild" Send="AnimPlay Build Stand,Morph,Start" />
     <Remove Terms="Signal.*.PlayBuild" Send="Create TestCannonTowerBuildSoundSequence" />
     <GroupIcon>
-      <Image value="Assets\Textures\storm_ui_ingame_targetinfopanel_unit_wcav_building_tower_1_alliance.dds" />
+      <Image index="0" value="Assets\Textures\storm_ui_ingame_targetinfopanel_unit_wcav_building_tower_1_alliance.dds" />
       <Image value="Assets\Textures\storm_ui_ingame_targetinfopanel_unit_wcav_building_tower_1_horde.dds" />
     </GroupIcon>
     <BuildModel value="Storm_Building_WCAV_Alliance_Tower_01" />

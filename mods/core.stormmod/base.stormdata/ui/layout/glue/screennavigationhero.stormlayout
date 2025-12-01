@@ -233,7 +233,7 @@
         <TooltipAnchorPosition val="BottomCenter" />
       </Frame>
     </Frame>
-    <Frame type="Button" name="EventPopupOpenButton" template="Toy2025EventQuestPopupPanel/OpenToy2025EventPopupButtonTemplate">
+    <Frame type="Button" name="EventPopupOpenButton" template="Toy2019EventQuestPopupPanel/OpenToy2019EventPopupButtonTemplate">
       <Anchor side="Top" relative="$parent/ReplayButton" pos="Min" offset="22" />
       <Anchor side="Left" relative="$parent/ReplayButton" pos="Max" offset="-53" />
       <Handle val="EventPopupOpenButton" />

@@ -5793,21 +5793,6 @@ void libUIUI_gf_KillLogAnnounceQuestMilestone (int lp_player, string lp_questTok
         return ;
     }
 
-    lv_itemIndex = libUIUI_gf_KillLogGetItemIndexforUnit(lp_player, libUIUI_ge_KillLogItemType_Quest);
-    if ((lv_itemIndex > 0)) {
-        if ((libUIUI_gv_killLogItems[lv_itemIndex].lv_combo >= (libUIUI_gv_killLog_MaxComboIcons_D0A1 - 1))) {
-            TriggerDebugOutput(1, StringExternal("Param/Value/lib_UIUI_0FA89E68"), true);
-            return ;
-        }
-
-        TimerStart(libUIUI_gv_killLogItems[lv_itemIndex].lv_timer, libUIUI_gv_killLog_Timeout_D0A1, false, c_timeGame);
-        libUIUI_gv_killLogItems[lv_itemIndex].lv_combo += 1;
-        lv_itemFrame = libUIUI_gv_killLogItems[lv_itemIndex].lv_frame;
-        lv_combo = libUIUI_gv_killLogItems[lv_itemIndex].lv_combo;
-    }
-    else {
-        lv_itemFrame = libUIUI_gf_KillLogAddNewItem(lp_player, libUIUI_ge_KillLogItemType_Quest);
-    }
     lv_icon = CatalogFieldValueGet(c_gameCatalogButton, CatalogFieldValueGet(c_gameCatalogBehavior, lp_questToken, "Face", c_playerAny), "Icon", c_playerAny);
     lv_questName = StringExternal(CatalogFieldValueGet(c_gameCatalogButton, CatalogFieldValueGet(c_gameCatalogBehavior, lp_questToken, "Face", c_playerAny), "Name", c_playerAny));
     SoundPlayForPlayer(SoundLink("TalentQuestLogCompleteAlly", -1), c_maxPlayers, libCore_gv_playerGroupFromPlayer[lp_player], 100.0, 0.0);

@@ -9775,14 +9775,9 @@
     <DeathActorModelLow value="UnitDeathModelPersistent" />
     <PlacementModel value="TownTowerL3KingsCrest" />
     <CustomUnitStatusFrame value="UnitStatus/TowerUnitStatusFrameTemplate" />
-    <GroupIcon>
-      <Image value="Assets\Textures\ui_targetportrait_buildings_ravenscourt_tower_superior_blue.dds" />
-    </GroupIcon>
-    <Wireframe>
-      <Image value="Assets\Textures\ui_targetportrait_buildings_ravenscourt_tower_superior_red.dds" />
-    </Wireframe>
     <BarOffset value="-35" />
     <ImpactSound value="BuildingTower_Impact" />
+    <UnitIcon value="Assets\Textures\storm_ui_icon_deathrecap_npc_structure.dds" />
   </CActorUnit>
   <CActorTurret id="TownCannonTowerTurret">
     <On Terms="TurretEnable.TownCannonTowerL1Turret" Send="Create" />

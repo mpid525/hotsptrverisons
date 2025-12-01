@@ -578,7 +578,9 @@
   <CBehaviorBuff default="1" id="StormSleep" parent="StormStun">
     <InitialEffect value="SleepBreakPreventApplyBehavior" />
     <BehaviorCategories index="Sleeping" value="1" />
-    <DamageResponse Chance="1" Handled="StormSleepRemoveBehaviorDelayCP" Priority="96" />
+    <DamageResponse Chance="1" Handled="StormSleepRemoveBehaviorDelayCP" Priority="96">
+      <UnitDamageType index="Minion" value="0" />
+    </DamageResponse>
   </CBehaviorBuff>
   <CBehaviorBuff default="1" id="StormStackingComboMarker">
     <BehaviorCategories index="StackingComboMarker" value="1" />

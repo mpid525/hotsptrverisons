@@ -995,16 +995,6 @@
   <Style name="Toy2019EventQuestCardTooltipText_Centered" template="Toy2019EventQuestCardTooltipText" height="18" styleflags="Uppercase" vjustify="Middle" hjustify="Center" />
   <Style name="Toy2019EventQuestCardProgressText" template="HeaderExtendedTemplate" height="12" styleflags="!Shadow|Outline" vjustify="Middle" hjustify="Center" textcolor="f7d9ba" outlinecolor="7F370E" outlinewidth="2" />
   <Style name="Toy2019Event_ErrorDialogText" template="Toy2019Event_EmceeText" hjustify="Center" />
-  <Style name="Toy2025EventQuestCardRepeatableDescText" template="StandardTemplate" height="14" styleflags="!Shadow|Outline" vjustify="Top" hjustify="Left" textcolor="fff9b8" outlinewidth="2" outlinecolor="57007F" />
-  <Style name="Toy2025EventQuestCardRepeatableTitleText" template="HeaderExtendedTemplate" height="17" styleflags="!Shadow|Outline" vjustify="Top" hjustify="Left" textcolor="ffffff" outlinewidth="2" outlinecolor="57007F" />
-  <Style name="Toy2025EventQuestCardUniqueDescText" template="Toy2025EventQuestCardRepeatableDescText" textcolor="FFF9F4" outlinecolor="7F370E" />
-  <Style name="Toy2025EventQuestCardUniqueTitleText" template="Toy2025EventQuestCardRepeatableTitleText" textcolor="ffffff" outlinecolor="7F370E" />
-  <Style name="Toy2025Event_EmceeText" template="HeaderExtendedTemplate" height="20" textcolor="E3D4F4" outlinecolor="542C7A" styleflags="!Shadow|Outline" fontflags="Bold | Italic" vJustify="Top" outlinewidth="2" />
-  <Style name="Toy2025Event_EmceeName" template="HeaderExtendedTemplate" height="24" textcolor="FFE19E" outlinecolor="684A03" styleflags="!Shadow|Outline" fontflags="Bold" vJustify="Top" outlinewidth="2" />
-  <Style name="Toy2025EventQuestCardTooltipText" template="HeaderExtendedTemplate" height="15" styleflags="!Shadow|Outline" vjustify="Top" hjustify="Left" textcolor="BAFFEB" outlinecolor="8000397F" outlinewidth="2" />
-  <Style name="Toy2025EventQuestCardTooltipText_Centered" template="Toy2025EventQuestCardTooltipText" height="18" styleflags="Uppercase" vjustify="Middle" hjustify="Center" />
-  <Style name="Toy2025EventQuestCardProgressText" template="HeaderExtendedTemplate" height="12" styleflags="!Shadow|Outline" vjustify="Middle" hjustify="Center" textcolor="f7d9ba" outlinecolor="7F370E" outlinewidth="2" />
-  <Style name="Toy2025Event_ErrorDialogText" template="Toy2025Event_EmceeText" hjustify="Center" />
   <Style name="MechaEvent_QuestLogItemTitleText_Unique" template="HeaderExtendedTemplate" height="18" styleflags="!Shadow|Glow" vjustify="Middle" hjustify="Left" textcolor="#ColorWhite" glowcolor="ff8400" disabledcolor="6f6f6f" />
   <Style name="MechaEvent_QuestLogNotification" template="MechaEvent_QuestLogItemTitleText_Unique" hjustify="Center" />
   <Style name="MechaEvent_QuestLogItemDescription_Unique" template="HeaderExtendedTemplate" height="16" styleflags="!Shadow|Outline" vjustify="Top" hjustify="Left" textcolor="ffb502" outlinewidth="1" outlinecolor="1b1306" />
