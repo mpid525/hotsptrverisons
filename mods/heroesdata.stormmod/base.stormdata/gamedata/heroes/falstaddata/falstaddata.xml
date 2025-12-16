@@ -1677,7 +1677,7 @@
   </CEffectModifyTokenCount>
   <CEffectSet id="FalstadGatheringStormFirstMilestoneGrantSet">
     <EffectArray value="FalstadHammerangGatheringStormQuestMilestoneModifyQuestToken" />
-    <EffectArray value="FalstadGatheringStormSecondMilestoneDisableMilestone" />
+    <EffectArray value="FalstadGatheringStormFirstMilestoneDisableMilestone" />
   </CEffectSet>
   <CEffectModifyTokenCount id="FalstadHammerangGatheringStormQuestMilestoneModifyQuestToken" parent="BaseEffectModifyTokenCount">
     <CollationId value="FalstadHammerangGatheringStormModifyQuestToken" />
