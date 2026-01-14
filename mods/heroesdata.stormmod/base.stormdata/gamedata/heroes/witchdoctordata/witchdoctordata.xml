@@ -1432,7 +1432,7 @@
     <DisplayDuration index="Self" value="0" />
     <DisplayDuration index="Ally" value="0" />
     <DisplayDuration index="Enemy" value="0" />
-    <Duration value="3" />
+    <Duration value="-1" />
     <InitialEffect value="WitchDoctorZombieWallDeadRushApplyBehaviorSource" />
   </CBehaviorBuff>
   <CBehaviorBuff id="WitchDoctorCorpseSpidersTimedLife" parent="StormTimedLife">
@@ -1456,7 +1456,7 @@
     <DisplayDuration index="Self" value="1" />
     <DisplayDuration index="Ally" value="1" />
     <DisplayDuration index="Enemy" value="1" />
-    <Duration value="20" />
+    <Duration value="-1" />
     <ExpireEffect value="SuicideTimeout" />
     <Modification>
       <StateFlags index="Hallucination" value="1" />
@@ -3591,6 +3591,13 @@
       <Modifications>
         <Catalog value="Unit" />
         <Entry value="WitchDoctorZombieWallDeadRushTalentUnit" />
+        <Field value="LifeRegenRate" />
+        <Value value="0.040000" />
+        <AffectedByOverdrive value="1" />
+      </Modifications>
+      <Modifications>
+        <Catalog value="Unit" />
+        <Entry value="WitchDoctorZombieWallDeadRushTalentUnit" />
         <Field value="LifeStart" />
         <Value value="0.040000" />
         <AffectedByOverdrive value="1" />
@@ -3659,6 +3666,13 @@
         <Catalog value="Unit" />
         <Entry value="WitchDoctorGargantuan" />
         <Field value="LifeMax" />
+        <Value value="0.040000" />
+        <AffectedByOverdrive value="1" />
+      </Modifications>
+      <Modifications>
+        <Catalog value="Unit" />
+        <Entry value="WitchDoctorGargantuan" />
+        <Field value="LifeRegenRate" />
         <Value value="0.040000" />
         <AffectedByOverdrive value="1" />
       </Modifications>
@@ -4536,6 +4550,7 @@
     <HotkeyCategory value="Unit/Category/ZergUnits" />
     <TauntDuration index="Cheer" value="5" />
     <TauntDuration index="Dance" value="5" />
+    <LifeRegenRate value="-70" />
   </CUnit>
   <CUnit id="WitchDoctorCorpseSpider" parent="StormSummonFigment">
     <FlagArray index="Unselectable" value="1" />
@@ -4704,8 +4719,8 @@
   </CUnit>
   <CUnit id="WitchDoctorZombieWallDeadRushTalentUnit" parent="StormSummonActive">
     <Description value="Button/Tooltip/Ghoul" />
-    <LifeStart value="225" />
-    <LifeMax value="225" />
+    <LifeStart value="300" />
+    <LifeMax value="300" />
     <Speed value="5" />
     <Sight value="7" />
     <AbilArray Link="stop" />
@@ -4726,6 +4741,7 @@
     <SubgroupPriority value="14" />
     <AIThinkTree value="AI/SummonedMinion.aitree" />
     <HotkeyCategory value="Unit/Category/ZergUnits" />
+    <LifeRegenRate value="-100" />
   </CUnit>
   <CUpgrade id="WitchDoctorPlagueofToadsPandemicTalentCompletion" />
   <CValidatorUnitCompareTokenCount id="WitchDoctorHasGTE5StacksVoodooRitual">

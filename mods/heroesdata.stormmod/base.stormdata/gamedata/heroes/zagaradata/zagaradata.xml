@@ -1394,7 +1394,7 @@
     <Alignment value="Positive" />
   </CBehaviorBuff>
   <CBehaviorBuff id="ZagaraRoachTimedLife" parent="StormTimedLife">
-    <Duration value="8" />
+    <Duration value="-1" />
   </CBehaviorBuff>
   <CBehaviorBuff id="ZagaraRoachAbilityController" parent="CarryBehaviorParent">
     <EnableEffect value="ZagaraRoachAddAbilityTargetController" />
@@ -1438,7 +1438,7 @@
   <CBehaviorBuff id="ZagaraCreepTumorTimedLife">
     <DisplayDuration index="Self" value="1" />
     <DisableValidatorArray value="ZagaraDoesNotHaveEndlessCreep" />
-    <Duration value="240" />
+    <Duration value="-1" />
     <Period value="2" />
     <PeriodCount value="1" />
     <InitialEffect value="ZagaraCreepTumorCreepQueenMasterySet" />
@@ -1465,7 +1465,7 @@
     </Modification>
   </CBehaviorBuff>
   <CBehaviorBuff id="ZagaraHydraliskTimedLife" parent="StormTimedLife">
-    <Duration value="8" />
+    <Duration value="-1" />
   </CBehaviorBuff>
   <CBehaviorBuff id="ZagaraHydraliskAbilityController" parent="CarryBehaviorParent">
     <EnableEffect value="ZagaraHydraliskAddAbilityTargetController" />
@@ -3228,6 +3228,13 @@
       <Modifications>
         <Catalog value="Unit" />
         <Entry value="ZagaraCreepTumorBurrowed" />
+        <Field value="LifeRegenRate" />
+        <Value value="0.040000" />
+        <AffectedByOverdrive value="1" />
+      </Modifications>
+      <Modifications>
+        <Catalog value="Unit" />
+        <Entry value="ZagaraCreepTumorBurrowed" />
         <Field value="LifeStart" />
         <Value value="0.040000" />
         <AffectedByOverdrive value="1" />
@@ -3262,6 +3269,13 @@
         <Catalog value="Unit" />
         <Entry value="ZagaraBaneling" />
         <Field value="LifeMax" />
+        <Value value="0.030000" />
+        <AffectedByOverdrive value="1" />
+      </Modifications>
+      <Modifications>
+        <Catalog value="Unit" />
+        <Entry value="ZagaraBaneling" />
+        <Field value="LifeRegenRate" />
         <Value value="0.030000" />
         <AffectedByOverdrive value="1" />
       </Modifications>
@@ -3308,6 +3322,13 @@
       <Modifications>
         <Catalog value="Unit" />
         <Entry value="ZagaraHydralisk" />
+        <Field value="LifeRegenRate" />
+        <Value value="0.045000" />
+        <AffectedByOverdrive value="1" />
+      </Modifications>
+      <Modifications>
+        <Catalog value="Unit" />
+        <Entry value="ZagaraHydralisk" />
         <Field value="LifeStart" />
         <Value value="0.045000" />
         <AffectedByOverdrive value="1" />
@@ -3346,6 +3367,13 @@
       <Modifications>
         <Catalog value="Unit" />
         <Entry value="ZagaraMutalisk" />
+        <Field value="LifeRegenRate" />
+        <Value value="0.045000" />
+        <AffectedByOverdrive value="1" />
+      </Modifications>
+      <Modifications>
+        <Catalog value="Unit" />
+        <Entry value="ZagaraMutalisk" />
         <Field value="LifeStart" />
         <Value value="0.045000" />
         <AffectedByOverdrive value="1" />
@@ -3364,6 +3392,13 @@
         <Catalog value="Unit" />
         <Entry value="ZagaraRoach" />
         <Field value="LifeMax" />
+        <Value value="0.040000" />
+        <AffectedByOverdrive value="1" />
+      </Modifications>
+      <Modifications>
+        <Catalog value="Unit" />
+        <Entry value="ZagaraRoach" />
+        <Field value="LifeRegenRate" />
         <Value value="0.040000" />
         <AffectedByOverdrive value="1" />
       </Modifications>
@@ -4311,23 +4346,25 @@
     <InnerRadius value="0.375" />
   </CUnit>
   <CUnit id="ZagaraCreepTumor" parent="StormSummonPassive">
-    <LifeStart value="125" />
-    <LifeMax value="125" />
+    <LifeStart value="250" />
+    <LifeMax value="250" />
     <AbilArray Link="BurrowZagaraCreepTumorDown" />
     <Radius value="1" />
     <InnerRadius value="0.5" />
     <PlacementFootprint value="StormPlacementFootprint1x1SummonedUnit" />
     <Sight value="7" />
+    <LifeRegenRate value="-1" />
   </CUnit>
   <CUnit id="ZagaraCreepTumorBurrowed" parent="StormSummonPassive">
-    <LifeStart value="125" />
-    <LifeMax value="125" />
+    <LifeStart value="250" />
+    <LifeMax value="250" />
     <Sight value="8.5" />
     <BehaviorArray Link="ZagaraCreepTumorCreepSource" />
     <BehaviorArray Link="ZagaraCreepTumorTimedLife" />
     <BehaviorArray Link="ZagaraCreepTumorCreepQueenCreepSource" />
     <Radius value="0.5" />
     <InnerRadius value="0.5" />
+    <LifeRegenRate value="-1" />
   </CUnit>
   <CUnit id="ZagaraHydralisk" parent="StormSummonActive">
     <LifeStart value="450" />
@@ -4358,6 +4395,7 @@
     <TauntDuration index="Cheer" value="5" />
     <TauntDuration index="Dance" value="5" />
     <AIThinkTree value="AI/SummonedMinionAttackOwnerTarget.aitree" />
+    <LifeRegenRate value="-45" />
   </CUnit>
   <CUnit id="ZagaraHydraliskRangedWeapon" parent="MISSILE_INVULNERABLE">
     <Mover value="HeroMissileSpeed22Ribbon" />
@@ -4389,6 +4427,7 @@
     <Radius value="0.375" />
     <InnerRadius value="0.375" />
     <AIThinkTree value="AI/SummonedMinion.aitree" />
+    <LifeRegenRate value="-32" />
   </CUnit>
   <CUnit id="ZagaraMedusaBladesMissile" parent="MISSILE_INVULNERABLE">
     <Mover value="HeroMissileSpeed22NoRibbonSlow" />
@@ -4427,6 +4466,7 @@
     <SubgroupPriority value="9" />
     <AIThinkTree value="AI/SummonedMinionAttackOwnerTarget.aitree" />
     <HotkeyCategory value="Unit/Category/ZergUnits" />
+    <LifeRegenRate value="-42" />
   </CUnit>
   <CUnit id="ZagaraMutaliskMissile1" parent="MISSILE_INVULNERABLE">
     <Mover value="ZagaraMutaliskMissile" />

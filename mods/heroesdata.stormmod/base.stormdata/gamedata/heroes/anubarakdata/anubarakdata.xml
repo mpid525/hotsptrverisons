@@ -1315,7 +1315,7 @@
     <RemoveValidatorArray value="AnubarakTargethasCocoonActive" />
   </CBehaviorBuff>
   <CBehaviorBuff id="AnubarakBeetleTimedLife" parent="StormTimedLife">
-    <Duration value="8" />
+    <Duration value="-1" />
   </CBehaviorBuff>
   <CBehaviorBuff id="AnubarakBurrowChargeCaster" parent="StormUnstoppableParent">
     <Duration value="1.125" />
@@ -2823,6 +2823,13 @@
       <Modifications>
         <Catalog value="Unit" />
         <Entry value="AnubarakBeetleSpitBeetle" />
+        <Field value="LifeRegenRate" />
+        <Value value="0.040000" />
+        <AffectedByOverdrive value="1" />
+      </Modifications>
+      <Modifications>
+        <Catalog value="Unit" />
+        <Entry value="AnubarakBeetleSpitBeetle" />
         <Field value="LifeStart" />
         <Value value="0.040000" />
         <AffectedByOverdrive value="1" />
@@ -4015,6 +4022,7 @@
     <ScoreResult value="" />
     <AIThinkTree value="AI/SummonedMinionAttackOwnerTarget.aitree" />
     <AcquireLeashRadius value="6" />
+    <LifeRegenRate value="-28" />
   </CUnit>
   <CUnit id="AnubarakLocustSwarmAttackMissile" parent="MISSILE_INVULNERABLE" />
   <CUnit id="AnubarakLocustSwarmBug" parent="StormSummonFigment">

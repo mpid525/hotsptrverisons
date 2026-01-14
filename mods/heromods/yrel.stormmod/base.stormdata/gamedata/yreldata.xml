@@ -183,7 +183,7 @@
     <Effect value="YrelDivinePurposeInitialSet" />
     <SharedFlags index="DelayHotkeysAfterThisByOneGameLoop" value="1" />
     <Cost>
-      <Cooldown TimeUse="$YrelDivinePurposeCooldown" />
+      <Cooldown TimeUse="16" />
     </Cost>
     <CmdButtonArray index="Execute" DefaultButtonFace="YrelDivinePurpose" ShowValidator="YrelDivinePurposeCasterDoesNotHaveBuff" />
   </CAbilEffectInstant>

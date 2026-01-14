@@ -4,7 +4,7 @@
   <const id="$ThrallCrashLightningQuestFirstMilestoneStacks" value="15" />
   <const id="$ThrallCrashLightningQuestMaxStacks" value="30" />
   <const id="$ThrallCrashLightningFirstMilestoneBonusDamage" value="270" />
-  <const id="$ThrallCrashLightningQuestCompleteBonusDamage" value="270" />
+  <const id="$ThrallCrashLightningQuestCompleteBonusDamage" value="325" />
   <const id="$ThrallSpiritShieldCooldownReductionValue" value="-10" />
   <const id="$ThrallMaelstromWeaponFirstMilestoneStacks" value="25" />
   <const id="$ThrallMaelstromWeaponSecondMilestoneStacks" value="55" />
@@ -1580,14 +1580,14 @@
   </CEffectModifyPlayer>
   <CEffectSet id="ThrallCrashLightningFirstMilestoneGrantSet">
     <EffectArray value="ThrallCrashLightningAddFirstMilestoneDamageTokens" />
-    <EffectArray value="ThrallCrashLightningFirstMilestoneDisableMilestone" />
+    <EffectArray value="ThrallCrashLightningFirstMilestoneCheckpointMinimum" />
   </CEffectSet>
   <CEffectModifyTokenCount id="ThrallCrashLightningAddFirstMilestoneDamageTokens" parent="BaseEffectModifyTokenCount">
     <TokenId value="ThrallCrashLightningDamageTokenCounter" />
     <Value value="$ThrallCrashLightningFirstMilestoneBonusDamage" />
   </CEffectModifyTokenCount>
-  <CEffectModifyPlayer id="ThrallCrashLightningFirstMilestoneDisableMilestone">
-    <EffectArray Operation="Set" Reference="Effect,ThrallCrashLightningFirstMilestoneGrantSet,Chance" Value="0" />
+  <CEffectModifyPlayer id="ThrallCrashLightningFirstMilestoneCheckpointMinimum">
+    <EffectArray Operation="Set" Reference="Behavior,ThrallCrashLightningTokenCounter,Min" Value="15" />
   </CEffectModifyPlayer>
   <CEffectSet id="ThrallCrashLightningQuestCompleteGrantSet">
     <EffectArray value="ThrallCrashLightningAddQuestCompleteDamageTokens" />
@@ -1890,7 +1890,7 @@
     <CaseDefault value="ThrallChainLightningRollingThunderTalentBounce6Damage" />
   </CEffectSwitch>
   <CEffectSet id="ThrallChainLightningRollingThunderTalentBounce6ImpactSet">
-    <ValidatorArray value="noMarkers" />
+    <ValidatorArray value="ThrallNoEchoAndNoMarkerCombine" />
     <ValidatorArray value="DoesNotHaveNoBounce" />
     <ValidatorArray value="NoJungleBenignTarget" />
     <EffectArray value="ApplyAbilityImpactReveal" />
@@ -1934,7 +1934,7 @@
     <CaseDefault value="ThrallChainLightningRollingThunderTalentBounce5Damage" />
   </CEffectSwitch>
   <CEffectSet id="ThrallChainLightningRollingThunderTalentBounce5ImpactSet">
-    <ValidatorArray value="noMarkers" />
+    <ValidatorArray value="ThrallNoEchoAndNoMarkerCombine" />
     <ValidatorArray value="DoesNotHaveNoBounce" />
     <ValidatorArray value="NoJungleBenignTarget" />
     <EffectArray value="ApplyAbilityImpactReveal" />
@@ -2946,7 +2946,7 @@
     <EffectArray value="ThrallChainLightningRollingThunderMasteryProcSet" />
   </CEffectSet>
   <CEffectDamage id="ThrallWindfuryTempestFuryDamage" parent="StormWeapon">
-    <Amount value="173" />
+    <Amount value="167" />
     <MultiplicativeModifierArray index="TempestFury" Modifier="-0.25" />
     <MultiplicativeModifierArray index="ElementalAssault" Validator="ThrallHasElementalAssaultBuff" Modifier="0.45" Crit="1" />
     <FlatModifierArray index="MaelstromWeaponFirstMilestone" Validator="ThrallMaelstromWeaponFirstMilestoneReachedCombine" Modifier="$ThrallMaelstromWeaponBasicAttackBonusDamageFirstMilestone" />
@@ -2975,7 +2975,7 @@
     <InitialEffect value="WindfuryTempestFuryInitialHitSet" />
   </CEffectCreatePersistent>
   <CEffectSet id="ThrallChainLightningBounce1ImpactSet">
-    <ValidatorArray value="noMarkers" />
+    <ValidatorArray value="ThrallNoEchoAndNoMarkerCombine" />
     <ValidatorArray value="DoesNotHaveNoBounce" />
     <ValidatorArray value="NoJungleBenignTarget" />
     <ValidatorArray value="NotCloakedOrIsRevealed" />
@@ -2988,7 +2988,7 @@
     <EffectArray value="ThrallChainLightningBounce1Persistent" />
   </CEffectSet>
   <CEffectSet id="ThrallChainLightningBounce2ImpactSet">
-    <ValidatorArray value="noMarkers" />
+    <ValidatorArray value="ThrallNoEchoAndNoMarkerCombine" />
     <ValidatorArray value="DoesNotHaveNoBounce" />
     <ValidatorArray value="NoJungleBenignTarget" />
     <ValidatorArray value="NotCloakedOrIsRevealed" />
@@ -3001,7 +3001,7 @@
     <EffectArray value="ThrallChainLightningBounce2Persistent" />
   </CEffectSet>
   <CEffectSet id="ThrallChainLightningBounce3ImpactSet">
-    <ValidatorArray value="noMarkers" />
+    <ValidatorArray value="ThrallNoEchoAndNoMarkerCombine" />
     <ValidatorArray value="DoesNotHaveNoBounce" />
     <ValidatorArray value="NoJungleBenignTarget" />
     <ValidatorArray value="NotCloakedOrIsRevealed" />
@@ -3022,7 +3022,7 @@
     </AINotifySettings>
   </CEffectCreatePersistent>
   <CEffectSet id="ThrallChainLightningBounce4ImpactSet">
-    <ValidatorArray value="noMarkers" />
+    <ValidatorArray value="ThrallNoEchoAndNoMarkerCombine" />
     <ValidatorArray value="DoesNotHaveNoBounce" />
     <ValidatorArray value="NoJungleBenignTarget" />
     <ValidatorArray value="NotCloakedOrIsRevealed" />
@@ -3045,6 +3045,7 @@
   <CEffectEnumArea id="ThrallChainLightningBounce2Search">
     <ImpactLocation Value="TargetPoint" />
     <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
+    <ExcludeArray Effect="ThrallChainLightningCastSet" Value="Target" />
     <AreaArray Effect="ThrallChainLightningBounce2ImpactSet">
       <Radius value="6" />
     </AreaArray>
@@ -3060,6 +3061,7 @@
   <CEffectEnumArea id="ThrallChainLightningBounce1Search">
     <ImpactLocation Value="TargetPoint" />
     <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
+    <ExcludeArray Effect="ThrallChainLightningCastSet" Value="Target" />
     <AreaArray Effect="ThrallChainLightningBounce1ImpactSet">
       <Radius value="6" />
     </AreaArray>
@@ -3093,6 +3095,7 @@
   <CEffectEnumArea id="ThrallChainLightningBounce3Search">
     <ImpactLocation Value="TargetPoint" />
     <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
+    <ExcludeArray Effect="ThrallChainLightningCastSet" Value="Target" />
     <AreaArray Effect="ThrallChainLightningBounce3ImpactSet">
       <Radius value="6" />
     </AreaArray>
@@ -3104,6 +3107,7 @@
   <CEffectEnumArea id="ThrallChainLightningBounce4Search">
     <ImpactLocation Value="TargetPoint" />
     <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
+    <ExcludeArray Effect="ThrallChainLightningCastSet" Value="Target" />
     <AreaArray Effect="ThrallChainLightningBounce4ImpactSet">
       <Radius value="6" />
     </AreaArray>
@@ -3350,7 +3354,7 @@
     <FlatModifierArray index="MaelstromWeaponFirstMilestone" Validator="ThrallMaelstromWeaponFirstMilestoneReachedCombine" Modifier="$ThrallMaelstromWeaponBasicAttackBonusDamageFirstMilestone" />
     <FlatModifierArray index="MaelstromWeaponSecondMilestone" Validator="ThrallMaelstromWeaponSecondMilestoneReachedCombine" Modifier="$ThrallMaelstromWeaponBasicAttackBonusDamageSecondMilestone" />
     <MultiplicativeModifierArray index="ElementalAssault" Validator="ThrallHasElementalAssaultBuff" Modifier="0.45" Crit="1" />
-    <Amount value="173" />
+    <Amount value="167" />
   </CEffectDamage>
   <CHero id="Thrall">
     <AIComplexityTier value="Low" />
@@ -4118,6 +4122,16 @@
   <CUnit id="WindfuryWeaponMissile" parent="MISSILE_INVULNERABLE">
     <Mover value="HeroMissileSpeed22Ribbon" />
   </CUnit>
+  <CValidatorUnitCompareTokenCount id="HasEchooftheElementsFinalComplete">
+    <WhichUnit Value="Caster" />
+    <Compare value="GE" />
+    <Value value="100" />
+    <TokenId value="ThrallEchooftheElementsTokenCounter" />
+  </CValidatorUnitCompareTokenCount>
+  <CValidatorCombine id="ThrallNoEchoAndNoMarkerCombine">
+    <CombineArray value="HasEchooftheElementsFinalComplete" />
+    <CombineArray value="noMarkers" />
+  </CValidatorCombine>
   <CValidatorUnitCompareTokenCount id="HasEchooftheElementsNotComplete">
     <WhichUnit Value="Caster" />
     <Compare value="LT" />
