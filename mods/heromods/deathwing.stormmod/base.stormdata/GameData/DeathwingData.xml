@@ -1976,7 +1976,7 @@
     <AtMaxEvents index="0" EventId="DeathwingComplete" />
   </CBehaviorTokenCounter>
   <CBehaviorBuff id="DeathwingLavaBurstInitialPersistentDeathCheck">
-    <Duration value="1" />
+    <Duration value="0.75" />
     <RemoveValidatorArray value="CasterNotDead" />
     <CancelEffect value="DeathwingLavaBurstDestroyInitialPersistent" />
   </CBehaviorBuff>
@@ -3462,7 +3462,7 @@
   </CEffectSet>
   <CEffectDamage id="DeathwingWeaponDamage" parent="StormWeapon">
     <MultiplicativeModifierArray index="DeathwingFireAndFury" Validator="DeathwingFireAndFuryAttackValidator" Modifier="0.4" Crit="1" />
-    <Amount value="110" />
+    <Amount value="117" />
     <LeechValidator index="Life" value="DeathwingTargetIsHeroAndHasDraconicMight" />
     <LeechFraction index="Life" value="0.25" />
     <SourceButtonFace value="Attack" />
@@ -4089,11 +4089,11 @@
     <EffectArray value="DeathwingDraconicMightApply" />
   </CEffectSet>
   <CEffectCreatePersistent id="DeathwingLavaBurstInitialPersistent">
-    <PeriodCount value="1" />
-    <PeriodicPeriodArray value="1" />
-    <PeriodicEffectArray value="DeathwingLavaBurstExplosionSearch" />
-    <ExpireDelay value="6" />
     <InitialEffect value="DeathwingLavaBurstInitialPersistentDeathCheckApplyBehavior" />
+    <ExpireDelay value="6" />
+    <PeriodCount value="1" />
+    <PeriodicEffectArray value="DeathwingLavaBurstExplosionSearch" />
+    <PeriodicPeriodArray value="0.75" />
   </CEffectCreatePersistent>
   <CEffectSet id="DeathwingLavaBurstInitialSet">
     <EffectArray value="DeathwingLavaBurstCreatePersistent" />
@@ -4431,8 +4431,8 @@
   </CEffectCreateHealer>
   <CEffectModifyPlayer id="DeathwingDragonflightFirestormCooldownReduction">
     <WhichPlayer Value="Caster" />
-    <EffectArray Operation="Set" Reference="Abil,DeathwingWorldbreakerForm,Cost.Cooldown.TimeUse" Value="6.000000" />
-    <EffectArray Operation="Set" Reference="Abil,DeathwingDestroyerForm,Cost.Cooldown.TimeUse" Value="6.000000" />
+    <EffectArray Operation="Set" Reference="Abil,DeathwingWorldbreakerForm,Cost.Cooldown.TimeUse" Value="5.000000" />
+    <EffectArray Operation="Set" Reference="Abil,DeathwingDestroyerForm,Cost.Cooldown.TimeUse" Value="5.000000" />
   </CEffectModifyPlayer>
   <CEffectSet id="DeathwingDeathDropImpactSet">
     <EffectArray value="DeathwingDragonflightLandBasicAbilityCooldownsDeathDrop" />
@@ -6009,13 +6009,13 @@
   <CTalent id="DeathwingFirestorm">
     <Face value="DeathwingFirestorm" />
     <Abil value="DeathwingDragonflight" />
+    <RankArray>
+      <BehaviorArray value="DeathwingDragonflightFirestormCooldownReductionBehavior" />
+    </RankArray>
     <AbilityModificationArray>
       <Modifications Type="FlatModification" Entry="DeathwingWorldbreakerForm" Field="Cost.Cooldown.TimeUse" />
       <Modifications Type="FlatModification" Entry="DeathwingDestroyerForm" Field="Cost.Cooldown.TimeUse" />
     </AbilityModificationArray>
-    <RankArray>
-      <BehaviorArray value="DeathwingDragonflightFirestormCooldownReductionBehavior" />
-    </RankArray>
   </CTalent>
   <CTalent id="DeathwingBellowingRoar">
     <Face value="DeathwingBellowingRoarTalent" />
@@ -6037,6 +6037,7 @@
     <Face value="DeathwingMoltenBlood" />
     <RankArray>
       <BehaviorArray value="DeathwingMoltenBlood" />
+      <BehaviorArray value="DeathwingFormSwitchAbility" />
     </RankArray>
     <Trait value="1" />
   </CTalent>
@@ -6247,7 +6248,7 @@
     <Radius value="0.875" />
   </CUnit>
   <CUnit id="DeathwingDragonflightUnit" parent="HeroDeathwing">
-    <BehaviorArray index="19" Link="HeroGenericDisableHeroRingBehavior" />
+    <BehaviorArray Link="HeroGenericDisableHeroRingBehavior" />
     <Name value="Unit/Name/DeathwingDragonflightUnit" />
     <FlagArray index="Untargetable" value="1" />
     <FlagArray index="Uncloakable" value="1" />

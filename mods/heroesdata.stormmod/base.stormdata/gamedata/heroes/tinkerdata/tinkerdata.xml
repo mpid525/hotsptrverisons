@@ -22,6 +22,8 @@
   <const id="$GazloweRockItTurretCooldown" value="1" />
   <const id="$GazloweRockItTurretCost" value="4" />
   <const id="$GazloweRockItTurretDuration" value="-1" />
+  <const id="$GazloweRockitTurretDecayDuration" value="17" />
+  <const id="$GazloweRockitTurretLifeDecayRate" value="/($GazloweRockItTurretHealth $GazloweRockitTurretDecayDuration)" evaluateAsExpression="1" />
   <const id="$GazloweRockItTurretAttackRange" value="6" />
   <const id="$GazloweRockItTurretAttackSpeed" value="1" />
   <const id="$GazloweRockItTurretPlacementRange" value="3" />
@@ -4324,7 +4326,7 @@
     <BehaviorArray Link="StormSummonedUnitTargetTracker" />
     <BehaviorArray Link="StormSummonedUnitDamagedUnitTracker" />
     <DeathTime value="2" />
-    <LifeRegenRate value="-30" />
+    <LifeRegenRate value="-$GazloweRockitTurretLifeDecayRate" />
   </CUnit>
   <CUnit id="TinkerItsRainingScrapMissile" parent="MISSILE_INVULNERABLE" />
   <CUnit id="RockItTurretRelicSideMissile" parent="MISSILE_INVULNERABLE">
@@ -4410,6 +4412,7 @@
     <BehaviorArray Link="StormSummonedUnitDamagedUnitTracker" />
     <Attributes index="ImmuneToFriendlyAbilities" value="1" />
     <DeathTime value="2" />
+    <LifeRegenRate value="-$GazloweRockitTurretLifeDecayRate" />
   </CUnit>
   <CUnit id="TinkerRockItTurretPlaceholderDummy" parent="TinkerRockItTurret">
     <Name value="Unit/Name/TinkerRockItTurretPlaceholderDummy" />
