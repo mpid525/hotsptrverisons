@@ -12,11 +12,11 @@
   <const id="$VehicleHealthScaling21to60" value="*($VehicleHealthScaling1to5 3.75)" evaluateAsExpression="1" />
   <CBehaviorBuff id="NeuralLinked" parent="StormArmor">
     <Modification>
-      <DamageDealtFraction index="Splash" value="0.35" />
-      <DamageDealtFraction index="Basic" value="0.35" />
-      <DamageDealtFraction index="Ability" value="0.35" />
-      <VitalRegenMultiplier index="Energy" value="0.35" />
-      <RateMultiplierArray index="Cooldown" value="1.35" />
+      <DamageDealtFraction index="Splash" value="0.4" />
+      <DamageDealtFraction index="Basic" value="0.4" />
+      <DamageDealtFraction index="Ability" value="0.4" />
+      <VitalRegenMultiplier index="Energy" value="0.4" />
+      <RateMultiplierArray index="Cooldown" value="1.4" />
     </Modification>
     <ArmorModification>
       <AllArmorBonus value="10" />

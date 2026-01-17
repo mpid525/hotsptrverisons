@@ -1,14 +1,5 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
-  <const id="$JainaBlizzardRange" value="7.5" />
-  <const id="$JainaStormFrontRangeModifier" value="0.75" />
-  <const id="$JainaStormFrontRangeIncrease" value="*($JainaBlizzardRange $JainaStormFrontRangeModifier)" evaluateAsExpression="1" />
-  <const id="$JainaSummonWaterElementalRange" value="8.5" />
-  <const id="$JainaWaterElementalHealth" value="958" />
-  <const id="$JainaWaterElementalDecayDuration" value="32" />
-  <const id="$JainaWaterElementalLifeDecayRate" value="/($JainaWaterElementalHealth $JainaWaterElementalDecayDuration)" evaluateAsExpression="1" />
-  <const id="$JainaWintermuteRangeModifier" value="0.4" />
-  <const id="$JainaWintermuteRangeIncrease" value="*($JainaSummonWaterElementalRange $JainaWintermuteRangeModifier)" evaluateAsExpression="1" />
   <CAbilBehavior id="IceCold">
     <OrderArray index="0" Color="255,0,255,0" Model="Assets\UI\Feedback\WayPointConfirm\WayPointConfirm.m3" LineTexture="Assets\Textures\Storm_WayPointLine.dds" />
     <CmdButtonArray index="On" DefaultButtonFace="JainaIceColdHotbar">
@@ -599,6 +590,9 @@
   <CActorAction id="JainaFrostboltImpactAction" parent="RangedHeroAttack" effectAttack="JainaFrostboltImpactSet">
     <ImpactMap index="None" Model="JainaFrostboltImpact" Sound="Jaina_Frostbolt_Volley_Impact" />
   </CActorAction>
+  <CActorAction id="JainaFrostboltImpactAction" parent="RangedHeroAttack" effectAttack="JainaFrostboltImpactSet">
+    <ImpactMap index="None" Model="JainaFrostboltImpact" Sound="Jaina_Frostbolt_Volley_Impact" />
+  </CActorAction>
   <CActorRange id="JainaBlizzardRange" parent="StormRangeAbilPlusSplat" abil="JainaBlizzard" />
   <CActorModel id="JainaBlizzardVisualEffect" parent="StormModelAnimationStyleOneShot">
     <On Terms="Effect.JainaBlizzardDummySearch.Start" Send="Create" />
@@ -834,8 +828,8 @@
       <Charge Link="Behavior/ImprovedIceBlock" />
       <Cooldown Link="Behavior/ImprovedIceBlock" />
     </Cost>
-    <Buttons Face="JainaIceColdCancel" Type="AbilCmd" AbilCmd="IceCold,Off" />
-    <Buttons Face="JainaIceColdHotbar" Type="AbilCmd" AbilCmd="IceCold,On" />
+    <Buttons Face="JainaImprovedIceBlockCancel" Type="AbilCmd" AbilCmd="IceCold,Off" />
+    <Buttons Face="JainaImprovedIceBlockHotbar" Type="AbilCmd" AbilCmd="IceCold,On" />
     <ButtonOverrideDataFrame value="Jaina/JainaIceBlockButtonOverlayFrame" />
   </CBehaviorAbility>
   <CBehaviorBuff id="IceColdCarryBehavior" parent="CarryBehaviorParent" />
@@ -848,6 +842,7 @@
     <BehaviorCategories index="Restorable" value="1" />
     <BehaviorCategories index="Invulnerable" value="0" />
     <BehaviorCategories index="Protected" value="1" />
+    <BehaviorCategories index="BuffUnstoppable" value="0" />
     <BehaviorCategories index="DebuffStasis" value="0" />
     <Duration value="2.5" />
     <InitialEffect value="JainaImprovedIceBlockInitialSet" />
@@ -862,6 +857,7 @@
       <StateFlags index="UnitAttrOnImmuneToAOE" value="0" />
       <StateFlags index="UnitAttrOnImmuneToSkillshots" value="0" />
       <StateFlags index="SuppressAttack" value="0" />
+      <StateFlags index="Unstoppable" value="0" />
     </Modification>
     <DamageResponse>
       <Cost>
@@ -3427,8 +3423,8 @@
   </CUnit>
   <CUnit id="JainaWaterElemental" parent="StormSummonActive">
     <FlagArray index="AIForceTactical" value="1" />
-    <LifeStart value="$JainaWaterElementalHealth" />
-    <LifeMax value="$JainaWaterElementalHealth" />
+    <LifeStart value="958" />
+    <LifeMax value="958" />
     <Speed value="5.1992" />
     <Sight value="7" />
     <AbilArray Link="stop" />
@@ -3459,7 +3455,7 @@
     <SubgroupPriority value="14" />
     <OverlapIndex value="Hero" />
     <AcquireLeashRadius value="15" />
-    <LifeRegenRate value="-$JainaWaterElementalLifeDecayRate" />
+    <LifeRegenRate value="-30" />
   </CUnit>
   <CValidatorUnitCompareTokenCount id="JainaNotHas30000FrostbiteTokens">
     <Compare value="LT" />

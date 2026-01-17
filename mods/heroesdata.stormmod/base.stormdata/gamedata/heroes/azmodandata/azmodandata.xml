@@ -8,18 +8,6 @@
   <const id="$AzmodanAllShallBurnChannelRangeGreed" value="+($AzmodanAllShallBurnChannelRange $AzmodanAllShallBurnGreedBonusRange)" evaluateAsExpression="1" />
   <const id="$AzmodanAllShallBurnGreedRangeModifier" value="0.25" />
   <const id="$AzmodanAllShallBurnGreedBonusRange" value="*($AzmodanAllShallBurnCastRange $AzmodanAllShallBurnGreedRangeModifier)" evaluateAsExpression="1" />
-  <const id="$AzmodanHellforgedDecayRateMultiplier" value="0.25" />
-  <const id="$AzmodanDemonWarriorHealth" value="435" />
-  <const id="$AzmodanDemonWarriorDecayDuration" value="17" />
-  <const id="$AzmodanDemonWarriorLifeDecayRate" value="/($AzmodanDemonWarriorHealth $AzmodanDemonWarriorDecayDuration)" evaluateAsExpression="1" />
-  <const id="$AzmodanHellforgedDemonWarriorLifeDecayModifier" value="*($AzmodanDemonWarriorLifeDecayRate $AzmodanHellforgedDecayRateMultiplier)" evaluateAsExpression="1" />
-  <const id="$AzmodanDemonLieutenantHealth" value="593" />
-  <const id="$AzmodanDemonLieutenantDecayDuration" value="21" />
-  <const id="$AzmodanDemonLieutenantLifeDecayRate" value="/($AzmodanDemonLieutenantHealth $AzmodanDemonLieutenantDecayDuration)" evaluateAsExpression="1" />
-  <const id="$AzmodanHellforgedDemonLieutenantLifeDecayModifier" value="*($AzmodanDemonLieutenantLifeDecayRate $AzmodanHellforgedDecayRateMultiplier)" evaluateAsExpression="1" />
-  <const id="$AzmodanDemonicInvasionGruntHealth" value="750" />
-  <const id="$AzmodanDemonicInvasionGruntDecayDuration" value="10" />
-  <const id="$AzmodanDemonicInvasionGruntLifeDecayRate" value="/($AzmodanDemonicInvasionGruntHealth $AzmodanDemonicInvasionGruntDecayDuration)" evaluateAsExpression="1" />
   <const id="$AzmodanGreedBonusNonHeroDamageModifier" value="0.15" />
   <const id="$AzmodanPrideAnnihilationStacksRequired" value="450" />
   <const id="$AzmodanPrideBonusDamage" value="125" />
@@ -1393,18 +1381,6 @@
     </ArmorModification>
     <DisableValidatorArray value="AzmodanHasHellforgedArmorTalent" />
   </CBehaviorBuff>
-  <CBehaviorBuff id="AzmodanDemonWarriorHellforgedLifeRegenModifier">
-    <DisableValidatorArray value="AzmodanHasHellforgedArmorTalent" />
-    <Modification>
-      <VitalRegenArray index="Life" value="$AzmodanHellforgedDemonWarriorLifeDecayModifier" />
-    </Modification>
-  </CBehaviorBuff>
-  <CBehaviorBuff id="AzmodanDemonLieutenantHellforgedLifeRegenModifier">
-    <DisableValidatorArray value="AzmodanHasHellforgedArmorTalent" />
-    <Modification>
-      <VitalRegenArray index="Life" value="$AzmodanHellforgedDemonLieutenantLifeDecayModifier" />
-    </Modification>
-  </CBehaviorBuff>
   <CBehaviorBuff id="AzmodanGlobeOfAnnihilationDebuff" parent="CarryBehaviorParent">
     <InfoIcon value="Assets\Textures\storm_temp_war3_btnorboffire.dds" />
     <Duration value="3" />
@@ -2728,8 +2704,7 @@
   <CEffectDamage id="AzmodanGlobeOfAnnihilationDamage" parent="StormSpell">
     <MultiplicativeModifierArray index="Greed" Validator="AzmodanCasterHasGreedTalentandTargetNotHero" Modifier="$AzmodanGreedBonusNonHeroDamageModifier" />
     <MultiplicativeModifierArray index="TideOfSin" Validator="AzmodanSourceHasTideOfSinGlobeOfAnnihilationMissileMarker" Modifier="0.5" Crit="1" />
-    <MultiplicativeModifierArray index="MinionMerc" Validator="GlobeofAnnihilationPvEDamageCheckCombine" Modifier="-0.5" />
-    <MultiplicativeModifierArray index="Structure" Validator="IsStructureTarget" Modifier="-0.5" />
+    <MultiplicativeModifierArray index="NotHero" Validator="GlobeofAnnihilationPvEDamageCheckCombine" Modifier="-0.5" />
     <FlatModifierArray index="Globe" Accumulator="AzmodanGlobeOfAnnihilationDamageAccumulator" />
     <FlatModifierArray index="Pride" Validator="AzmodanHasPrideCarry" Modifier="$AzmodanPrideBonusDamage" />
     <Amount value="176" />
@@ -3095,13 +3070,6 @@
         <Value value="0.040000" />
         <AffectedByOverdrive value="1" />
       </Modifications>
-      <Modifications>
-        <Catalog value="Behavior" />
-        <Entry value="AzmodanDemonLieutenantHellforgedLifeRegenModifier" />
-        <Field value="Modification.VitalRegenArray[Life]" />
-        <Value value="0.040000" />
-        <AffectedByOverdrive value="1" />
-      </Modifications>
     </LevelScalingArray>
     <LevelScalingArray Ability="AzmodanGlobeOfAnnihilation">
       <Modifications>
@@ -3133,27 +3101,6 @@
         <Catalog value="Unit" />
         <Entry value="AzmodanDemonWarrior" />
         <Field value="LifeMax" />
-        <Value value="0.040000" />
-        <AffectedByOverdrive value="1" />
-      </Modifications>
-      <Modifications>
-        <Catalog value="Unit" />
-        <Entry value="AzmodanDemonWarrior" />
-        <Field value="LifeRegenRate" />
-        <Value value="0.040000" />
-        <AffectedByOverdrive value="1" />
-      </Modifications>
-      <Modifications>
-        <Catalog value="Unit" />
-        <Entry value="AzmodanDemonWarrior" />
-        <Field value="LifeRegenRate" />
-        <Value value="0.040000" />
-        <AffectedByOverdrive value="1" />
-      </Modifications>
-      <Modifications>
-        <Catalog value="Behavior" />
-        <Entry value="AzmodanDemonWarriorHellforgedLifeRegenModifier" />
-        <Field value="Modification.VitalRegenArray[Life]" />
         <Value value="0.040000" />
         <AffectedByOverdrive value="1" />
       </Modifications>
@@ -3875,6 +3822,22 @@
   <CTalent id="AzmodanHellforgedArmor">
     <Face value="AzmodanSummonDemonWarriorHellforgedArmorTalent" />
     <Abil value="AzmodanSummonDemonWarrior" />
+    <AbilityModificationArray>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Unit" />
+        <Entry value="AzmodanSummonDemonWarrior" />
+        <Field value="LifeRegenRate" />
+        <Value value="6.000000" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Unit" />
+        <Entry value="AzmodanDemonLieutenant" />
+        <Field value="LifeRegenRate" />
+        <Value value="6.000000" />
+      </Modifications>
+    </AbilityModificationArray>
   </CTalent>
   <CTalent id="AzmodanMasterofDestruction">
     <Face value="AzmodanAllShallBurnMasterOfDestructionTalent" />
@@ -3923,9 +3886,9 @@
     <BehaviorArray Link="HallOfStormsKnockbackImmunity" />
   </CUnit>
   <CUnit id="AzmodanDemonWarrior" parent="StormSummonActive">
-    <LifeStart value="$AzmodanDemonWarriorHealth" />
-    <LifeMax value="$AzmodanDemonWarriorHealth" />
-    <LifeRegenRate value="-$AzmodanDemonWarriorLifeDecayRate" />
+    <LifeStart value="435" />
+    <LifeMax value="435" />
+    <LifeRegenRate value="-26" />
     <Speed value="3.6015" />
     <Sight value="7" />
     <AbilArray Link="stop" />
@@ -3933,7 +3896,6 @@
     <AbilArray Link="move" />
     <BehaviorArray Link="AzmodanSummonDemonWarriorDemonSpawn" />
     <BehaviorArray Link="AzmodanSummonDemonWarriorBrutishVanguardTalentCarry" />
-    <BehaviorArray Link="AzmodanDemonWarriorHellforgedLifeRegenModifier" />
     <WeaponArray Link="AzmodanDemonWarriorWeapon" />
     <CardLayouts>
       <LayoutButtons Face="Move" Type="AbilCmd" AbilCmd="move,Move" Slot="Stop" />
@@ -3948,8 +3910,8 @@
   </CUnit>
   <CUnit id="AzmodanDemonLieutenant" parent="StormSummonActive">
     <FlagArray index="CreateAITreeOnSpawn" value="1" />
-    <LifeStart value="$AzmodanDemonLieutenantHealth" />
-    <LifeMax value="$AzmodanDemonLieutenantHealth" />
+    <LifeStart value="593" />
+    <LifeMax value="593" />
     <Sight value="7" />
     <AbilArray Link="stop" />
     <AbilArray Link="attack" />
@@ -3959,7 +3921,6 @@
     <BehaviorArray Link="AzmodanDemonLieutenantTimedLife" />
     <BehaviorArray Link="AzmodanDemonLieutenantInitialAbilitySuppression" />
     <BehaviorArray Link="AzmodanSummonDemonWarriorHellforgedArmorTalent" />
-    <BehaviorArray Link="AzmodanDemonLieutenantHellforgedLifeRegenModifier" />
     <BehaviorArray Link="AzmodanSummonDemonWarriorBrutishVanguardTalentCarry" />
     <WeaponArray Link="AzmodanDemonLieutenantWeapon" />
     <CardLayouts>
@@ -3973,13 +3934,13 @@
     <InnerRadius value="0.75" />
     <AIThinkTree value="AI/SummonedMinion.aitree" />
     <DeathTime value="3" />
-    <LifeRegenRate value="-$AzmodanDemonLieutenantLifeDecayRate" />
+    <LifeRegenRate value="-28" />
   </CUnit>
   <CUnit id="AzmodanDemonicInvasionDemonGrunt" parent="StormSummonActive">
     <FlagArray index="CreateAITreeOnSpawn" value="1" />
-    <LifeStart value="$AzmodanDemonicInvasionGruntHealth" />
-    <LifeMax value="$AzmodanDemonicInvasionGruntHealth" />
-    <LifeRegenRate value="-$AzmodanDemonicInvasionGruntLifeDecayRate" />
+    <LifeStart value="750" />
+    <LifeMax value="750" />
+    <LifeRegenRate value="-75" />
     <Sight value="7" />
     <AbilArray Link="stop" />
     <AbilArray Link="attack" />
@@ -4054,7 +4015,7 @@
   </CUnit>
   <CValidatorCombine id="GlobeofAnnihilationPvEDamageCheckCombine">
     <Type value="And" />
-    <CombineArray value="TargetisMinionOrMercOrMonster" />
+    <CombineArray value="TargetNotHero" />
     <CombineArray value="GlobeofAnnihilationFirstMilestoneNotReached" />
   </CValidatorCombine>
   <CValidatorUnitCompareTokenCount id="GlobeofAnnihilationFirstMilestoneNotReached">

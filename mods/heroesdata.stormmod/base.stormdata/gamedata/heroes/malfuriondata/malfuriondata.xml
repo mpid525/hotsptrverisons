@@ -1,8 +1,5 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
-  <const id="$MalfurionVengefulRootsTreantHealth" value="550" />
-  <const id="$MalfurionVengefulRootsTreantDecayDuration" value="11" />
-  <const id="$MalfurionVengefulRootsTreantLifeDecayRate" value="/($MalfurionVengefulRootsTreantHealth $MalfurionVengefulRootsTreantDecayDuration)" evaluateAsExpression="1" />
   <CAbilEffectInstant id="MalfurionCenarionWard">
     <Effect value="MalfurionCenarionWardCastSet" />
     <Cost>
@@ -2827,8 +2824,8 @@
     <Abil value="MalfurionMoonfire" />
   </CTalent>
   <CUnit id="MalfurionEntanglingRootsVengefulRootsTreant" parent="StormSummonActive">
-    <LifeStart value="$MalfurionVengefulRootsTreantHealth" />
-    <LifeMax value="$MalfurionVengefulRootsTreantHealth" />
+    <LifeStart value="550" />
+    <LifeMax value="550" />
     <Speed value="4.8007" />
     <AbilArray Link="stop" />
     <AbilArray Link="attack" />
@@ -2845,7 +2842,7 @@
     <AcquireLeashRadius value="10" />
     <FlagArray index="CreateAITreeOnSpawn" value="1" />
     <AIThinkTree value="AI\MalfurionTreant.aitree" />
-    <LifeRegenRate value="-$MalfurionVengefulRootsTreantLifeDecayRate" />
+    <LifeRegenRate value="-50" />
   </CUnit>
   <CUnit id="HeroMalfurion" parent="StormHeroMounted">
     <LifeStart value="1525" />

@@ -13779,11 +13779,8 @@ bool libGame_gt_CapturePointLogic_Func (bool testConds, bool runActions) {
             }
         }
         else {
-            if ((UnitGetType(libGame_gv_capturePoints[lv_capturePointIndex].lv_captureBeaconUnit) == "WatchTowerCaptureBeacon")) {
-                libGame_gv_watchTowers[lv_capturePointIndex].lv_decayDelayTicks = 0;
-                libGame_gv_watchTowers[lv_capturePointIndex].lv_neutralDecayTicks = 0;
-            }
-
+            libGame_gv_watchTowers[lv_capturePointIndex].lv_decayDelayTicks = 0;
+            libGame_gv_watchTowers[lv_capturePointIndex].lv_neutralDecayTicks = 0;
         }
         if ((lv_orderTeamHeroes > 0) && (lv_chaosTeamHeroes > 0)) {
             DialogControlSetAnimationState(libGame_gv_capturePoints[lv_capturePointIndex].lv_captureProgressBar, PlayerGroupAll(), "IsContested", "Contested");

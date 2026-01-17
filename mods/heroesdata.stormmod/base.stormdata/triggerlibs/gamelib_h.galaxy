@@ -486,7 +486,7 @@ const int libGame_gv_townMaxTownCount = 30;
 const int libGame_gv_townMaxStructureCount = 63;
 const fixed libGame_gv_hallOfStormsKnockbackLaunchDistance = 12.0;
 const fixed libGame_gv_hallOfStormsKnockbackCutoffDistance = -1.0;
-const int libGame_gv_watchTowersMaxCount = 15;
+const int libGame_gv_watchTowersMaxCount = 10;
 const int libGame_gv_TimeToStartDecay_C = 15;
 const int libGame_gv_TimeToDecay_C2 = 30;
 

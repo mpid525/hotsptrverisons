@@ -37,7 +37,7 @@
     <Flags index="ClearLastMoveTarget" value="1" />
     <Flags index="RequireTargetVision" value="0" />
     <Cost>
-      <Vital index="Energy" value="85" />
+      <Vital index="Energy" value="75" />
       <Cooldown TimeUse="80" />
     </Cost>
     <Range value="9" />
@@ -65,7 +65,7 @@
     <Flags index="RequireTargetVision" value="0" />
     <Flags index="TargetVectorLock" value="1" />
     <Cost>
-      <Vital index="Energy" value="55" />
+      <Vital index="Energy" value="50" />
       <Charge>
         <CountMax value="1" />
         <CountStart value="1" />
@@ -91,7 +91,7 @@
   <CAbilEffectInstant id="TyrandeShadowstalk">
     <Effect value="TyrandeShadowstalkEnumerateTrackedUnits" />
     <Cost>
-      <Vital index="Energy" value="85" />
+      <Vital index="Energy" value="75" />
       <Cooldown TimeUse="90" />
     </Cost>
     <CmdButtonArray index="Execute" DefaultButtonFace="TyrandeShadowstalk" Requirements="Ultimate1Unlocked" />
@@ -125,7 +125,7 @@
     <Flags index="ClearLastMoveTarget" value="1" />
     <Flags index="RequireTargetVision" value="0" />
     <Cost>
-      <Vital index="Energy" value="65" />
+      <Vital index="Energy" value="60" />
       <Cooldown TimeUse="13" />
     </Cost>
     <Range value="10" />
@@ -1068,7 +1068,6 @@
     <Icon value="Assets\Textures\storm_ui_icon_tyrande_lunarflare.dds" />
   </CButton>
   <CButton id="TyrandeSentinel" parent="StormButtonParent">
-    <TooltipCooldownOverrideText value="Button/CooldownOverride/TyrandeSentinel" />
     <Icon value="Assets\Textures\storm_ui_icon_tyrande_sentinel.dds" />
     <TooltipAppender Validator="HasTyrandeSentinelRanger" Face="TyrandeSentinelRangerTalent" />
     <TooltipAppender Validator="TyrandeHasHarshMoonlightTalent" Face="TyrandeHarshMoonlight" />
@@ -1905,7 +1904,6 @@
     </HeroAbilArray>
     <HeroAbilArray Abil="TyrandeSentinelShot" Button="TyrandeSentinel">
       <Flags index="ShowInHeroSelect" value="1" />
-      <Flags index="UsesCharges" value="1" />
       <Flags index="AffectedByCooldownReduction" value="1" />
     </HeroAbilArray>
     <HeroAbilArray Abil="TyrandeLunarFlare" Button="TyrandeLunarFlare">
@@ -2577,6 +2575,9 @@
     <HeroPlaystyleFlags index="RoleAutoAttacker" value="1" />
     <HeroPlaystyleFlags index="RoleSupport" value="1" />
     <HeroPlaystyleFlags index="SelfHealer" value="1" />
+    <EnergyStart value="450" />
+    <EnergyMax value="450" />
+    <EnergyRegenRate value="2.6992" />
   </CUnit>
   <CUnit id="TyrandeMissile" parent="MISSILE_INVULNERABLE">
     <Mover value="HeroMissileSpeed25" />

@@ -375,6 +375,7 @@
     <On Terms="Abil.MurkyMarchoftheMurlocsNeverEndingMurlocsTalent.SourceFinishStart" Send="AnimClear Spell" />
     <On Terms="Behavior.MurkyBigTunaKahunaCarry.On" Send="SetScale 1.250000 0.250000 BTKScale" />
     <On Terms="Behavior.MurkyBigTunaKahunaCarry.Off" Send="ClearScale 0.250000 BTKScale" />
+    <On Terms="ActorCreation; ValidatePlayer MurkyHasBigTunaKahunaTalent" Send="SetScale 1.250000 0.000000 BTKScale" />
     <Remove Terms="AnimDone; AnimName Taunt" Send="Signal ApplyReady" />
     <DeathArray index="Normal" SoundLink="Murky_Death" />
     <DeathActorModelLow value="UnitDeathModel" />
@@ -3113,13 +3114,6 @@
         <Catalog value="Unit" />
         <Entry value="MurkyRespawnEgg" />
         <Field value="ShieldsStart" />
-        <Value value="0.040000" />
-        <AffectedByOverdrive value="1" />
-      </Modifications>
-      <Modifications>
-        <Catalog value="Unit" />
-        <Entry value="MurkyRespawnEgg" />
-        <Field value="LifeRegenRate" />
         <Value value="0.040000" />
         <AffectedByOverdrive value="1" />
       </Modifications>
