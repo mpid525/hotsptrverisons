@@ -1115,6 +1115,7 @@
     <TooltipAppender Validator="HasMuradinThunderclapHealingStatic" Face="MuradinThunderclapHealingStaticTalent" />
     <TooltipAppender Validator="HasMuradinThunderclapThunderstrike" Face="MuradinThunderclapThunderstrikeTalent" />
     <Icon value="Assets\Textures\storm_ui_icon_Muradin_Thunderclap.dds" />
+    <TooltipCooldownOverrideText value="Button/CooldownOverride/MuradinThunderclap" />
   </CButton>
   <CButton id="MuradinDwarfToss" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_Muradin_Dwarftoss.dds" />
@@ -1122,6 +1123,7 @@
     <TooltipAppender Validator="MuradinDwarfTossLandingMomentumHasTalent" Face="MuradinDwarfTossLandingMomentumTalent" />
     <TooltipAppender Validator="MuradinDwarfTossHeavyImpactHasTalent" Face="MuradinDwarfTossHeavyImpactTalent" />
     <TooltipAppender Validator="MuradinDwarfTossDwarfLaunchHasTalent" Face="MuradinDwarfTossDwarfLaunchTalent" />
+    <TooltipCooldownOverrideText value="Button/CooldownOverride/MuradinDwarfToss" />
   </CButton>
   <CButton id="MuradinAvatar" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_Muradin_Avatar.dds" />
@@ -1239,8 +1241,8 @@
     <ValidatorArray value="HasAvatar" />
     <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
     <ImpactUnit Value="Caster" />
-    <Cost Abil="MuradinThunderclap,Execute" CooldownOperation="Add" CooldownTimeUse="-0.75" />
-    <Cost Abil="MuradinDwarfToss,Execute" CooldownOperation="Add" CooldownTimeUse="-0.75" />
+    <Cost Abil="MuradinThunderclap,Execute" ChargeTimeUse="-0.75" CooldownOperation="Add" />
+    <Cost Abil="MuradinDwarfToss,Execute" ChargeTimeUse="-0.75" CooldownOperation="Add" />
   </CEffectModifyUnit>
   <CEffectModifyUnit id="MuradinThunderClapReverberationModifyHeroicCooldown">
     <ValidatorArray value="HasMuradinThunderclapReverberation" />
@@ -1266,7 +1268,7 @@
   </CEffectEnumArea>
   <CEffectModifyUnit id="MuradinDwarfTossDwarfLaunchTalentModifyCooldown">
     <ImpactUnit Value="Caster" />
-    <Cost Abil="MuradinDwarfToss,Execute" CooldownOperation="Add" CooldownTimeUse="-2" />
+    <Cost Abil="MuradinDwarfToss,Execute" ChargeTimeUse="-2" CooldownOperation="Add" />
   </CEffectModifyUnit>
   <CEffectDamage id="MuradinBronzebeardRageDamage" parent="StormSpellNoTowerAggro">
     <DamageModifierSource Value="Source" />
@@ -1341,7 +1343,7 @@
   </CEffectSwitch>
   <CEffectModifyUnit id="MuradinDwarfTossNoLaunchRefund">
     <ImpactUnit Value="Caster" />
-    <Cost Abil="MuradinDwarfToss,Execute" CooldownOperation="Set" />
+    <Cost Abil="MuradinDwarfToss,Execute" ChargeCountUse="-1" CooldownOperation="Add" />
     <VitalArray index="Energy">
       <Change value="55" />
     </VitalArray>
@@ -1846,8 +1848,8 @@
     <EffectArray value="MuradinWeaponPreImpactSet" />
     <EffectArray value="MuradinWeaponDamage" />
     <EffectArray value="MuradinWeaponPostImpactSet" />
-    <EffectArray value="UniversalWeaponPostImpactSet" />
     <EffectArray value="SkullcrackerSwitch" />
+    <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
   <CEffectSet id="MuradinWeaponPreImpactSet">
     <EffectArray value="MuradinGiveEmTheAxeExecutioner50DamageBonusSet" />
@@ -2354,10 +2356,12 @@
     </HeroAbilArray>
     <HeroAbilArray Abil="MuradinThunderclap" Button="MuradinThunderclap">
       <Flags index="ShowInHeroSelect" value="1" />
+      <Flags index="UsesCharges" value="1" />
       <Flags index="AffectedByCooldownReduction" value="1" />
     </HeroAbilArray>
     <HeroAbilArray Abil="MuradinDwarfToss" Button="MuradinDwarfToss">
       <Flags index="ShowInHeroSelect" value="1" />
+      <Flags index="UsesCharges" value="1" />
       <Flags index="AffectedByCooldownReduction" value="1" />
     </HeroAbilArray>
     <HeroAbilArray Abil="MuradinAvatar" Button="MuradinAvatar">

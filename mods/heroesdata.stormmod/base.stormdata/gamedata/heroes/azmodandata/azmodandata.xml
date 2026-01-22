@@ -22,7 +22,7 @@
   <const id="$AzmodanDemonicInvasionGruntLifeDecayRate" value="/($AzmodanDemonicInvasionGruntHealth $AzmodanDemonicInvasionGruntDecayDuration)" evaluateAsExpression="1" />
   <const id="$AzmodanGreedBonusNonHeroDamageModifier" value="0.15" />
   <const id="$AzmodanPrideAnnihilationStacksRequired" value="450" />
-  <const id="$AzmodanPrideBonusDamage" value="125" />
+  <const id="$AzmodanPrideBonusDamage" value="150" />
   <CAbilEffectTarget id="AzmodanTrample" parent="StormSkillshotDashParent">
     <Effect value="AzmodanTrampleCastSet" />
     <Cost>
@@ -177,7 +177,7 @@
     <CursorEffect value="AzmodanSummonDemonWarriorBurningDemonSearch" />
   </CAbilEffectTarget>
   <CAccumulatorToken id="AzmodanWrathDamageAccumulator" parent="BaseTokenAccumulator">
-    <MaxAccumulation value="340" />
+    <MaxAccumulation value="383" />
     <ApplicationRule value="Add" />
     <TokenId value="AzmodanGlobeOfAnnihilationTokenCounter" />
     <Scale value="0.85" />
@@ -1097,6 +1097,7 @@
   <CBehaviorBuff id="AzmodanGlobeOfAnnihilationWrathTalentMarker">
     <Duration value="3" />
   </CBehaviorBuff>
+  <CBehaviorBuff id="AzmodanWrathCasterBuffDummy" parent="CarryBehaviorParent" />
   <CBehaviorBuff id="AzmodanAllShallBurnHellRiftTalentCarry" parent="CarryBehaviorParent">
     <DisableValidatorArray value="AzmodanHellRiftTalentCompletionCombine" />
   </CBehaviorBuff>
@@ -1773,6 +1774,8 @@
     <Value value="1" />
   </CEffectModifyTokenCount>
   <CEffectSet id="AzmodanHeroWeaponBombardmentTalentModifyTokenSet">
+    <ValidatorArray value="TargetIsHero" />
+    <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
     <EffectArray value="AzmodanHeroWeaponBombardmentTalentModifyTokenCount" />
     <EffectArray value="AzmodanHeroWeaponBombardmentTalentModifyDisplayTokenCount" />
   </CEffectSet>
@@ -1870,16 +1873,30 @@
     <ImpactUnit Value="Caster" />
     <RechargeVitalRate value="40" />
   </CEffectCreateHealer>
-  <CEffectModifyTokenCount id="AzmodanHeroWeaponWrathTalentModifyDisplayTokenCount">
-    <CollationId value="AzmodanHeroWeaponWrathTalentModifyTokenCount" />
+  <CEffectModifyTokenCount id="AzmodanHeroWeaponWrathTalentModifyDisplayTokenCount" parent="BaseEffectModifyTokenCount">
+    <EffectCategory index="Quest" value="1" />
     <TokenId value="AzmodanGlobeOfAnnihilationDisplayTokenCounter" />
-    <ContextUnit Value="Target" />
-    <Value value="0.5" />
+    <CollationId value="AzmodanHeroWeaponWrathTalentModifyTokenCount" />
   </CEffectModifyTokenCount>
+  <CEffectSwitch id="AzmodanWrathBasicAttackGrantTokenSwitch">
+    <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
+    <ValidatorArray value="AzmodanWrathTalentBasicAttackCombine" />
+    <CaseArray Validator="AzmodanCasterHasWrathCasterBuffDummy" Effect="AzmodanHeroWeaponWrathTalentModifyTokenSet" />
+    <CaseDefault value="AzmodanWrathApplyCasterBuffDummy" />
+  </CEffectSwitch>
+  <CEffectApplyBehavior id="AzmodanWrathApplyCasterBuffDummy">
+    <WhichUnit Value="Caster" />
+    <Behavior value="AzmodanWrathCasterBuffDummy" />
+  </CEffectApplyBehavior>
+  <CEffectRemoveBehavior id="AzmodanWrathRemoveCasterBuffDummy">
+    <WhichUnit Value="Caster" />
+    <BehaviorLink value="AzmodanWrathCasterBuffDummy" />
+    <Count value="1" />
+  </CEffectRemoveBehavior>
   <CEffectSet id="AzmodanHeroWeaponWrathTalentModifyTokenSet">
-    <ValidatorArray value="TargetIsEnemyStructureAndNotTownWallORHero" />
     <EffectArray value="AzmodanHeroWeaponWrathTalentModifyTokenCount" />
     <EffectArray value="AzmodanHeroWeaponWrathTalentModifyDisplayTokenCount" />
+    <EffectArray value="AzmodanWrathRemoveCasterBuffDummy" />
   </CEffectSet>
   <CEffectApplyBehavior id="AzmodanSummonDemonWarriorApplyTimedLife">
     <Behavior value="AzmodanSummonDemonWarriorTimedLife" />
@@ -1888,8 +1905,8 @@
     <ValidatorArray value="AzmodanHasBattleborn" />
     <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
     <ImpactUnit Value="Caster" />
-    <Cost Abil="AzmodanSummonDemonWarrior,Execute" CooldownOperation="Add" CooldownTimeUse="-0.75" />
-    <Cost Abil="AzmodanDemonLieutenant,Execute" CooldownOperation="Add" CooldownTimeUse="-1.5" />
+    <Cost Abil="AzmodanSummonDemonWarrior,Execute" ChargeTimeUse="-0.75" CooldownOperation="Add" />
+    <Cost Abil="AzmodanDemonLieutenant,Execute" ChargeTimeUse="-1.5" CooldownOperation="Add" />
   </CEffectModifyUnit>
   <CEffectApplyBehavior id="AzmodanGlobeOfAnnihilationApplyQuestCompletionCarry">
     <Behavior value="AzmodanGlobeOfAnnihilationQuestCompletionCarry" />
@@ -1992,7 +2009,7 @@
     <Cost Abil="AzmodanGlobeOfAnnihilation,Execute" CooldownOperation="Add" CooldownTimeUse="-0.25" />
   </CEffectModifyUnit>
   <CEffectSwitch id="AzmodanHeroWeaponImpactSwitch">
-    <CaseArray Validator="AzmodanTargetLTWrathThresholdAndSourceHasBombardmentMarker" Effect="AzmodanHeroWeaponImpactSetWrathProcPlusBombardmentProc" />
+    <CaseArray Validator="AzmodanHasWrathTalentAndSourceHasBombardmentMarker" Effect="AzmodanHeroWeaponImpactSetWrathProcPlusBombardmentProc" />
     <CaseArray Validator="AzmodanSourceHasBombardmentTalentMissileMarker" Effect="AzmodanHeroWeaponImpactSetBombardmentProc" />
     <CaseArray Validator="AzmodanWrathTalentBasicAttackCombine" Effect="AzmodanHeroWeaponImpactSetWrathProc" />
     <CaseDefault value="AzmodanHeroWeaponImpactSet" />
@@ -2006,7 +2023,7 @@
   </CEffectSet>
   <CEffectSet id="AzmodanHeroWeaponImpactSet" parent="AzmodanHeroWeaponImpactSetNonHero" />
   <CEffectSet id="AzmodanHeroWeaponImpactSetWrathProcPlusBombardmentProc" parent="AzmodanHeroWeaponImpactSet">
-    <EffectArray index="3" value="AzmodanHeroWeaponWrathTalentModifyTokenSet" />
+    <EffectArray index="3" value="AzmodanWrathBasicAttackGrantTokenSwitch" />
     <EffectArray index="4" value="AzmodanHeroWeaponBombardmentTalentModifyTokenSet" />
     <EffectArray value="AzmodanWeaponPostImpactSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
@@ -2017,7 +2034,7 @@
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
   <CEffectSet id="AzmodanHeroWeaponImpactSetWrathProc" parent="AzmodanHeroWeaponImpactSet">
-    <EffectArray index="3" value="AzmodanHeroWeaponWrathTalentModifyTokenSet" />
+    <EffectArray index="3" value="AzmodanWrathBasicAttackGrantTokenSwitch" />
     <EffectArray index="4" value="AzmodanWeaponPostImpactSet" />
     <EffectArray value="UniversalWeaponPostImpactSet" />
   </CEffectSet>
@@ -2027,12 +2044,9 @@
   <CEffectSet id="AzmodanWeaponPostImpactSet">
     <EffectArray value="AzmodanGlobeOfAnnihilationWrathTalentRemoveMarker" />
   </CEffectSet>
-  <CEffectModifyTokenCount id="AzmodanHeroWeaponWrathTalentModifyTokenCount">
-    <TokenId value="AzmodanGlobeOfAnnihilationTokenCounter" />
-    <Value value="0.5" />
+  <CEffectModifyTokenCount id="AzmodanHeroWeaponWrathTalentModifyTokenCount" parent="BaseEffectModifyTokenCount">
     <EffectCategory index="Quest" value="1" />
-    <CollationId value="Annihilation" />
-    <ContextUnit Value="Target" />
+    <TokenId value="AzmodanGlobeOfAnnihilationTokenCounter" />
   </CEffectModifyTokenCount>
   <CEffectDamage id="AzmodanGlobeOfAnnihilationTotalAnnihilationTalentDamage" parent="StormSpellPercentDamage">
     <ValidatorArray value="AzmodanHasTotalAnnihilationTalent" />
@@ -2638,17 +2652,17 @@
     </AreaArray>
   </CEffectEnumArea>
   <CEffectDamage id="AzmodanSummonDemonWarriorWeaponDamage" parent="StormSummonedUnitWeapon">
-    <Amount value="83" />
+    <Amount value="53" />
     <MultiplicativeModifierArray index="HellRift" Validator="AzmodanSourceHasHellRiftTalentCarryActive" Modifier="0.35" Crit="1" />
     <MultiplicativeModifierArray index="Siegebreakers" Validator="AzmodanSiegebreakerTalentCombine" Modifier="0.4" />
     <MultiplicativeModifierArray index="CoC" Validator="AzmodanHasChainOfCommandAuraBuff" Modifier="0.25" />
-    <MultiplicativeModifierArray index="Hero" Validator="TargetIsHero" Modifier="-0.5" />
+    <MultiplicativeModifierArray index="Merc/Minion" Validator="IsMercorMinion" Modifier="1" />
   </CEffectDamage>
   <CEffectDamage id="AzmodanDemonLieutenantWeaponDamage" parent="StormSummonedUnitWeapon">
-    <Amount value="103" />
+    <Amount value="52" />
     <MultiplicativeModifierArray index="Siegebreaker" Validator="AzmodanSiegebreakerTalentCombine" Modifier="0.4" />
     <MultiplicativeModifierArray index="CoC" Validator="AzmodanHasChainOfCommandAuraBuff" Modifier="0.25" />
-    <MultiplicativeModifierArray index="Hero" Validator="TargetIsHero" Modifier="-0.5" />
+    <MultiplicativeModifierArray index="MercMinion" Validator="IsMercorMinion" Modifier="1" />
   </CEffectDamage>
   <CEffectApplyBehavior id="AzmodanDemonicInvasionApplyFallenManiacMasteryBuff">
     <Behavior value="AzmodanDemonicInvasionExplosionController" />
@@ -3133,13 +3147,6 @@
         <Catalog value="Unit" />
         <Entry value="AzmodanDemonWarrior" />
         <Field value="LifeMax" />
-        <Value value="0.040000" />
-        <AffectedByOverdrive value="1" />
-      </Modifications>
-      <Modifications>
-        <Catalog value="Unit" />
-        <Entry value="AzmodanDemonWarrior" />
-        <Field value="LifeRegenRate" />
         <Value value="0.040000" />
         <AffectedByOverdrive value="1" />
       </Modifications>
@@ -4116,10 +4123,9 @@
     <Find value="1" />
     <Value value="AzmodanHasBlackPoolActive" />
   </CValidatorPlayerRequirement>
-  <CValidatorCombine id="AzmodanTargetLTWrathThresholdAndSourceHasBombardmentMarker">
+  <CValidatorCombine id="AzmodanHasWrathTalentAndSourceHasBombardmentMarker">
     <Type value="And" />
     <CombineArray value="AzmodanHasWrathTalent" />
-    <CombineArray value="TargetLifeLT75Percent" />
     <CombineArray value="TargetIsHero" />
     <CombineArray value="AzmodanSourceHasBombardmentTalentMissileMarker" />
   </CValidatorCombine>
@@ -4241,6 +4247,11 @@
     <CombineArray value="AzmodanHasWrathTalent" />
     <CombineArray value="TargetIsEnemyStructureAndNotTownWallORHero" />
   </CValidatorCombine>
+  <CValidatorUnitCompareBehaviorCount id="AzmodanCasterHasWrathCasterBuffDummy">
+    <Compare value="GT" />
+    <Behavior value="AzmodanWrathCasterBuffDummy" />
+    <WhichUnit Value="Caster" />
+  </CValidatorUnitCompareBehaviorCount>
   <CValidatorPlayerTalent id="AzmodanHasWrathTalent">
     <WhichPlayer Value="Caster" />
     <Find value="1" />

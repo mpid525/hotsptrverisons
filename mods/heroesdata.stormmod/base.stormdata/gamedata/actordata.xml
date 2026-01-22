@@ -1399,6 +1399,7 @@
   <CActorSound id="ExperienceGlobePickupSound" parent="SoundOneShot">
     <Filter index="All" value="1" />
     <VisibleToAtCreation index="Target" value="1" />
+    <VisibleToAtCreation index="TargetAlly" value="1" />
     <On Terms="Effect.ExperienceGlobeMissileLaunchSwitch.Start; At Caster" Send="Create" />
     <On Terms="Effect.ExperienceGlobeDummyImpactSetLastHit.Start; At Caster" Send="Create" />
     <Sound value="ExperienceGlobePickup" />

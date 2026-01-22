@@ -3045,7 +3045,7 @@
   <CEffectEnumArea id="ThrallChainLightningBounce2Search">
     <ImpactLocation Value="TargetPoint" />
     <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
-    <ExcludeArray Value="Target" />
+    <ExcludeArray index="0" Effect="" Value="Target" />
     <AreaArray Effect="ThrallChainLightningBounce2ImpactSet">
       <Radius value="6" />
     </AreaArray>
@@ -3061,7 +3061,7 @@
   <CEffectEnumArea id="ThrallChainLightningBounce1Search">
     <ImpactLocation Value="TargetPoint" />
     <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
-    <ExcludeArray Value="Target" />
+    <ExcludeArray index="0" Effect="" Value="Target" />
     <AreaArray Effect="ThrallChainLightningBounce1ImpactSet">
       <Radius value="6" />
     </AreaArray>
@@ -3095,7 +3095,7 @@
   <CEffectEnumArea id="ThrallChainLightningBounce3Search">
     <ImpactLocation Value="TargetPoint" />
     <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
-    <ExcludeArray Value="Target" />
+    <ExcludeArray index="0" Effect="" Value="Target" />
     <AreaArray Effect="ThrallChainLightningBounce3ImpactSet">
       <Radius value="6" />
     </AreaArray>
@@ -3107,7 +3107,7 @@
   <CEffectEnumArea id="ThrallChainLightningBounce4Search">
     <ImpactLocation Value="TargetPoint" />
     <SearchFilters value="-;Player,Ally,Neutral,ImmuneToAOE,Missile,Item,Stasis,Dead,Hidden,Invulnerable" />
-    <ExcludeArray Value="Target" />
+    <ExcludeArray index="0" Effect="" Value="Target" />
     <AreaArray Effect="ThrallChainLightningBounce4ImpactSet">
       <Radius value="6" />
     </AreaArray>

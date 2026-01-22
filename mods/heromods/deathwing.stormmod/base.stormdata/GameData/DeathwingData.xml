@@ -6009,13 +6009,13 @@
   <CTalent id="DeathwingFirestorm">
     <Face value="DeathwingFirestorm" />
     <Abil value="DeathwingDragonflight" />
-    <RankArray>
-      <BehaviorArray value="DeathwingDragonflightFirestormCooldownReductionBehavior" />
-    </RankArray>
     <AbilityModificationArray>
       <Modifications Type="FlatModification" Entry="DeathwingWorldbreakerForm" Field="Cost.Cooldown.TimeUse" />
       <Modifications Type="FlatModification" Entry="DeathwingDestroyerForm" Field="Cost.Cooldown.TimeUse" />
     </AbilityModificationArray>
+    <RankArray>
+      <BehaviorArray value="DeathwingDragonflightFirestormCooldownReductionBehavior" />
+    </RankArray>
   </CTalent>
   <CTalent id="DeathwingBellowingRoar">
     <Face value="DeathwingBellowingRoarTalent" />
@@ -6037,7 +6037,6 @@
     <Face value="DeathwingMoltenBlood" />
     <RankArray>
       <BehaviorArray value="DeathwingMoltenBlood" />
-      <BehaviorArray value="DeathwingFormSwitchAbility" />
     </RankArray>
     <Trait value="1" />
   </CTalent>

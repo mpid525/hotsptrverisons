@@ -926,15 +926,27 @@
     <Model value="MurkyMarchoftheMurlocsImpactMurloc" />
   </CActorModel>
   <CActorModel id="HeroMurkyDeathRagdoll" parent="StormHeroDeathRagdoll" />
+  <CBehaviorBuff id="SlimeFatalResponse">
+    <Alignment value="Negative" />
+    <InfoIcon value="Assets\Textures\storm_ui_icon_Murky_Slime.dds" />
+    <BehaviorCategories index="Cleansable" value="1" />
+    <Duration value="6" />
+    <DamageResponse>
+      <Chance value="1" />
+      <Handled value="MurkySlimeFatalPuffedUpCreatePersistent" />
+      <Priority value="15" />
+      <Fatal value="1" />
+    </DamageResponse>
+  </CBehaviorBuff>
   <CBehaviorTokenCounter id="PuffedUpTokenCounter" parent="StormQuestToken">
     <Face value="MurkyPufferfishPuffedUpToken" />
     <SortIndex value="200" />
     <TokenId value="MurkyPuffedUpTokenCounter" />
-    <ConditionalEvents Compare="GE" CompareValue="100">
+    <ConditionalEvents Compare="GE" CompareValue="200">
       <Event EventId="QuestMilestone" />
     </ConditionalEvents>
     <AtMaxEvents index="0" EventId="QuestComplete" Effect="MurkyPuffedUpFinalReward" />
-    <Max value="200" />
+    <Max value="400" />
   </CBehaviorTokenCounter>
   <CBehaviorAbility id="MurkyEggHuntItem">
     <Buttons Face="MurkyEggHuntTalent" Type="AbilCmd" AbilCmd="MurkyEggHunt,Execute" />
@@ -1512,6 +1524,28 @@
     <Color value="255,0,193,193" />
     <Unit value="HeroMurky" />
   </CCharacter>
+  <CEffectApplyBehavior id="SlimeApplyDamageResponse" parent="StormSlowApply">
+    <ValidatorArray index="0" value="TargetNotDead" />
+    <ValidatorArray index="1" removed="1" />
+    <Behavior value="SlimeFatalResponse" />
+  </CEffectApplyBehavior>
+  <CEffectCreatePersistent id="MurkySlimeFatalPuffedUpCreatePersistent">
+    <WhichLocation Effect="SlimeApplyDamageResponse" Value="TargetUnit" />
+    <InitialEffect value="MurkySlimeFatalPuffedUpModifyTokenCountSwitch" />
+  </CEffectCreatePersistent>
+  <CEffectSwitch id="MurkySlimeFatalPuffedUpModifyTokenCountSwitch">
+    <CaseArray Validator="TargetIsEnemyStructureAndNotTownWallORHero" Effect="PufferfishPuffedUpModifyTokenCountHeroorStructureDeath" />
+    <CaseDefault value="PufferfishPuffedUpModifyTokenCountDeath" />
+  </CEffectSwitch>
+  <CEffectModifyTokenCount id="PufferfishPuffedUpModifyTokenCountDeath" parent="BaseEffectModifyTokenCount">
+    <EffectCategory index="Quest" value="1" />
+    <TokenId value="MurkyPuffedUpTokenCounter" />
+  </CEffectModifyTokenCount>
+  <CEffectModifyTokenCount id="PufferfishPuffedUpModifyTokenCountHeroorStructureDeath" parent="BaseEffectModifyTokenCount">
+    <EffectCategory index="Quest" value="1" />
+    <TokenId value="MurkyPuffedUpTokenCounter" />
+    <Value value="5" />
+  </CEffectModifyTokenCount>
   <CEffectApplyBehavior id="MurkyPuffedUpFinalReward">
     <Behavior value="MurkyBigTunaKahunaCarry" />
     <WhichUnit Value="Source" />
@@ -2811,6 +2845,7 @@
     <ValidatorArray value="MurkyHasRejuvenatingBubble" />
   </CEffectCreateHealer>
   <CEffectSet id="MurkySlimeImpactSet">
+    <EffectArray value="SlimeApplyDamageResponse" />
     <EffectArray value="MurkySlimeDamageSwitch" />
     <EffectArray value="ApplyAbilityImpactReveal" />
     <EffectArray value="MurkySlimeApplySlowBehaviorUnnamed" />
@@ -2827,6 +2862,7 @@
     </RevealerParams>
   </CEffectEnumArea>
   <CEffectSet id="MurkySlimeImpactSetUnstoppableTarget">
+    <EffectArray value="SlimeApplyDamageResponse" />
     <EffectArray value="MurkySlimeDamageSwitch" />
     <EffectArray value="MurkySlimeApplyBehaviorUnstoppableTarget" />
   </CEffectSet>
@@ -3615,8 +3651,15 @@
     <AbilityModificationArray>
       <Modifications>
         <Type value="FlatModification" />
-        <Entry value="MurkySpawnEgg" />
+        <Entry value="MurkyRespawnEgg" />
         <Field value="Cost[0].Cooldown.TimeUse" />
+        <Value value="15.000000" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Behavior" />
+        <Entry value="MurkyDeadEggReveal" />
+        <Field value="Duration" />
         <Value value="15.000000" />
       </Modifications>
     </AbilityModificationArray>
@@ -4071,15 +4114,15 @@
     <ShieldRegenDelay value="5" />
     <ShieldRegenRate value="42" />
   </CUnit>
-  <CValidatorUnitCompareTokenCount id="MurkyHasLT100PuffedUpTalentTokens">
+  <CValidatorUnitCompareTokenCount id="MurkyHasLT200PuffedUpTalentTokens">
     <WhichUnit Value="Caster" />
     <Compare value="LT" />
-    <Value value="100" />
+    <Value value="200" />
     <TokenId value="MurkyPuffedUpTokenCounter" />
   </CValidatorUnitCompareTokenCount>
   <CValidatorCombine id="MurkyStructureDamageRewardValidator">
     <Type value="And" />
-    <CombineArray value="MurkyHasLT100PuffedUpTalentTokens" />
+    <CombineArray value="MurkyHasLT200PuffedUpTalentTokens" />
     <CombineArray value="IsStructureTarget" />
   </CValidatorCombine>
   <CValidatorUnitOrderQueue id="CasterCastingMurkyMarchOfTheMurlocs">

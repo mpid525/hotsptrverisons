@@ -9,32 +9,22 @@
   <const id="$JainaWaterElementalLifeDecayRate" value="/($JainaWaterElementalHealth $JainaWaterElementalDecayDuration)" evaluateAsExpression="1" />
   <const id="$JainaWintermuteRangeModifier" value="0.4" />
   <const id="$JainaWintermuteRangeIncrease" value="*($JainaSummonWaterElementalRange $JainaWintermuteRangeModifier)" evaluateAsExpression="1" />
-  <CAbilBehavior id="IceCold">
-    <OrderArray index="0" Color="255,0,255,0" Model="Assets\UI\Feedback\WayPointConfirm\WayPointConfirm.m3" LineTexture="Assets\Textures\Storm_WayPointLine.dds" />
-    <CmdButtonArray index="On" DefaultButtonFace="JainaIceColdHotbar">
-      <Flags index="ToSelection" value="1" />
-    </CmdButtonArray>
-    <CmdButtonArray index="Off" DefaultButtonFace="JainaIceColdCancel">
-      <Flags index="ToSelection" value="1" />
-    </CmdButtonArray>
-    <Flags index="Toggle" value="1" />
-    <Flags index="Transient" value="1" />
+  <CAbilEffectInstant id="JainaIceBlockCancel">
+    <Effect value="JainaIceBlockRemoveBehaviorsSet" />
     <Cost>
-      <Charge Link="Abil/ImprovedIceBlock" />
-      <Cooldown Link="Abil/ImprovedIceBlock" Location="Player" TimeUse="0.5" />
+      <Cooldown TimeUse="0.5" />
     </Cost>
-    <OffCost>
-      <Charge Link="Abil/ImprovedIceBlock" />
-      <Cooldown Link="Abil/ImprovedIceBlock" Location="Player" TimeUse="40" />
-    </OffCost>
-    <ExpireCost>
-      <Charge Link="Abil/ImprovedIceBlock" />
-      <Cooldown Link="Abil/ImprovedIceBlock" Location="Player" TimeUse="40" />
-    </ExpireCost>
-    <BehaviorArray value="JainaIceCold" />
-    <ValidatorArray value="CasterNotDead" />
-    <Marker Link="Abil/ImprovedIceBlock" />
-  </CAbilBehavior>
+    <Flags index="Transient" value="1" />
+    <CmdButtonArray index="Execute" DefaultButtonFace="JainaImprovedIceBlockCancel" />
+  </CAbilEffectInstant>
+  <CAbilEffectInstant id="JainaIceBlockActivate">
+    <PrepEffect value="DismountDecloakCasterSet" />
+    <Effect value="JainaImprovedIceBlockCastSet" />
+    <Cost>
+      <Cooldown TimeUse="40" />
+    </Cost>
+    <CmdButtonArray index="Execute" DefaultButtonFace="JainaImprovedIceBlockHotbar" />
+  </CAbilEffectInstant>
   <CAbilEffectTarget id="JainaFrigidTransmission">
     <PrepEffect value="DismountDecloakCasterSet" />
     <Effect value="JainaFrigidTransmissionSet" />
@@ -69,28 +59,6 @@
     <CmdButtonArray index="Execute" DefaultButtonFace="JainaIcyVeinsHotbar" Requirements="HeroHasNoDeadBehavior" />
     <SharedFlags index="AllowQuickCastCustomization" value="0" />
   </CAbilEffectInstant>
-  <CAbilBehavior id="ImprovedIceBlock">
-    <OrderArray index="0" Color="255,0,255,0" Model="Assets\UI\Feedback\WayPointConfirm\WayPointConfirm.m3" LineTexture="Assets\Textures\Storm_WayPointLine.dds" />
-    <Flags index="Toggle" value="1" />
-    <Flags index="Transient" value="1" />
-    <BehaviorArray value="JainaImprovedIceBlock" />
-    <CmdButtonArray index="On" DefaultButtonFace="JainaImprovedIceBlockHotbar">
-      <Flags index="ToSelection" value="1" />
-    </CmdButtonArray>
-    <CmdButtonArray index="Off" DefaultButtonFace="JainaImprovedCancelIceBlock">
-      <Flags index="ToSelection" value="1" />
-    </CmdButtonArray>
-    <Cost>
-      <Cooldown Location="Player" TimeUse="0.5" />
-    </Cost>
-    <ExpireCost>
-      <Cooldown Location="Player" TimeUse="40" />
-    </ExpireCost>
-    <OffCost>
-      <Cooldown Location="Player" TimeUse="40" />
-    </OffCost>
-    <ValidatorArray value="CasterNotDead" />
-  </CAbilBehavior>
   <CAbilEffectTarget id="JainaBlizzard">
     <Effect value="JainaBlizzardBasePersistentSet" />
     <Flags index="ClearLastAttackTargetOutOfRange" value="1" />
@@ -101,6 +69,7 @@
       <Vital index="Energy" value="90" />
       <Cooldown TimeUse="15" />
     </Cost>
+    <Range value="$JainaBlizzardRange" />
     <FinishTime value="0.1" />
     <UninterruptibleArray index="Cast" value="1" />
     <UninterruptibleArray index="Channel" value="1" />
@@ -240,6 +209,7 @@
       <Vital index="Energy" value="60" />
       <Cooldown TimeUse="60" />
     </Cost>
+    <Range value="$JainaSummonWaterElementalRange" />
     <Arc value="360" />
     <UninterruptibleArray index="Cast" value="1" />
     <UninterruptibleArray index="Channel" value="1" />
@@ -653,7 +623,9 @@
     <On Terms="Effect.JainaWaterElementalBlizzardPersistent.Start" Send="Create" />
     <On Terms="Effect.JainaWaterElementalBlizzardPersistent.Stop" Send="AnimBracketStop BSD 0 1.000000 AsDuration" />
   </CActorModel>
-  <CActorSplat id="JainaBlizzardRangeSplat" parent="StormRangeSplat" />
+  <CActorSplat id="JainaBlizzardRangeSplat" parent="StormRangeSplat">
+    <Scale value="$JainaBlizzardRange" />
+  </CActorSplat>
   <CActorModel id="JainaConeOfColdModel" parent="StormModelAnimationStyleOneShotUnit">
     <On Terms="Effect.JainaConeOfColdOffsetPersistent.Start; At Caster; ValidatePlayer JainaNoConeOfColdIceFloes" Send="Create" />
     <On Terms="ActorCreation" Send="Create JainaConeOfColdLaunchSound" />
@@ -685,7 +657,9 @@
     <Host Subject="_Unit" />
   </CActorSound>
   <CActorRange id="JainaSummonWaterElementalRange" parent="StormRangeAbilPlusSplat" abil="JainaSummonWaterElemental" />
-  <CActorSplat id="JainaSummonWaterElementalRangeSplat" parent="StormRangeSplat" />
+  <CActorSplat id="JainaSummonWaterElementalRangeSplat" parent="StormRangeSplat">
+    <Scale value="$JainaSummonWaterElementalRange" />
+  </CActorSplat>
   <CActorSound id="JainaWaterElementalSoundLoop" parent="SoundContinuous">
     <Host Subject="::Creator" />
     <Sound value="Jaina_WaterElemental_Loop" />
@@ -829,16 +803,9 @@
     <On Terms="Behavior.JainaImprovedIceBlock.Off; ValidateUnit TargetNotTimeStopped" Send="Destroy" />
   </CActorSimple>
   <CActorPortrait id="JainaClausPortrait" parent="StormCompositePortrait" />
-  <CBehaviorAbility id="IceCold">
-    <Cost>
-      <Charge Link="Behavior/ImprovedIceBlock" />
-      <Cooldown Link="Behavior/ImprovedIceBlock" />
-    </Cost>
-    <Buttons Face="JainaIceColdCancel" Type="AbilCmd" AbilCmd="IceCold,Off" />
-    <Buttons Face="JainaIceColdHotbar" Type="AbilCmd" AbilCmd="IceCold,On" />
-    <ButtonOverrideDataFrame value="Jaina/JainaIceBlockButtonOverlayFrame" />
-  </CBehaviorAbility>
-  <CBehaviorBuff id="IceColdCarryBehavior" parent="CarryBehaviorParent" />
+  <CBehaviorBuff id="IceColdCarryBehavior" parent="CarryBehaviorParent">
+    <RemoveValidatorArray value="JainaHas30000FrostbiteTokens" />
+  </CBehaviorBuff>
   <CBehaviorBuff id="JainaIceCold" parent="StormStasisIceBlock">
     <Cost>
       <Charge Link="Behavior/JainaImprovedIceBlock" />
@@ -846,7 +813,6 @@
     </Cost>
     <InfoFlags index="AlwaysUseGameText" value="1" />
     <BehaviorCategories index="Restorable" value="1" />
-    <BehaviorCategories index="Invulnerable" value="0" />
     <BehaviorCategories index="Protected" value="1" />
     <BehaviorCategories index="DebuffStasis" value="0" />
     <Duration value="2.5" />
@@ -856,7 +822,6 @@
       <ModifyFlags index="DisableAbils" value="0" />
       <ModifyFlags index="SuppressMoving" value="0" />
       <ModifyFlags index="SuppressTurning" value="0" />
-      <StateFlags index="Invulnerable" value="0" />
       <StateFlags index="Benign" value="0" />
       <StateFlags index="Stasis" value="0" />
       <StateFlags index="UnitAttrOnImmuneToAOE" value="0" />
@@ -940,7 +905,6 @@
   </CBehaviorBuff>
   <CBehaviorTokenCounter id="JainaFrostbiteTokenCounter" parent="StormQuestToken">
     <Face value="JainaFrostbiteToken" />
-    <AtMaxEvents index="0" EventId="QuestComplete" Effect="RemoveImprovedIceBlockItem" />
     <AtMaxEvents Effect="ApplyIceColdCarry" />
     <Max value="30000" />
     <TerminateEvents Effect="JainaFrostbiteIceBlockResetCooldown" />
@@ -955,8 +919,6 @@
       <Event Effect="JainaIceBlockApplyButtonFlash" />
     </ConditionalEvents>
     <ConditionalEvents Compare="GE" CompareValue="30000" />
-    <AtMinEvents index="0" EventId="QuestReset" Effect="RemoveIceColdItem" />
-    <DecreaseEvents index="0" EventId="QuestDecrease" Effect="RemoveIceColdItem" />
   </CBehaviorTokenCounter>
   <CBehaviorTokenCounter id="JainaFrostboltPierceCounter" parent="StormGenericToken">
     <Max value="2" />
@@ -1089,7 +1051,7 @@
     <InitialEffect value="JainaImprovedIceBlockInitialSet" />
     <FinalEffect value="JainaImprovedIceBlockExpirationSet" />
     <Modification>
-      <AbilLinkEnableArray value="ImprovedIceBlock" />
+      <AbilLinkEnableArray value="JainaIceBlockCancel" />
       <AbilLinkEnableArray value="JainaCommandWaterElemental" />
     </Modification>
     <InfoFlags index="AlwaysUseGameText" value="1" />
@@ -1123,8 +1085,10 @@
     </ArmorModification>
   </CBehaviorBuff>
   <CBehaviorAbility id="ImprovedIceBlock">
-    <Buttons Face="JainaImprovedIceBlockCancel" Type="AbilCmd" AbilCmd="ImprovedIceBlock,Off" />
-    <Buttons Face="JainaImprovedIceBlockHotbar" Type="AbilCmd" AbilCmd="ImprovedIceBlock,On" />
+    <Buttons Face="JainaIceColdCancel" Type="AbilCmd" AbilCmd="JainaIceBlockCancel,Execute" ShowValidator="JainaCasterHasIceColdActive" />
+    <Buttons Face="JainaImprovedIceBlockCancel" Type="AbilCmd" AbilCmd="JainaIceBlockCancel,Execute" ShowValidator="JainaCasterHasImprovedIceBlockActive" />
+    <Buttons Face="JainaIceColdHotbar" Type="AbilCmd" AbilCmd="JainaIceBlockActivate,Execute" ShowValidator="HasIceColdCarry" />
+    <Buttons Face="JainaImprovedIceBlockHotbar" Type="AbilCmd" AbilCmd="JainaIceBlockActivate,Execute" />
     <ButtonOverrideDataFrame value="Jaina/JainaIceBlockButtonOverlayFrame" />
     <DisableValidatorArray value="JainaHasFrostbiteCompletionCarry" />
   </CBehaviorAbility>
@@ -1290,13 +1254,8 @@
     <Count value="1" />
     <WhichUnit Value="Caster" />
   </CEffectRemoveBehavior>
-  <CEffectRemoveBehavior id="RemoveIceColdItem">
-    <BehaviorLink value="IceCold" />
-    <Count value="1" />
-    <WhichUnit Value="Caster" />
-  </CEffectRemoveBehavior>
   <CEffectApplyBehavior id="ApplyIceColdCarry">
-    <Behavior value="IceCold" />
+    <Behavior value="IceColdCarryBehavior" />
     <WhichUnit Value="Source" />
   </CEffectApplyBehavior>
   <CEffectSwitch id="JainaConeOfColdIceFloesSwitch">
@@ -1374,6 +1333,41 @@
     <ValidatorArray value="JainaHasFrostbiteCompletionCarry" />
     <Behavior value="JainaIceBlockUsedCarry" />
   </CEffectApplyBehavior>
+  <CEffectSet id="JainaImprovedIceBlockCastSet">
+    <ValidatorArray value="JainaCasterDoesNotHaveImprovedIceBlockOrIceColdActive" />
+    <EffectArray value="JainaIceBlockActivateSwitch" />
+    <EffectArray value="JainaIceBlockApplyCancelCoolup" />
+  </CEffectSet>
+  <CEffectModifyUnit id="JainaIceBlockApplyCancelCoolup">
+    <ImpactUnit Value="Caster" />
+    <Cost Abil="JainaIceBlockCancel,Execute" CooldownOperation="Set">
+      <Fraction Cooldown="1" />
+    </Cost>
+  </CEffectModifyUnit>
+  <CEffectSwitch id="JainaIceBlockActivateSwitch">
+    <CaseArray Validator="HasIceColdCarry" Effect="JainaIceColdApplyBehavior" />
+    <CaseDefault value="JainaImprovedIceBlockApplyBehavior" />
+  </CEffectSwitch>
+  <CEffectApplyBehavior id="JainaImprovedIceBlockApplyBehavior">
+    <WhichUnit Value="Caster" />
+    <Behavior value="JainaImprovedIceBlock" />
+  </CEffectApplyBehavior>
+  <CEffectApplyBehavior id="JainaIceColdApplyBehavior">
+    <WhichUnit Value="Caster" />
+    <Behavior value="JainaIceCold" />
+  </CEffectApplyBehavior>
+  <CEffectSet id="JainaIceBlockRemoveBehaviorsSet">
+    <EffectArray value="JainaImprovedIceBlockRemoveBehavior" />
+    <EffectArray value="JainaImprovedIceBlockIceColdRemoveBehavior" />
+  </CEffectSet>
+  <CEffectRemoveBehavior id="JainaImprovedIceBlockRemoveBehavior">
+    <WhichUnit Value="Caster" />
+    <BehaviorLink value="JainaImprovedIceBlock" />
+  </CEffectRemoveBehavior>
+  <CEffectRemoveBehavior id="JainaImprovedIceBlockIceColdRemoveBehavior">
+    <WhichUnit Value="Caster" />
+    <BehaviorLink value="JainaIceCold" />
+  </CEffectRemoveBehavior>
   <CEffectSet id="JainaImprovedIceBlockInitialSet">
     <EffectArray value="StormStasisIceBlockInitialSet" />
     <EffectArray value="JainaIceBlockRemoveButtonFlash" />
@@ -1945,7 +1939,13 @@
   <CEffectSet id="JainaImprovedIceBlockExpirationSet">
     <EffectArray value="HeroGenericCleanseRemoveCCBehaviorCategoriesExpandedTarget" />
     <EffectArray value="JainaImprovedIceBlockExpirationChillSearch" />
+    <EffectArray value="JainaImprovedIceBlockSetCooldown" />
   </CEffectSet>
+  <CEffectModifyUnit id="JainaImprovedIceBlockSetCooldown">
+    <Cost Abil="JainaIceBlockActivate,Execute" CooldownOperation="Set">
+      <Fraction Cooldown="1" />
+    </Cost>
+  </CEffectModifyUnit>
   <CEffectCreatePersistent id="JainaCommandWaterElementalCreatePersistent">
     <WhichLocation Value="TargetUnitOrPoint" />
   </CEffectCreatePersistent>
@@ -3097,12 +3097,18 @@
     <Face value="JainaSummonWaterElementalWintermuteTalent" />
     <Abil value="JainaSummonWaterElemental" />
     <AbilityModificationArray>
-      <Modifications Type="FlatModification" Entry="JainaSummonWaterElemental" Field="Range[0]" />
+      <Modifications>
+        <Type value="FlatModification" />
+        <Entry value="JainaSummonWaterElemental" />
+        <Field value="Range[0]" />
+        <Value value="$JainaWintermuteRangeIncrease" />
+      </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="JainaSummonWaterElementalRangeSplat" />
         <Field value="Scale" />
+        <Value value="$JainaWintermuteRangeIncrease" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
@@ -3346,12 +3352,18 @@
     <Face value="JainaBlizzardStormFrontTalent" />
     <Abil value="JainaBlizzard" />
     <AbilityModificationArray>
-      <Modifications Type="FlatModification" Entry="JainaBlizzard" Field="Range[0]" />
+      <Modifications>
+        <Type value="FlatModification" />
+        <Entry value="JainaBlizzard" />
+        <Field value="Range[0]" />
+        <Value value="$JainaStormFrontRangeIncrease" />
+      </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="JainaBlizzardRangeSplat" />
         <Field value="Scale" />
+        <Value value="$JainaStormFrontRangeIncrease" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
@@ -3626,6 +3638,29 @@
   <CValidatorUnitCompareBehaviorCount id="JainaTargetHasImprovedIceBlockActive">
     <Value value="1" />
     <Behavior value="JainaImprovedIceBlock" />
+  </CValidatorUnitCompareBehaviorCount>
+  <CValidatorUnitCompareBehaviorCount id="JainaCasterHasImprovedIceBlockActive">
+    <WhichUnit Value="Caster" />
+    <Value value="1" />
+    <Behavior value="JainaImprovedIceBlock" />
+  </CValidatorUnitCompareBehaviorCount>
+  <CValidatorUnitCompareBehaviorCount id="JainaCasterHasIceColdActive">
+    <WhichUnit Value="Caster" />
+    <Value value="1" />
+    <Behavior value="JainaIceCold" />
+  </CValidatorUnitCompareBehaviorCount>
+  <CValidatorCombine id="JainaCasterDoesNotHaveImprovedIceBlockOrIceColdActive">
+    <Type value="And" />
+    <CombineArray value="JainaCasterDoesNotHaveImprovedIceBlockActive" />
+    <CombineArray value="JainaCasterDoesNotHaveIceColdActive" />
+  </CValidatorCombine>
+  <CValidatorUnitCompareBehaviorCount id="JainaCasterDoesNotHaveImprovedIceBlockActive">
+    <WhichUnit Value="Caster" />
+    <Behavior value="JainaImprovedIceBlock" />
+  </CValidatorUnitCompareBehaviorCount>
+  <CValidatorUnitCompareBehaviorCount id="JainaCasterDoesNotHaveIceColdActive">
+    <WhichUnit Value="Caster" />
+    <Behavior value="JainaIceCold" />
   </CValidatorUnitCompareBehaviorCount>
   <CValidatorCombine id="JainaHasRingOfFrostColdSnapRootCombine">
     <Type value="And" />

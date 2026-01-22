@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
-  <const id="$KerriganRavageBaselineQuestFirstMilestoneStacks" value="85" />
-  <const id="$KerriganRavageBaselineQuestMaxStacks" value="150" />
+  <const id="$KerriganRavageBaselineQuestFirstMilestoneStacks" value="100" />
+  <const id="$KerriganRavageBaselineQuestMaxStacks" value="250" />
   <const id="$KerriganRavageBaselineQuestFirstMilestoneBonusDamage" value="125" />
   <const id="$KerriganRavageBaselineQuestCompleteBonusDamage" value="200" />
   <const id="$KerriganMaelstromRange" value="4.5" />
@@ -983,10 +983,10 @@
   </CBehaviorBuff>
   <CBehaviorTokenCounter id="KerriganRavageSharpenedBladesTokenCounter" parent="StormQuestToken">
     <InfoIcon value="Assets\Textures\storm_ui_icon_kerrigan_ravage.dds" />
-    <Max value="250" />
+    <Max value="$KerriganRavageBaselineQuestMaxStacks" />
     <AtMaxEvents index="0" EventId="QuestComplete" Effect="KerriganSharpenedBladesQuestCompleteGrantSet" />
     <SortIndex value="10" />
-    <ConditionalEvents Compare="GE" CompareValue="100">
+    <ConditionalEvents Compare="GE" CompareValue="$KerriganRavageBaselineQuestFirstMilestoneStacks">
       <Event Effect="KerriganSharpenedBladesFirstMilestoneGrantSet" />
     </ConditionalEvents>
   </CBehaviorTokenCounter>

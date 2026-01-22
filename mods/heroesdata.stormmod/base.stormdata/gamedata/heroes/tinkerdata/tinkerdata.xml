@@ -2211,13 +2211,12 @@
     <ValidatorArray value="GazloweHasBigGameHunter" />
     <ValidatorArray value="GazloweTargetIsHeroOrMercOrMonsterOrCreepCombine" />
   </CEffectModifyBehaviorBuffDuration>
-  <CEffectModifyBehaviorBuffDuration id="GazloweOverchargedCapacitorsTurretDurationIncrease">
-    <Behavior value="RockItTurretTimedLife" />
-    <Value value="$GazloweRockItTurretOverchargedCapacitorsDurationIncreaseValue" />
+  <CEffectCreateHealer id="GazloweOverchargedCapacitorsTurretDurationIncrease">
     <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
     <ValidatorArray value="GazloweHasOverchargedCapacitors" />
-    <WhichUnit Value="Target" />
-  </CEffectModifyBehaviorBuffDuration>
+    <FloaterCreation value="Suppress" />
+    <RechargeVitalFraction value="0.08" />
+  </CEffectCreateHealer>
   <CEffectApplyBehavior id="GazloweReduceReuseRecycleTraitScrapRegenerationApplyCooldown">
     <WhichUnit Value="Caster" />
     <Behavior value="GazloweReduceReuseRecycleTraitScrapRegenerationCooldown" />

@@ -3973,13 +3973,6 @@
     <AbilityModificationArray>
       <Modifications>
         <Type value="FlatModification" />
-        <Catalog value="Behavior" />
-        <Entry value="ZagaraHydraliskTimedLife" />
-        <Field value="Duration" />
-        <Value value="22.000000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
         <Entry value="ZagaraSummonHydralisk" />
         <Field value="Cost.Cooldown.TimeUse" />
         <Value value="-4.000000" />

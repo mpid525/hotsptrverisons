@@ -282,13 +282,13 @@
 
             <Frame type="UnitStatusValidatorAnimElement" name="QuestFrameVisibility">
                 <Anchor relative="$parent"/>
-                <Validator val="JainaHas25000FrostbiteTokens"/>
+                <Validator val="JainaHas30000FrostbiteTokens"/>
                 <Validator val="JainaHasFrostbiteCompletionCarry"/>
 
                 <StateGroup name="JainaQuestState">
                     <DefaultState val="JainaQuestInProgress"/>
                     <State name="QuestFullyComplete">
-                        <When type="AnimationState" UnitStatusValidatorState="JainaHas25000FrostbiteTokens"/>
+                        <When type="AnimationState" UnitStatusValidatorState="JainaHas30000FrostbiteTokens"/>
                         <Action type="SetProperty" frame="$parent/JainaQuestCurrentLabel" Visible="false"/>
                         <Action type="SetProperty" frame="$parent/JainaQuestCurrentValue" Visible="false"/>
                         <Action type="SetProperty" frame="$parent/JainaQuestProgressBarFill" VisibleToOwner="false"/>
@@ -315,11 +315,11 @@
 
             <Frame type="UnitStatusValidatorAnimElement" name="CompleteBarFlashOn">
                 <Anchor relative="$parent"/>
-                <Validator val="JainaHas25000FrostbiteTokens"/>
+                <Validator val="JainaHas30000FrostbiteTokens"/>
 
                 <Animation name="BarFlashOnAnims">
                     <Event event="Reset" action="Stop" frame="$this"/>
-                    <Event event="JainaHas25000FrostbiteTokens" action="Restart,Play" frame="$this"/>
+                    <Event event="JainaHas30000FrostbiteTokens" action="Restart,Play" frame="$this"/>
 
                     <Controller name="Visibility_0" type="Visibility" end="Pause" frame="$parent/JainaQuestCompleteBarGlow">
                         <Key type="Bool" time="0" value="1"/>
@@ -329,11 +329,11 @@
 
             <Frame type="UnitStatusValidatorAnimElement" name="ResetBarFlashOn">
                 <Anchor relative="$parent"/>
-                <Validator val="JainaNotHas25000FrostbiteTokens"/>
+                <Validator val="JainaNotHas30000FrostbiteTokens"/>
 
                 <Animation name="BarFlashOnAnims">
                     <Event event="Reset" action="Stop" frame="$this"/>
-                    <Event event="JainaNotHas25000FrostbiteTokens" action="Restart,Play" frame="$this"/>
+                    <Event event="JainaNotHas30000FrostbiteTokens" action="Restart,Play" frame="$this"/>
 
                     <Controller name="Visibility_0" type="Visibility" end="Pause" frame="$parent/JainaQuestCompleteBarGlow">
                         <Key type="Bool" time="0" value="0"/>
