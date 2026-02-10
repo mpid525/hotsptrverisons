@@ -1495,6 +1495,7 @@
   <CButton id="TychusOdinThrusters" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_tychus_thrusters.dds" />
     <TooltipAppender Validator="TychusHasRunAndGunBobAndWeaveTalent" Face="TychusRunAndGunBobAndWeaveTalent" />
+    <TooltipCooldownOverrideText value="Button/CooldownOverride/TychusOdinThrusters" />
   </CButton>
   <CButton id="TychusSizzinAttacks" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_talent_autoattack_searing.dds" />

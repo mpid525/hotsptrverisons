@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="us-ascii"?>
 <Catalog>
-  <const id="$MurkyRespawnEggTotalVitals" value="420" />
-  <const id="$MurkyRespawnEggLifeMax" value="*($MurkyRespawnEggTotalVitals $MurkyRespawnEggHealthFraction)" evaluateAsExpression="1" />
+  <const id="$MurkyRespawnEggLifeMax" value="420" />
   <const id="$MurkyRespawnEggLifeRegenDelay" value="5" />
-  <const id="$MurkyRespawnEggLifeTimeToRegenToFull" value="8" />
+  <const id="$MurkyRespawnEggLifeTimeToRegenToFull" value="10" />
   <const id="$MurkyRespawnEggLifeRegen" value="/($MurkyRespawnEggLifeMax $MurkyRespawnEggLifeTimeToRegenToFull)" evaluateAsExpression="1" />
   <CAbilEffectInstant id="MurkyCancelMarchoftheMurlocs">
     <Effect value="MurkyMarchoftheMurlocsNeverEndingMurlocsTalentCancelSet" />
@@ -933,10 +932,13 @@
     <Duration value="6" />
     <DamageResponse>
       <Chance value="1" />
-      <Handled value="MurkySlimeFatalPuffedUpCreatePersistent" />
+      <Handled value="MurkySlimePuffedUpTokenIncreaseSet" />
       <Priority value="15" />
       <Fatal value="1" />
     </DamageResponse>
+    <Modification>
+      <DeathResponse Chance="1" Effect="MurkySlimePuffedUpTokenIncreaseSet" />
+    </Modification>
   </CBehaviorBuff>
   <CBehaviorTokenCounter id="PuffedUpTokenCounter" parent="StormQuestToken">
     <Face value="MurkyPufferfishPuffedUpToken" />
@@ -1506,6 +1508,7 @@
   </CButton>
   <CButton id="MurkySpawnEgg" parent="StormButtonParentTrait">
     <TooltipAppender Validator="MurkyHasFishEyeTalent" Face="MurkyFishEye" />
+    <TooltipAppender Validator="MurkyHasShellGameTalent" Face="MurkyEggHuntTalent" />
     <TooltipAppender Validator="MurkyHasLivingTheDream" Face="MurkyLivingTheDreamTalent" />
     <TooltipAppender Validator="MurkyHasEggShellTalent" Face="MurkyEggShell" />
     <TooltipAppender Validator="SourceHasMurkyFishtankTalent" Face="MurkyFishTank" />
@@ -1529,6 +1532,11 @@
     <ValidatorArray index="1" removed="1" />
     <Behavior value="SlimeFatalResponse" />
   </CEffectApplyBehavior>
+  <CEffectSet id="MurkySlimePuffedUpTokenIncreaseSet">
+    <ValidatorArray value="MurkySlimeSourceHasFatalBehavior" />
+    <EffectArray value="MurkySlimeFatalPuffedUpCreatePersistent" />
+    <EffectArray value="MurkySlimeRemoveFatalResponse" />
+  </CEffectSet>
   <CEffectCreatePersistent id="MurkySlimeFatalPuffedUpCreatePersistent">
     <WhichLocation Effect="SlimeApplyDamageResponse" Value="TargetUnit" />
     <InitialEffect value="MurkySlimeFatalPuffedUpModifyTokenCountSwitch" />
@@ -1546,6 +1554,10 @@
     <TokenId value="MurkyPuffedUpTokenCounter" />
     <Value value="5" />
   </CEffectModifyTokenCount>
+  <CEffectRemoveBehavior id="MurkySlimeRemoveFatalResponse">
+    <WhichUnit Value="Source" />
+    <BehaviorLink value="SlimeFatalResponse" />
+  </CEffectRemoveBehavior>
   <CEffectApplyBehavior id="MurkyPuffedUpFinalReward">
     <Behavior value="MurkyBigTunaKahunaCarry" />
     <WhichUnit Value="Source" />
@@ -3964,8 +3976,8 @@
   <CUnit id="MurkyRespawnEgg" parent="StormSummonPassive">
     <FlagArray index="AIForceTactical" value="1" />
     <Attributes index="ImmuneToSkillshots" value="0" />
-    <LifeStart value="420" />
-    <LifeMax value="420" />
+    <LifeStart value="$MurkyRespawnEggLifeMax" />
+    <LifeMax value="$MurkyRespawnEggLifeMax" />
     <Sight value="6" />
     <VisionHeight value="10" />
     <Radius value="0.5" />
@@ -3975,20 +3987,12 @@
     <BehaviorArray Link="MurkySneakyEggVOX" />
     <InnerRadius value="0.5" />
     <MinimapRadius value="0.75" />
-    <LifeRegenDelay value="5" />
-    <LifeRegenRate value="42" />
+    <LifeRegenDelay value="$MurkyRespawnEggLifeRegenDelay" />
+    <LifeRegenRate value="$MurkyRespawnEggLifeRegen" />
   </CUnit>
   <CUnit id="MurkyEggHuntEgg" parent="MurkyRespawnEgg">
     <Sight value="5" />
     <BehaviorArray Link="MurkyEggHuntStructureDeath" />
-    <LifeStart value="83.9794" />
-    <LifeMax value="83.9794" />
-    <LifeRegenDelay value="0" />
-    <LifeRegenRate value="0" />
-    <ShieldsStart value="336.0205" />
-    <ShieldsMax value="336.0205" />
-    <ShieldRegenDelay value="5" />
-    <ShieldRegenRate value="42" />
   </CUnit>
   <CUnit id="HeroMurky" parent="StormHeroMounted">
     <LifeStart value="730" />
@@ -4105,14 +4109,6 @@
   <CUnit id="MurkyDummyPlacementEgg" parent="MurkyRespawnEgg">
     <Name value="Unit/Name/MurkyDummyPlacementEgg" />
     <Mover value="Fly" />
-    <LifeStart value="110" />
-    <LifeMax value="110" />
-    <LifeRegenDelay value="0" />
-    <LifeRegenRate value="0" />
-    <ShieldsStart value="336.0205" />
-    <ShieldsMax value="336.0205" />
-    <ShieldRegenDelay value="5" />
-    <ShieldRegenRate value="42" />
   </CUnit>
   <CValidatorUnitCompareTokenCount id="MurkyHasLT200PuffedUpTalentTokens">
     <WhichUnit Value="Caster" />
@@ -4173,6 +4169,11 @@
     <WhichPlayer Value="Caster" />
     <Find value="1" />
     <Value value="MurkyEggShell" />
+  </CValidatorPlayerTalent>
+  <CValidatorPlayerTalent id="MurkyHasShellGameTalent">
+    <WhichPlayer Value="Caster" />
+    <Find value="1" />
+    <Value value="MurkyShellGame" />
   </CValidatorPlayerTalent>
   <CValidatorUnitCompareBehaviorCount id="MurkyCasterHasCompressedAirTalentMarker">
     <WhichUnit Value="Caster" />
@@ -4440,6 +4441,10 @@
     <Value value="HeroMurky" />
     <Find value="0" />
   </CValidatorUnitType>
+  <CValidatorUnitHasBehavior id="MurkySlimeSourceHasFatalBehavior">
+    <WhichUnit Value="Source" />
+    <Behavior value="SlimeFatalResponse" />
+  </CValidatorUnitHasBehavior>
   <CWeaponLegacy id="HeroMurky" parent="StormHeroMediumWeapon">
     <Options index="Melee" value="1" />
     <Icon value="Assets\Textures\storm_temp_btn-upgrade-zerg-missileattacks-level3.dds" />

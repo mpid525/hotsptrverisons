@@ -1346,11 +1346,13 @@
     <Duration value="0.5" />
     <DamageResponse>
       <Chance value="1" />
-      <Handled value="ZuljinLetTheKillingBeginApplyStackBehavior" />
+      <Handled value="ZuljinLetTheKillingBeginProcSet" />
       <Priority value="15" />
       <Fatal value="1" />
-      <ProvideCategories index="Shield" value="1" />
     </DamageResponse>
+    <Modification>
+      <DeathResponse Chance="1" Effect="ZuljinLetTheKillingBeginProcSet" />
+    </Modification>
   </CBehaviorBuff>
   <CBehaviorBuff id="ZuljinRegenerationForestMedicineCarry" parent="CarryBehaviorParent" />
   <CBehaviorBuff id="ZuljinTazdingoDummyFatalBuff">
@@ -2079,10 +2081,19 @@
     <Behavior value="ZuljinLetTheKillingBeginStack" />
     <Count value="8" />
   </CEffectApplyBehavior>
+  <CEffectSet id="ZuljinLetTheKillingBeginProcSet">
+    <ValidatorArray value="ZuljinLetTheKillingBeginSourceHasDebuff" />
+    <EffectArray value="ZuljinLetTheKillingBeginApplyStackBehavior" />
+    <EffectArray value="ZuljinLetTheKillingBeginRemoveDebuff" />
+  </CEffectSet>
   <CEffectApplyBehavior id="ZuljinLetTheKillingBeginApplyStackBehavior">
     <WhichUnit Value="Caster" />
     <Behavior value="ZuljinLetTheKillingBeginStack" />
   </CEffectApplyBehavior>
+  <CEffectRemoveBehavior id="ZuljinLetTheKillingBeginRemoveDebuff">
+    <WhichUnit Value="Source" />
+    <BehaviorLink value="ZuljinLetTheKillingBeginDebuff" />
+  </CEffectRemoveBehavior>
   <CEffectApplyBehavior id="ZuljinLetTheKillingBeginApplyDebuffBehavior">
     <Chance value="0" />
     <Behavior value="ZuljinLetTheKillingBeginDebuff" />
@@ -3967,6 +3978,10 @@
   <CValidatorCombine id="StormTargetHasRootCombineIncludeDisabled">
     <CombineArray value="ZuljinTargetHasEnsnareRootIncludeDisabled" />
   </CValidatorCombine>
+  <CValidatorUnitHasBehavior id="ZuljinLetTheKillingBeginSourceHasDebuff">
+    <WhichUnit Value="Source" />
+    <Behavior value="ZuljinLetTheKillingBeginDebuff" />
+  </CValidatorUnitHasBehavior>
   <CWeaponLegacy id="ZuljinHeroWeapon" parent="StormHeroFastWeapon">
     <DisplayEffect value="ZuljinWeaponDamageDisplay" />
     <MinScanRange value="5.5" />

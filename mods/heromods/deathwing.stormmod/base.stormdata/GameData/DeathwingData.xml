@@ -1957,7 +1957,6 @@
     <EnableEffect value="DeathwingDragonflightFirestormCooldownReduction" />
   </CBehaviorBuff>
   <CBehaviorTokenCounter id="DeathwingCataclysmQuestToken" parent="StormQuestToken">
-    <Face value="DeathwingCataclysm" />
     <SortIndex value="100" />
     <TokenId value="DeathwingCataclysmQuestTokenCounter" />
     <Max value="2000" />
@@ -2627,6 +2626,9 @@
     <Icon value="Assets\Textures\storm_ui_icon_deathwing_cataclysm.dds" />
     <TooltipAppender Validator="DeathwingHasBurnBeneathMyShadowTalent" Face="DeathwingBurnBeneathMyShadow" />
     <TooltipAppender Validator="DeathwingHasScorchedEarthTalent" Face="DeathwingStoodInTheFire" />
+  </CButton>
+  <CButton id="DeathwingCataclysmQuestToken" parent="StormButtonParent">
+    <Icon value="Assets\Textures\storm_ui_icon_deathwing_cataclysm.dds" />
   </CButton>
   <CButton id="DeathwingLavaBurst" parent="StormButtonParent">
     <Icon value="Assets\Textures\storm_ui_icon_deathwing_lava_burst.dds" />

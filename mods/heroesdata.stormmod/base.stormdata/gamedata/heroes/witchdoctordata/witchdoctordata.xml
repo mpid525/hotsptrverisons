@@ -4,6 +4,9 @@
   <const id="$WitchDoctorZombieWallDeadRushHealth" value="300" />
   <const id="$WitchDoctorZombieWallDeadRushDecayDuration" value="3" />
   <const id="$WitchDoctorZombieWallDeadRushLifeDecayRate" value="/($WitchDoctorZombieWallDeadRushHealth $WitchDoctorZombieWallDeadRushDecayDuration)" evaluateAsExpression="1" />
+  <const id="$WitchDoctorRingOfPoisonBonusZombieWallDuration" value="1" />
+  <const id="$WitchDoctorDeadRushRingOfPoisonDecayRateMultiplier" value="-(1 /($WitchDoctorZombieWallDeadRushDecayDuration +($WitchDoctorZombieWallDeadRushDecayDuration $WitchDoctorRingOfPoisonBonusZombieWallDuration)))" evaluateAsExpression="1" />
+  <const id="$WitchDoctorDeadRushRingOfPoisonLifeDecayModifier" value="*($WitchDoctorZombieWallDeadRushLifeDecayRate $WitchDoctorDeadRushRingOfPoisonDecayRateMultiplier)" evaluateAsExpression="1" />
   <const id="$WitchDoctorGargantuanHealth" value="2000" />
   <const id="$WitchDoctorGargantuanDecayDuration" value="29" />
   <const id="$WitchDoctorGargantuanLifeDecayRate" value="/($WitchDoctorGargantuanHealth $WitchDoctorGargantuanDecayDuration)" evaluateAsExpression="1" />
@@ -1441,6 +1444,13 @@
     <DisplayDuration index="Enemy" value="0" />
     <Duration value="-1" />
     <InitialEffect value="WitchDoctorZombieWallDeadRushApplyBehaviorSource" />
+  </CBehaviorBuff>
+  <CBehaviorBuff id="WitchDoctorDeadRushRingOfPoisonLifeRegenModifier">
+    <DisableValidatorArray value="WitchDoctorHasRingOfPoison" />
+    <Modification>
+      <VitalRegenArray index="Life" value="$WitchDoctorDeadRushRingOfPoisonLifeDecayModifier" />
+      <VitalRegenArray index="Energy" value="$WitchDoctorDeadRushRingOfPoisonDecayRateMultiplier" />
+    </Modification>
   </CBehaviorBuff>
   <CBehaviorBuff id="WitchDoctorCorpseSpidersTimedLife" parent="StormTimedLife">
     <Duration value="4" />
@@ -3610,6 +3620,13 @@
         <AffectedByOverdrive value="1" />
       </Modifications>
       <Modifications>
+        <Catalog value="Behavior" />
+        <Entry value="WitchDoctorDeadRushRingOfPoisonLifeRegenModifier" />
+        <Field value="Modification.VitalRegenArray[Life]" />
+        <Value value="0.040000" />
+        <AffectedByOverdrive value="1" />
+      </Modifications>
+      <Modifications>
         <Catalog value="Effect" />
         <Entry value="WitchDoctorZombieWallPoisonZombieTalentDamage1" />
         <Field value="Amount" />
@@ -4125,21 +4142,14 @@
         <Catalog value="Behavior" />
         <Entry value="WitchDoctorZombieWallTimedLife" />
         <Field value="Duration" />
-        <Value value="1.000000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Behavior" />
-        <Entry value="WitchDoctorZombieWallDeadRushTalentTimedLife" />
-        <Field value="Duration" />
-        <Value value="1.000000" />
+        <Value value="$WitchDoctorRingOfPoisonBonusZombieWallDuration" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Effect" />
         <Entry value="WitchDoctorZombieWallPersistent" />
         <Field value="ExpireDelay" />
-        <Value value="1.000000" />
+        <Value value="$WitchDoctorRingOfPoisonBonusZombieWallDuration" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>
@@ -4737,6 +4747,7 @@
     <BehaviorArray Link="ZombieWallStatusBarController" />
     <BehaviorArray Link="StormSummonedUnitTargetTracker" />
     <BehaviorArray Link="StormSummonedUnitDamagedUnitTracker" />
+    <BehaviorArray Link="WitchDoctorDeadRushRingOfPoisonLifeRegenModifier" />
     <WeaponArray Link="WitchDoctorZombieWeapon" />
     <CardLayouts>
       <LayoutButtons Face="Move" Type="AbilCmd" AbilCmd="move,Move" Slot="Stop" />

@@ -1018,6 +1018,9 @@
       <Priority value="15" />
       <Fatal value="1" />
     </DamageResponse>
+    <Modification>
+      <DeathResponse Chance="1" Effect="KerriganRavageFatalSet" />
+    </Modification>
   </CBehaviorBuff>
   <CBehaviorBuff id="KerriganPrimalGraspTargetFound">
     <Duration value="0.1875" />
@@ -1893,9 +1896,15 @@
     </Cost>
   </CEffectModifyUnit>
   <CEffectSet id="KerriganRavageFatalSet">
+    <ValidatorArray value="KerriganRavageSourceHasFatalBehavior" />
     <EffectArray value="KerriganRavageManaReturn" />
     <EffectArray value="KerriganRavageRestoreCharge" />
+    <EffectArray value="KerriganRavageRemoveFatalResponse" />
   </CEffectSet>
+  <CEffectRemoveBehavior id="KerriganRavageRemoveFatalResponse">
+    <WhichUnit Value="Source" />
+    <BehaviorLink value="KerriganRavageFatalDamageResponse" />
+  </CEffectRemoveBehavior>
   <CEffectModifyUnit id="KerriganBladedMomentumModifyCooldowns">
     <ValidatorArray value="CasterNotBlindedAndTargetNotEvading" />
     <ValidatorArray value="TargetIsHero" />
@@ -3728,6 +3737,10 @@
     <Compare value="GE" />
     <Range value="20" />
   </CValidatorLocationCompareRange>
+  <CValidatorUnitHasBehavior id="KerriganRavageSourceHasFatalBehavior">
+    <WhichUnit Value="Source" />
+    <Behavior value="KerriganRavageFatalDamageResponse" />
+  </CValidatorUnitHasBehavior>
   <CWeaponLegacy id="HeroKerrigan" parent="StormHeroFastWeapon">
     <Icon value="Assets\Textures\storm_temp_btn-upgrade-zerg-meleeattacks-level3.dds" />
     <DisplayEffect value="KerriganWeaponDamage" />
