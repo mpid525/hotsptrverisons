@@ -8,4 +8,3 @@ mods/core.stormmod/base.stormdata/shadercache_mtl.bin filter=lfs diff=lfs merge=
 .git/objects/dc/62c7611f8824e0b390a2adb3b811ab48f05b57 filter=lfs diff=lfs merge=lfs -text
 .git/lfs/objects/90/32/9032c8686dcd1fc3626b79d7eaf25983a929b5dbd52e1b8ee6b495117772de4c filter=lfs diff=lfs merge=lfs -text
 *.aitree text diff
-
