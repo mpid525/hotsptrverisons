@@ -1287,8 +1287,6 @@ void libGDHL_gf_HeroFalstadIncrementHeroCountFunction () {
     if ((libGDHL_gv_heroFalstadTriggerRegistrationVariable == 1)) {
         TriggerEnable(libGDHL_gt_HeroFalstadFlightCameraHeightRestore, true);
         TriggerEnable(libGDHL_gt_HeroFalstadFlightPing, true);
-        TriggerEnable(libGDHL_gt_HeroFalstadFrequentFlyerHeroTakedown, true);
-        TriggerEnable(libGDHL_gt_HeroFalstadFrequentFlyerNPCKill, true);
         TriggerEnable(libGDHL_gt_HeroFalstadDishonorableDischargeHeroKillRefreshCooldown, true);
     }
 
@@ -1305,8 +1303,6 @@ void libGDHL_gf_HeroFalstadDecrementHeroCountFunction () {
     if ((libGDHL_gv_heroFalstadTriggerRegistrationVariable == 0)) {
         TriggerEnable(libGDHL_gt_HeroFalstadFlightCameraHeightRestore, false);
         TriggerEnable(libGDHL_gt_HeroFalstadFlightPing, false);
-        TriggerEnable(libGDHL_gt_HeroFalstadFrequentFlyerHeroTakedown, false);
-        TriggerEnable(libGDHL_gt_HeroFalstadFrequentFlyerNPCKill, false);
         TriggerEnable(libGDHL_gt_HeroFalstadDishonorableDischargeHeroKillRefreshCooldown, false);
     }
 
@@ -10436,87 +10432,6 @@ void libGDHL_gt_HeroFalstadFlightCameraHeightRestore_Init () {
 }
 
 //--------------------------------------------------------------------------------------------------
-// Trigger: Hero - Falstad - Frequent Flyer - Hero Takedown
-//--------------------------------------------------------------------------------------------------
-bool libGDHL_gt_HeroFalstadFrequentFlyerHeroTakedown_Func (bool testConds, bool runActions) {
-    // Variable Declarations
-    int lv_localPlayer;
-    unit lv_falstad;
-
-    // Automatic Variable Declarations
-    // Variable Initialization
-    lv_localPlayer = libGame_gf_HeroParticipatedInTakedownKillingPlayer();
-
-    // Conditions
-    if (testConds) {
-        if (!((PlayerHasTalent(lv_localPlayer, "FalstadTailwindFrequentFlyer") == true))) {
-            return false;
-        }
-    }
-
-    // Actions
-    if (!runActions) {
-        return true;
-    }
-
-    lv_falstad = libGame_gv_players[lv_localPlayer].lv_heroUnit;
-    UnitCreateEffectUnit(lv_falstad, "FalstadFrequentFlyerHeroKillIncreaseQuestToken", lv_falstad);
-    return true;
-}
-
-//--------------------------------------------------------------------------------------------------
-void libGDHL_gt_HeroFalstadFrequentFlyerHeroTakedown_Init () {
-    libGDHL_gt_HeroFalstadFrequentFlyerHeroTakedown = TriggerCreate("libGDHL_gt_HeroFalstadFrequentFlyerHeroTakedown_Func");
-    TriggerEnable(libGDHL_gt_HeroFalstadFrequentFlyerHeroTakedown, false);
-    libGame_gf_HeroParticipatedInTakedown(libGDHL_gt_HeroFalstadFrequentFlyerHeroTakedown);
-}
-
-//--------------------------------------------------------------------------------------------------
-// Trigger: Hero - Falstad - Frequent Flyer - NPC Kill
-//--------------------------------------------------------------------------------------------------
-bool libGDHL_gt_HeroFalstadFrequentFlyerNPCKill_Func (bool testConds, bool runActions) {
-    // Variable Declarations
-    int lv_killingPlayer;
-    unit lv_killingHero;
-    unit lv_minion;
-
-    // Automatic Variable Declarations
-    // Variable Initialization
-    lv_killingPlayer = libGame_gf_HeroParticipatedInNPCTakedownKillingPlayer();
-    lv_killingHero = libGame_gv_players[lv_killingPlayer].lv_heroUnit;
-    lv_minion = libGame_gf_HeroParticipatedInNPCTakedownMinion();
-
-    // Conditions
-    if (testConds) {
-        if (!((PlayerHasTalent(lv_killingPlayer, "FalstadTailwindFrequentFlyer") == true))) {
-            return false;
-        }
-    }
-
-    // Actions
-    if (!runActions) {
-        return true;
-    }
-
-    if (((UnitTypeTestAttribute(UnitGetType(lv_minion), c_unitAttributeSummoned) == true) || (UnitTypeTestAttribute(UnitGetType(lv_minion), c_unitAttributeUser1) == true) || (UnitTypeTestAttribute(UnitGetType(lv_minion), c_unitAttributeMapBoss) == true))) {
-        return true;
-    }
-
-    if ((UnitTypeTestAttribute(UnitGetType(lv_minion), c_unitAttributeMinion) == true) && (UnitFilterMatch(lv_minion, lv_killingPlayer, UnitFilter(0, 0, (1 << c_targetFilterCreep) | (1 << c_targetFilterMerc), 0)) == true)) {
-        UnitCreateEffectUnit(lv_killingHero, "FalstadFrequentFlyerMinionKillIncreaseQuestToken", lv_killingHero);
-    }
-
-    return true;
-}
-
-//--------------------------------------------------------------------------------------------------
-void libGDHL_gt_HeroFalstadFrequentFlyerNPCKill_Init () {
-    libGDHL_gt_HeroFalstadFrequentFlyerNPCKill = TriggerCreate("libGDHL_gt_HeroFalstadFrequentFlyerNPCKill_Func");
-    TriggerEnable(libGDHL_gt_HeroFalstadFrequentFlyerNPCKill, false);
-    libGame_gf_HeroParticipatedInNPCTakedown(libGDHL_gt_HeroFalstadFrequentFlyerNPCKill);
-}
-
-//--------------------------------------------------------------------------------------------------
 // Trigger: Hero - Falstad - Wingman Variables
 //--------------------------------------------------------------------------------------------------
 bool libGDHL_gt_HeroFalstadWingmanVariables_Func (bool testConds, bool runActions) {
@@ -11397,6 +11312,10 @@ bool libGDHL_gt_HeroKaelthasPhoenixSpawnSelection_Func (bool testConds, bool run
     libGDHL_gv_kaelthas_PhoenixUnit[lv_player] = lv_unit;
     if ((libGame_gv_players[lv_player].lv_activeVehicle == null)) {
         UnitSelect(lv_unit, lv_player, true);
+    }
+
+    if ((libAIAI_gf_HeroAIIsAIEnabledForPlayer(lv_player) == true)) {
+        UnitCreateAIThinkTree(lv_unit);
     }
 
     return true;
@@ -26921,8 +26840,6 @@ void libGDHL_InitTriggers () {
     libGDHL_gt_HeroFalstadDishonorableDischargeHeroKillRefreshCooldown_Init();
     libGDHL_gt_HeroFalstadFlightPing_Init();
     libGDHL_gt_HeroFalstadFlightCameraHeightRestore_Init();
-    libGDHL_gt_HeroFalstadFrequentFlyerHeroTakedown_Init();
-    libGDHL_gt_HeroFalstadFrequentFlyerNPCKill_Init();
     libGDHL_gt_HeroFalstadWingmanVariables_Init();
     libGDHL_gt_HeroIllidanApplyFotBCooldownonInventoryUse_Init();
     libGDHL_gt_HeroIllidanMetamorphosisAvatarApplyHealthBuff_Init();

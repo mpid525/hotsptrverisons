@@ -7,6 +7,7 @@
   </mod>
   <mod id="93D883AF1FB031B1">
     <insertChild id="79093AFB2B207904" />
+    <insertChild id="9E72C36E9B963ECB" />
   </mod>
   <mod id="A4058AA255280C17">
     <insertChild id="F9976420435D043B" />
@@ -16,6 +17,7 @@
   </mod>
   <mod id="F21BCB9B06948439">
     <insertChild id="79093AFB2B207904" />
+    <insertChild id="9E72C36E9B963ECB" />
     <insertChild id="6A62D1B3FDDDCB48" />
     <insertChild id="F4B33AF82A567135" />
     <insertChild id="319FDB1E0EBD3DBE" />
@@ -638,19 +640,16 @@
     <insertChild id="5D6DCF496703672B" />
   </node>
   <node name="Ice Block" type="AbilityUsable" id="79093AFB2B207904">
-    <property name="Ability" valueSource="literal" value="ImprovedIceBlock" />
+    <property name="Ability" valueSource="literal" value="JainaIceBlockActivate" />
     <insertChild id="0C975BDA15F7410E" />
   </node>
   <node name="Ice Block" type="And" id="0C975BDA15F7410E">
-    <insertChild id="C6159E302184AA9C" />
-    <insertChild id="2AB77C95A1039E3B" />
-  </node>
-  <node name="Use or Cancel" type="Or" id="C6159E302184AA9C">
     <insertChild id="1E359896B4D478B8" />
-    <insertChild id="8DB16363A0F3EAAC" />
+    <insertChild id="2AB77C95A1039E3B" />
   </node>
   <node name="Use Ice Block" type="And" id="1E359896B4D478B8">
     <insertChild id="499E81141C83F7BE" />
+    <insertChild id="8E4C15F844A7C68E" />
     <insertChild id="85D6E60E3600C317" />
     <insertChild id="8C536BA876F7FA14" />
   </node>
@@ -691,10 +690,17 @@
   </node>
   <node name="Is Ice Blocked" type="UnitHasBehavior" id="2C98DD75C4D97CA5">
     <property name="Unit" valueSource="intrinsic" value="Self" />
-    <property name="Behavior" valueSource="literal" value="TalentBucketIceBlock" />
+    <property name="Behavior" valueSource="literal" value="JainaImprovedIceBlock" />
+  </node>
+  <node name="" type="Not" id="8E4C15F844A7C68E">
+    <insertChild id="6F8904E8206A6C18" />
+  </node>
+  <node name="Is Ice Colded" type="UnitHasBehavior" id="6F8904E8206A6C18">
+    <property name="Unit" valueSource="intrinsic" value="Self" />
+    <property name="Behavior" valueSource="literal" value="JainaIceCold" />
   </node>
   <node name="Ice Block" type="Ability" id="2AB77C95A1039E3B">
-    <property name="Ability" valueSource="literal" value="ImprovedIceBlock" />
+    <property name="Ability" valueSource="literal" value="JainaIceBlockActivate" />
   </node>
   <node name="Icy Veins" type="AbilityUsable" id="F9976420435D043B">
     <property name="Ability" valueSource="literal" value="IcyVeins" />
@@ -1208,14 +1214,26 @@
     <property name="PredictionMissileSpeed" valueSource="variable" value="AbilityPredictionSpeed" />
     <property name="TargetBlockingTypes" valueSource="literal" value="Enemy" />
   </node>
+  <node name="Ice Block Cancel" type="AbilityUsable" id="9E72C36E9B963ECB">
+    <property name="Ability" valueSource="literal" value="JainaIceBlockCancel" />
+    <insertChild id="8DB16363A0F3EAAC" />
+  </node>
   <node name="Cancel Ice Block" type="And" id="8DB16363A0F3EAAC">
-    <insertChild id="5B84CC3B1AE7F371" />
+    <insertChild id="0FAF30F3927D3966" />
     <insertChild id="55AB60770E892D59" />
     <insertChild id="90C866B2B4CAA675" />
   </node>
+  <node name="Has Ice Block or Ice Cold" type="Or" id="0FAF30F3927D3966">
+    <insertChild id="5B84CC3B1AE7F371" />
+    <insertChild id="7C16B95B3E536CF4" />
+  </node>
   <node name="Is Ice Blocked" type="UnitHasBehavior" id="5B84CC3B1AE7F371">
     <property name="Unit" valueSource="intrinsic" value="Self" />
-    <property name="Behavior" valueSource="literal" value="TalentBucketIceBlock" />
+    <property name="Behavior" valueSource="literal" value="JainaImprovedIceBlock" />
+  </node>
+  <node name="Is Ice Cold" type="UnitHasBehavior" id="7C16B95B3E536CF4">
+    <property name="Unit" valueSource="intrinsic" value="Self" />
+    <property name="Behavior" valueSource="literal" value="JainaIceCold" />
   </node>
   <node name="No Enemy Heroes Around" type="UnitCount" id="55AB60770E892D59">
     <property name="TargetTypes" valueSource="literal" value="Heroic" />
@@ -1225,7 +1243,7 @@
     <property name="RequiredTypes" valueSource="literal" value="Enemy" />
   </node>
   <node name="Cancel" type="Ability" id="90C866B2B4CAA675">
-    <property name="Ability" valueSource="literal" value="ImprovedIceBlock" />
+    <property name="Ability" valueSource="literal" value="JainaIceBlockCancel" />
     <property name="DoNotThrottle" valueSource="literal" value="true" />
   </node>
 </tree>

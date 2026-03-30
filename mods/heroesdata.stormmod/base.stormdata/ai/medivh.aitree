@@ -24,14 +24,14 @@
     <insertChild id="D8BD02668D96F3B8" />
     <insertChild id="45A78ED157AA5779" />
     <insertChild id="388EB8037F0D1048" />
-    <insertChild id="BA4E07FF55186472" />
+    <insertChild id="7D465C72AEA57590" />
   </mod>
   <mod id="A4058AA255280C17">
     <insertChild id="F78FC49B9532B542" />
     <insertChild id="FEC2087EF3CE11F2" />
     <insertChild id="45A78ED157AA5779" />
     <insertChild id="388EB8037F0D1048" />
-    <insertChild id="BA4E07FF55186472" />
+    <insertChild id="7D465C72AEA57590" />
     <insertChild id="45A1AEE291DDFBF1" />
     <insertChild id="53A33480158EF871" />
     <insertChild id="F0FB1128286CE401" />
@@ -630,6 +630,10 @@
     <property name="TargetPoint" valueSource="variable" value="AbilityTargetPoint" />
     <property name="DoNotThrottle" valueSource="literal" value="true" />
   </node>
+  <node name="Polybomb Cast Switch" type="Or" id="7D465C72AEA57590">
+    <insertChild id="EE75B1D5954592F9" />
+    <insertChild id="BA4E07FF55186472" />
+  </node>
   <node name="Poly Bomb" type="AbilityUsable" id="BA4E07FF55186472" comment="This Node is the start of the branch. It check that the ability is actually usable before doing any logic for it.">
     <property name="Ability" valueSource="literal" value="MedivhPolyBomb" />
     <insertChild id="0B54B63140F082B5" />
@@ -693,6 +697,55 @@
   <node name="Use Ability" type="Ability" id="DE4BD7EEF16DAC91">
     <property name="Ability" valueSource="literal" value="MedivhPolyBomb" />
     <property name="TargetUnit" valueSource="variable" value="PolyBombTarget" />
+  </node>
+  <node name="Glyph of Poly Bomb" type="AbilityUsable" id="EE75B1D5954592F9" comment="This Node is the start of the branch. It check that the ability is actually usable before doing any logic for it.">
+    <property name="Ability" valueSource="literal" value="MedivhPolyBombGlyphOfPolyBomb" />
+    <insertChild id="EC049CE785B73BD3" />
+  </node>
+  <node name="Base Node" type="And" id="EC049CE785B73BD3" comment="This Node links targeting Logic, ability use and talent modifications">
+    <variable name="AbilityRange" type="Number" valueSource="lookup" value="Abil,MedivhPolyBombGlyphOfPolyBomb,Range" comment="Range of the Ability" />
+    <variable name="AbilityMissileRadius" type="Number" comment="Width of the Searches" />
+    <variable name="AbilityMissilePierceCount" type="Number" comment="Number of Blockers this can go through" />
+    <variable name="AbilityAOERadius" type="Number" valueSource="lookup" value="Effect,MedivhPolyBombGlyphOfPolyBombSearch,AreaArray[0].Radius" comment="Radius of the Search" />
+    <variable name="AbilityLowManaThreshHold" type="Number" value="0.4" comment="Low Threshhold for Casting" />
+    <variable name="AbilityHighManaThreshHold" type="Number" value="0.75" comment="High threshhold for Casting" />
+    <variable name="AbilityTargetPoint" type="Point" comment="Point to use ability on" />
+    <insertChild id="F468AE62A42DCB64" />
+    <insertChild id="25A87CEBEF921E1A" />
+  </node>
+  <node name="Targeting Selecting Node" type="Or" id="F468AE62A42DCB64">
+    <insertChild id="CE999AEED74AFCFE" />
+    <insertChild id="9497ED06CD80D5A8" />
+  </node>
+  <node name="3 Enemy Hero" type="FindBestAOEPoint" id="CE999AEED74AFCFE">
+    <property name="TargetTypes" valueSource="literal" value="" />
+    <property name="RequiredTypes" valueSource="literal" value="Enemy,Heroic" />
+    <property name="MaxTargetDistance" valueSource="variable" value="AbilityRange" />
+    <property name="AOERadius" valueSource="variable" value="AbilityAOERadius" />
+    <property name="MinTargets" valueSource="literal" value="3" />
+    <property name="OutputTarget" value="AbilityTargetPoint" />
+  </node>
+  <node name="Self &lt; 15%" type="LifeFraction" id="9497ED06CD80D5A8">
+    <property name="LifeFraction" valueSource="literal" value="0.15" />
+    <property name="Comparison" valueSource="literal" value="LT" />
+    <property name="Target" valueSource="intrinsic" value="Self" />
+    <insertChild id="A7AEE5E41C219BD8" />
+  </node>
+  <node name="High Mana Targeting" type="Or" id="A7AEE5E41C219BD8">
+    <insertChild id="4B94FFF8E990A73D" />
+  </node>
+  <node name="1 Enemy Hero" type="FindBestAOEPoint" id="4B94FFF8E990A73D">
+    <property name="TargetTypes" valueSource="literal" value="" />
+    <property name="RequiredTypes" valueSource="literal" value="Enemy,Heroic" />
+    <property name="MaxTargetDistance" valueSource="variable" value="AbilityRange" />
+    <property name="AOERadius" valueSource="variable" value="AbilityAOERadius" />
+    <property name="MinTargets" valueSource="literal" value="1" />
+    <property name="OutputTarget" value="AbilityTargetPoint" />
+    <property name="DistanceFactor" valueSource="literal" value="100" />
+  </node>
+  <node name="Use Ability" type="Ability" id="25A87CEBEF921E1A">
+    <property name="Ability" valueSource="literal" value="MedivhPolyBombGlyphOfPolyBomb" />
+    <property name="TargetPoint" valueSource="variable" value="AbilityTargetPoint" />
   </node>
   <node name="Birds Eye View" type="AbilityUsable" id="45A1AEE291DDFBF1" comment="This Node is the start of the branch. It check that the ability is actually usable before doing any logic for it.">
     <property name="Ability" valueSource="literal" value="MedivhTransformRavenBirdsEyeView" />

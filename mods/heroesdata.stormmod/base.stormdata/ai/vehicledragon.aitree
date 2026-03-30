@@ -25,6 +25,7 @@
   </mod>
   <mod name="" id="1D230C110020102F">
     <removeChild id="694D6B100F1B1D2F" />
+    <removeChild id="30C97CE23B02993B" />
     <removeChild id="0736191615170133" />
     <removeChild id="835364CAFA5D0BDB" />
     <insertChild id="F90097B32858BF00" before="" />

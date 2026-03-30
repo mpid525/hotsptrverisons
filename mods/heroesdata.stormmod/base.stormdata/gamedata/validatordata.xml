@@ -234,6 +234,15 @@
     <WhichUnit Value="Source" />
     <Filters value="Minion;Merc,Structure,Heroic,User1,Summoned,MapBoss" />
   </CValidatorUnitFilters>
+  <CValidatorCombine id="SourceIsMinionAndNotMercLaner">
+    <Type value="And" />
+    <CombineArray value="SourceIsMinion" />
+    <CombineArray value="SourceNotMerc" />
+  </CValidatorCombine>
+  <CValidatorUnitFilters id="SourceIsNotAMonster">
+    <Filters value="-;MapCreature" />
+    <WhichUnit Value="Source" />
+  </CValidatorUnitFilters>
   <CValidatorUnitCompareBehaviorCount id="SylvanasTargetDoesNotHaveImmuneToSylvanasBlackArrowsStructureDebuff">
     <Behavior value="ImmunetoSylvanasBlackArrowStructureDebuff" />
   </CValidatorUnitCompareBehaviorCount>

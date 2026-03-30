@@ -4621,6 +4621,7 @@
     <BehaviorArray Link="StormSummonedUnitDamagedUnitTracker" />
     <EffectArray index="Create" value="KaelthasPhoenixAddToTrackingList" />
     <PlaneArray index="Air" value="1" />
+    <AIThinkTree value="AI/KaelthasPhoenix.aitree" />
   </CUnit>
   <CUnit id="KaelthasPhoenixWeaponMissile" parent="MISSILE_INVULNERABLE" />
   <CUnit id="KaelthasPyroblastMissile" parent="MISSILE_INVULNERABLE" />

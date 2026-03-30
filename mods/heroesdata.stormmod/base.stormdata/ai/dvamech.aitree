@@ -16,6 +16,7 @@
     <insertChild id="53BD4BAA6F98210E" />
     <insertChild id="819A40E4B48F1EFD" />
     <insertChild id="1D22D3CCB028E1F7" />
+    <insertChild id="8214F0780A478078" />
     <insertChild id="8DAC6137A31930D1" />
     <insertChild id="88455C6210A4CE34" />
   </mod>
@@ -129,6 +130,115 @@
   </node>
   <node name="Move to target" type="HeroMoveToPoint" id="0E0D1F1A6F4E27D5">
     <property name="TargetPosition" valueSource="variable" value="EnemyTargetPoint" />
+  </node>
+  <node name="Retarget Defense Matrix" type="AbilityUsable" id="8214F0780A478078" comment="This Node is the start of the branch. It checks that the ability is actually usable before doing any logic for it.">
+    <property name="Ability" valueSource="literal" value="DVaMechDefenseMatrixRetarget" />
+    <insertChild id="35C398B1D980A0F2" />
+  </node>
+  <node name="Base Node" type="And" id="35C398B1D980A0F2" comment="This Node links targeting Logic, ability use and talent modifications">
+    <variable name="AbilityRange" type="Number" value="7" comment="Range of the Ability" />
+    <variable name="AbilityTargetPoint" type="Point" comment="Target Point of the ability" />
+    <variable name="AbilityMissileRadius" type="Number" value="2" comment="Width of the Ability Searches" />
+    <variable name="AbilityMissilePierceCount" type="Number" comment="Number of Blockers this can go through" />
+    <variable name="AbilityHighManaThreshHold" type="Number" value="0.75" comment="High Mana ThreshHold" />
+    <variable name="AbilityLowManaThreshHold" type="Number" value="0.4" comment="Low Mana ThreshHold" />
+    <variable name="AllytoSave" type="Unit" />
+    <variable name="HeroestoHit" type="Integer" />
+    <variable name="SelfLocation" type="Point" />
+    <variable name="TargetLocation" type="Point" />
+    <insertChild id="FEF8DC6E8E4AAA78" />
+    <insertChild id="3403B322D42476D4" />
+    <insertChild id="25781E7D5763F441" />
+    <insertChild id="8D0EBECE0EB84B9F" />
+    <insertChild id="2655A1A127E5C110" />
+  </node>
+  <node name="" type="Sequence" id="FEF8DC6E8E4AAA78">
+    <property name="IgnoreChildFailures" valueSource="literal" value="true" />
+    <insertChild id="2D58EC2113CF861C" />
+  </node>
+  <node name="Diverting Power" type="UnitHasTalent" id="2D58EC2113CF861C">
+    <property name="Unit" valueSource="intrinsic" value="Self" />
+    <property name="Talent" valueSource="literal" value="DVaDefenseMatrixDivertingPower" />
+    <insertChild id="F1E49CDC3E054809" />
+  </node>
+  <node name="Increase Range" type="SetNumber" id="F1E49CDC3E054809">
+    <property name="Variable" value="AbilityMissileRadius" />
+    <property name="Value" valueSource="literal" value="3" />
+  </node>
+  <node name="Is Using Defense Matrix" type="UnitHasBehavior" id="3403B322D42476D4">
+    <property name="Behavior" valueSource="literal" value="DVaMechDefenseMatrixChannelling" />
+    <property name="Unit" valueSource="intrinsic" value="Self" />
+  </node>
+  <node name="Ally to Save" type="FindBestTarget" id="25781E7D5763F441">
+    <property name="OutputTarget" value="AllytoSave" />
+    <property name="MaxTargetDistance" valueSource="literal" value="10" />
+    <property name="DistanceFactor" valueSource="literal" value="0" />
+    <property name="LifeFractionFactor" valueSource="literal" value="10" />
+  </node>
+  <node name="Targeting Selecting Node" type="Or" id="8D0EBECE0EB84B9F">
+    <insertChild id="B23048638B6EE787" />
+    <insertChild id="9196BAF6B8FF2ECB" />
+    <insertChild id="EE28FF76DC29BB62" />
+  </node>
+  <node name="&gt;75%" type="LifeFraction" id="B23048638B6EE787">
+    <property name="Target" valueSource="variable" value="AllytoSave" />
+    <property name="LifeFraction" valueSource="literal" value="0.75" />
+    <insertChild id="7F4C1DB81B9E4266" />
+  </node>
+  <node name="Find 3 Hero" type="FindBestVector" id="7F4C1DB81B9E4266">
+    <property name="TargetTypes" valueSource="literal" value="" />
+    <property name="RequiredTypes" valueSource="literal" value="Enemy,Heroic" />
+    <property name="MissilePierceCount" valueSource="variable" value="AbilityMissilePierceCount" />
+    <property name="MissileRadius" valueSource="variable" value="AbilityMissileRadius" />
+    <property name="OutputEndPoint" value="AbilityTargetPoint" />
+    <property name="MinTargets" valueSource="literal" value="3" />
+    <property name="MaxVectorLength" valueSource="variable" value="AbilityRange" />
+    <property name="TargetBlockingTypes" valueSource="literal" value="Structure" />
+    <property name="PreferredPointFactor" valueSource="literal" value="5" />
+  </node>
+  <node name="&gt;50%" type="LifeFraction" id="9196BAF6B8FF2ECB">
+    <property name="Target" valueSource="variable" value="AllytoSave" />
+    <property name="LifeFraction" valueSource="literal" value="0.5" />
+    <insertChild id="E3A641A983850A14" />
+  </node>
+  <node name="Find 2 Hero" type="FindBestVector" id="E3A641A983850A14">
+    <property name="TargetTypes" valueSource="literal" value="" />
+    <property name="RequiredTypes" valueSource="literal" value="Enemy,Heroic" />
+    <property name="MissilePierceCount" valueSource="variable" value="AbilityMissilePierceCount" />
+    <property name="MissileRadius" valueSource="variable" value="AbilityMissileRadius" />
+    <property name="OutputEndPoint" value="AbilityTargetPoint" />
+    <property name="MinTargets" valueSource="literal" value="2" />
+    <property name="MaxVectorLength" valueSource="variable" value="AbilityRange" />
+    <property name="TargetBlockingTypes" valueSource="literal" value="Structure" />
+    <property name="PreferredPointFactor" valueSource="literal" value="5" />
+  </node>
+  <node name="&lt;50%" type="LifeFraction" id="EE28FF76DC29BB62">
+    <property name="Target" valueSource="variable" value="AllytoSave" />
+    <property name="LifeFraction" valueSource="literal" value="0.5" />
+    <property name="Comparison" valueSource="literal" value="LT" />
+    <insertChild id="2664FCD05F8AE0C8" />
+  </node>
+  <node name="Find 1 Hero" type="FindBestVector" id="2664FCD05F8AE0C8">
+    <property name="TargetTypes" valueSource="literal" value="" />
+    <property name="RequiredTypes" valueSource="literal" value="Enemy,Heroic" />
+    <property name="MissilePierceCount" valueSource="variable" value="AbilityMissilePierceCount" />
+    <property name="MissileRadius" valueSource="variable" value="AbilityMissileRadius" />
+    <property name="OutputEndPoint" value="AbilityTargetPoint" />
+    <property name="MinTargets" valueSource="literal" value="1" />
+    <property name="MaxVectorLength" valueSource="variable" value="AbilityRange" />
+    <property name="TargetBlockingTypes" valueSource="literal" value="Structure" />
+    <property name="PreferredPointFactor" valueSource="literal" value="5" />
+  </node>
+  <node name="Find a Projection Point" type="FindPointOnLine" id="2655A1A127E5C110">
+    <property name="SourcePoint" valueSource="variable" value="AbilityTargetPoint" />
+    <property name="DestinationUnit" valueSource="intrinsic" value="Self" />
+    <property name="DistanceOffset" valueSource="literal" value="10" />
+    <property name="OutputTarget" value="DefenseMatrixProjectionPoint" />
+    <insertChild id="6547C3DC9C786602" />
+  </node>
+  <node name="Use Ability" type="Ability" id="6547C3DC9C786602">
+    <property name="Ability" valueSource="literal" value="DVaMechDefenseMatrixRetarget" />
+    <property name="TargetPoint" valueSource="variable" value="AbilityTargetPoint" />
   </node>
   <node name="Defense Matrix" type="AbilityUsable" id="8DAC6137A31930D1" comment="This Node is the start of the branch. It check that the ability is actually usable before doing any logic for it.">
     <property name="Ability" valueSource="literal" value="DVaMechDefenseMatrixOn" />

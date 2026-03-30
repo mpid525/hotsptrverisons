@@ -9,6 +9,7 @@
   </mod>
   <mod id="1D230C110020102F">
     <removeChild id="694D6B100F1B1D2F" />
+    <removeChild id="30C97CE23B02993B" />
     <removeChild id="835364CAFA5D0BDB" />
     <insertChild id="332E156B2A961EEF" before="" />
   </mod>
