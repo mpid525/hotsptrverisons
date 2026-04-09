@@ -3019,6 +3019,7 @@
   <CEffectSet id="RagnarosLivingMeteorSpawnSet">
     <EffectArray value="RagnarosMoltenPowerApplyTokenCounterSource" />
     <EffectArray value="RagnarosLivingMeteorMoltenPowerTransferDamageBuff" />
+    <EffectArray value="RagnarosLivingMeteorLandingSearch" />
     <EffectArray value="RagnarosLivingMeteorApplyTimedLifeBehavior" />
     <EffectArray value="RagnarosLivingMeteorAddTrackedMeteor" />
   </CEffectSet>

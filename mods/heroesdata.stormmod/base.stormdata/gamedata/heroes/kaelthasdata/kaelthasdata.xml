@@ -2021,7 +2021,6 @@
     <EffectCategory index="Quest" value="1" />
     <Chance value="0" />
     <CollationId value="" />
-    <ContextUnit Value="Caster" />
     <TokenId value="KaelthasFlamestrikeConvectionQuestToken" />
   </CEffectModifyTokenCount>
   <CEffectApplyBehavior id="KaelthasPhoenixApplyRebirthTalentRetargetReadyBehaviorSource">

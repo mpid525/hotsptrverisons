@@ -3890,6 +3890,13 @@
         <Field value="Height" />
         <Value value="5.000000" />
       </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Effect" />
+        <Entry value="MedivhArcaneRiftMissileScanPersistent" />
+        <Field value="PeriodCount" />
+        <Value value="5.000000" />
+      </Modifications>
     </AbilityModificationArray>
   </CTalent>
   <CTalent id="MedivhForceOfWillArcaneExplosion">
@@ -4184,14 +4191,14 @@
         <Catalog value="Behavior" />
         <Entry value="MedivhTransformRaven" />
         <Field value="Modification.VitalRegenMultiplier[Energy]" />
-        <Value value="1.250000" />
+        <Value value="2.000000" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Behavior" />
         <Entry value="MedivhTransformRaven" />
         <Field value="Modification.VitalRegenMultiplier[Life]" />
-        <Value value="1.250000" />
+        <Value value="2.000000" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>
@@ -4212,7 +4219,7 @@
         <Catalog value="Behavior" />
         <Entry value="MedivhTransformRaven" />
         <Field value="Modification.UnifiedMoveSpeedFactor" />
-        <Value value="0.150000" />
+        <Value value="0.200000" />
       </Modifications>
     </AbilityModificationArray>
     <Abil value="MedivhTransformRaven" />

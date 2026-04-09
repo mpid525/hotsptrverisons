@@ -5205,7 +5205,7 @@
     <AmmoUnit value="MercBanditRangedAirAttackMissile" />
   </CEffectLaunchMissile>
   <CEffectDamage id="BattleshipBombardDamage" parent="StormSpell">
-    <Amount value="2875" />
+    <Amount value="3000" />
     <ImpactLocation Value="TargetUnit" />
     <CasterHistory value="Damage" />
     <SourceButtonFace value="GhostShipCannonBombard" />

@@ -1767,7 +1767,7 @@
       <SortArray value="TSDistance" />
     </TargetSorts>
     <AreaArray MaxCount="1" Effect="GarroshWreckingBallSearchAreaMarkerImpactSet">
-      <Radius value="2.5" />
+      <Radius value="2.25" />
     </AreaArray>
     <SearchFlags index="ExtendByUnitRadius" value="1" />
   </CEffectEnumArea>

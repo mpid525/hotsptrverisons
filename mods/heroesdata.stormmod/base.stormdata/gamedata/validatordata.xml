@@ -46,6 +46,11 @@
     <Value value="1" />
     <Behavior value="HeroGenericExperienceGlobeReducedXPCarry" />
   </CValidatorUnitCompareBehaviorCount>
+  <CValidatorCombine id="CasterIsStunnedOrRootedOrSlowed">
+    <CombineArray value="CasterIsStunned" />
+    <CombineArray value="CasterIsRooted" />
+    <CombineArray value="CasterIsSlowed" />
+  </CValidatorCombine>
   <CValidatorCombine id="IsMinionorStructureANDNotMerc">
     <CombineArray value="TargetIsMinionAndNotMercLaner" />
     <CombineArray value="IsStructureTarget" />
@@ -3012,9 +3017,13 @@
   <CValidatorUnitCompareBehaviorCount id="TargetNotMounted">
     <Behavior value="Mounted" />
   </CValidatorUnitCompareBehaviorCount>
+  <CValidatorUnitCompareBehaviorCount id="TargetNotMountedCaboose">
+    <Behavior value="MountCaboose" />
+  </CValidatorUnitCompareBehaviorCount>
   <CValidatorCombine id="TargetNotMountedCombine">
     <Type value="And" />
     <CombineArray value="TargetNotMounted" />
+    <CombineArray value="TargetNotMountedCaboose" />
     <CombineArray value="TargetHasNoGhostWolf" />
   </CValidatorCombine>
   <CValidatorUnitCompareBehaviorCount id="HasDestructibleBehavior">

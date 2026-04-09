@@ -1159,7 +1159,7 @@
     </CBehaviorBuff>
     <CBehaviorBuff id="ThrallChainLightningEchooftheElementsTalentDebuff">
         <RemoveValidatorArray value="ThrallHasEchooftheElementsTalent"/>
-        <Duration value="1.5"/>
+        <Duration value="2"/>
         <DamageResponse>
             <Chance value="1"/>
             <Handled value="ThrallChainLightningEchooftheElementsTalentProcSet"/>
@@ -1334,11 +1334,11 @@
         <ConditionalEvents Compare="GE" CompareValue="20">
             <Event EventId="QuestMilestone" Effect="ThrallChainLightningEchooftheElementsTalentQuestModifyPlayer"/>
         </ConditionalEvents>
-        <ConditionalEvents Compare="GE" CompareValue="40">
+        <ConditionalEvents Compare="GE" CompareValue="50">
             <Event EventId="QuestMilestone" Effect="ThrallChainLightningEchooftheElementsTalent2ndQuestModifyPlayer"/>
         </ConditionalEvents>
         <AtMaxEvents index="0" EventId="QuestComplete" Effect="ThrallChainLightningEchooftheElementsTalentCompletionModifyPlayer"/>
-        <Max value="100"/>
+        <Max value="125"/>
     </CBehaviorTokenCounter>
     <CBehaviorTokenCounter id="ThrallCrashLightningTokenCounter" parent="StormQuestToken">
         <Face value="ThrallCrashLightningToken"/>
@@ -1649,10 +1649,6 @@
         <EffectArray Operation="Set" Reference="Behavior,WindfurySpeedBuff,Modification.UnifiedMoveSpeedFactor" Value=".4"/>
     </CEffectModifyPlayer>
     <CEffectModifyPlayer id="ThrallChainLightningEchooftheElementsTalent2ndQuestModifyPlayer">
-        <EffectArray Operation="Set" Reference="Effect,ThrallChainLightningBounce3Persistent,Chance" Value="1"/>
-        <EffectArray Operation="Set" Reference="Effect,ThrallChainLightningRollingThunderTalentBounce6Persistent,Chance" Value="1"/>
-        <EffectArray Operation="Set" Reference="Effect,ThrallChainLightningBounce4Persistent,Chance" Value="1"/>
-        <EffectArray Operation="Set" Reference="Effect,ThrallChainLightningRollingThunderTalentBounce5Persistent,Chance" Value="1"/>
         <EffectArray Operation="Set" Reference="Abil,ThrallChainLightning,Cost.Charge.CountMax" Value="2"/>
         <EffectArray Operation="Set" Reference="Abil,ThrallChainLightning,Cost.Charge.HideCount" Value="0"/>
     </CEffectModifyPlayer>
@@ -3219,18 +3215,10 @@
     <CEffectDamage id="ThrallChainLightningBounce2Damage" parent="ThrallChainLightningBounce1Damage"/>
     <CEffectDamage id="ThrallChainLightningBounce3Damage" parent="ThrallChainLightningBounce1Damage"/>
     <CEffectDamage id="ThrallChainLightningBounce4Damage" parent="ThrallChainLightningBounce1Damage"/>
-    <CEffectDamage id="ThrallEchooftheElementsBounce1Damage" parent="ThrallChainLightningBounce1Damage">
-        <Amount value="70"/>
-    </CEffectDamage>
-    <CEffectDamage id="ThrallEchooftheElementsBounce2Damage" parent="ThrallChainLightningBounce1Damage">
-        <Amount value="70"/>
-    </CEffectDamage>
-    <CEffectDamage id="ThrallEchooftheElementsBounce3Damage" parent="ThrallChainLightningBounce1Damage">
-        <Amount value="70"/>
-    </CEffectDamage>
-    <CEffectDamage id="ThrallEchooftheElementsBounce4Damage" parent="ThrallChainLightningBounce1Damage">
-        <Amount value="70"/>
-    </CEffectDamage>
+    <CEffectDamage id="ThrallEchooftheElementsBounce1Damage" parent="ThrallChainLightningBounce1Damage"/>
+    <CEffectDamage id="ThrallEchooftheElementsBounce2Damage" parent="ThrallChainLightningBounce1Damage"/>
+    <CEffectDamage id="ThrallEchooftheElementsBounce3Damage" parent="ThrallChainLightningBounce1Damage"/>
+    <CEffectDamage id="ThrallEchooftheElementsBounce4Damage" parent="ThrallChainLightningBounce1Damage"/>
     <CEffectSet id="ThrallChainLightningCastSet">
         <EffectArray value="ThrallChainLightingInitialPersistentSwitch"/>
         <EffectArray value="ThrallElementalAssaultApplyBuff"/>
@@ -4181,6 +4169,34 @@
                 <Field value="Chance"/>
                 <Value value="1.000000"/>
             </Modifications>
+            <Modifications>
+                <Type value="FlatModification"/>
+                <Catalog value="Effect"/>
+                <Entry value="ThrallChainLightningBounce3Persistent"/>
+                <Field value="Chance"/>
+                <Value value="1.000000"/>
+            </Modifications>
+            <Modifications>
+                <Type value="FlatModification"/>
+                <Catalog value="Effect"/>
+                <Entry value="ThrallChainLightningRollingThunderTalentBounce6Persistent"/>
+                <Field value="Chance"/>
+                <Value value="1.000000"/>
+            </Modifications>
+            <Modifications>
+                <Type value="FlatModification"/>
+                <Catalog value="Effect"/>
+                <Entry value="ThrallChainLightningBounce4Persistent"/>
+                <Field value="Chance"/>
+                <Value value="1.000000"/>
+            </Modifications>
+            <Modifications>
+                <Type value="FlatModification"/>
+                <Catalog value="Effect"/>
+                <Entry value="ThrallChainLightningRollingThunderTalentBounce5Persistent"/>
+                <Field value="Chance"/>
+                <Value value="1.000000"/>
+            </Modifications>
         </AbilityModificationArray>
         <Abil value="ThrallChainLightning"/>
     </CTalent>
@@ -4301,7 +4317,7 @@
     <CValidatorUnitCompareTokenCount id="HasEchooftheElementsFinalComplete">
         <WhichUnit Value="Caster"/>
         <Compare value="GE"/>
-        <Value value="100"/>
+        <Value value="125"/>
         <TokenId value="ThrallEchooftheElementsTokenCounter"/>
     </CValidatorUnitCompareTokenCount>
     <CValidatorCombine id="ThrallNoEchoAndNoMarkerCombine">

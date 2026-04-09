@@ -2130,6 +2130,7 @@ bool libMHtM_gt_MMHMSkullPickup_Func (bool testConds, bool runActions) {
     }
 
     libMHtM_gv_mMUnderworldSkullCollected[libGame_gf_TeamNumberOfPlayer(lv_collectingPlayer)] += 1;
+    libMHtM_gv_mMUnderworldSkullCollected[libGame_gf_TeamNumberOfPlayer(lv_collectingPlayer)] = MinI(libMHtM_gv_mMUnderworldSkullCollected[libGame_gf_TeamNumberOfPlayer(lv_collectingPlayer)], libMHtM_gv_mMUnderworldTotalSkulls_C);
     lv_alliedSkullCount = libMHtM_gv_mMUnderworldSkullCollected[libGame_gf_TeamNumberOfPlayer(lv_collectingPlayer)];
     SoundPlayAtPointForPlayer(SoundLink("UI_Game_Skull_Pickup", -1), c_maxPlayers, PlayerGroupAll(), lv_collectingUnitPosition, 0.5, 100.0, 0.0);
     libNtve_gf_AddPlayerGroupToPlayerGroup(libGame_gf_AlliedPlayerGroupOfPlayer(lv_collectingPlayer), lv_textTagPlayers);

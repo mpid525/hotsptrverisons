@@ -162,7 +162,7 @@
   <CAccumulatorToken id="TyrandeLunarFlareLunarBlazeDamageAccumulator" parent="BaseAccumulator">
     <ApplicationRule value="Add" />
     <TokenId value="TyrandeLunarFlareLunarBlazeTokenCounter" />
-    <Scale value="0.035" />
+    <Scale value="0.03" />
   </CAccumulatorToken>
   <CAccumulatorDistanceUnitTraveled id="TyrandeSentinelShotRangerAccumulator" parent="BaseAccumulator">
     <MaxAccumulation value="2.5" />
@@ -937,7 +937,7 @@
     <InfoIcon value="Assets\Textures\storm_ui_temp_icon_sprint.dds" />
     <Duration value="3" />
     <Modification>
-      <UnifiedMoveSpeedFactor value="0.2" />
+      <UnifiedMoveSpeedFactor value="0.25" />
     </Modification>
   </CBehaviorBuff>
   <CBehaviorBuff id="SentinelShot" parent="StormReveal">
@@ -2431,13 +2431,6 @@
         <Field value="Cost.Charge.HideCount" />
         <FieldIsInteger value="1" />
         <Value value="-1.000000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Entry value="TyrandeSentinelShot" />
-        <Field value="Cost.Charge.TimeUse" />
-        <FieldIsInteger value="1" />
-        <Value value="3.000000" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>

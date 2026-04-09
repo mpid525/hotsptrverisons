@@ -22,7 +22,7 @@
   <const id="$GazloweRockItTurretCooldown" value="1" />
   <const id="$GazloweRockItTurretCost" value="4" />
   <const id="$GazloweRockItTurretDuration" value="-1" />
-  <const id="$GazloweRockitTurretDecayDuration" value="17" />
+  <const id="$GazloweRockitTurretDecayDuration" value="20" />
   <const id="$GazloweRockitTurretLifeDecayRate" value="/($GazloweRockItTurretHealth $GazloweRockitTurretDecayDuration)" evaluateAsExpression="1" />
   <const id="$GazloweRockItTurretAttackRange" value="6" />
   <const id="$GazloweRockItTurretAttackSpeed" value="1" />

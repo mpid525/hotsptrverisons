@@ -1272,11 +1272,28 @@
   <CBehaviorBuff id="MalGanisNecroticEmbraceArmor" parent="StormArmor">
     <BehaviorCategories index="BuffResistant" value="1" />
     <Duration value="3" />
-    <ArmorModification>
-      <AllArmorBonus value="35" />
-    </ArmorModification>
-    <DamageResponse Handled="MalGanisNecroticEmbraceFueledByTormentHeal" />
     <FinalEffect value="MalGanisNecroticEmbraceFinalSet" />
+    <DamageResponse Handled="MalGanisNecroticEmbraceFueledByTormentHeal" />
+    <ArmorModification>
+      <ArmorSet index="Hero">
+        <ArmorMitigationTable index="Ability" value="15" />
+      </ArmorSet>
+      <ArmorSet index="Merc">
+        <ArmorMitigationTable index="Ability" value="15" />
+      </ArmorSet>
+      <ArmorSet index="Monster">
+        <ArmorMitigationTable index="Ability" value="15" />
+      </ArmorSet>
+      <ArmorSet index="Summon">
+        <ArmorMitigationTable index="Ability" value="15" />
+      </ArmorSet>
+      <ArmorSet index="Structure">
+        <ArmorMitigationTable index="Ability" value="15" />
+      </ArmorSet>
+      <ArmorSet index="Minion">
+        <ArmorMitigationTable index="Ability" value="15" />
+      </ArmorSet>
+    </ArmorModification>
     <AINotifySettings AreaEffect="MalGanisNecroticEmbraceEchoOfDoomSearch">
       <Flags index="Disabled" value="1" />
     </AINotifySettings>
@@ -2149,7 +2166,7 @@
     <EffectArray value="MalGanisNecroticEmbraceEchoOfDoomDecloakCasterSet" />
   </CEffectSet>
   <CEffectDamage id="MalGanisNecroticEmbraceDamage" parent="StormSpell">
-    <Amount value="110" />
+    <Amount value="121" />
     <LeechFraction index="Life" value="0.2" />
     <LeechFlatModifierArray index="IsHero" Validator="TargetIsHero" Modifier="0.7" />
     <LeechFlatModifierArray index="FueledByTorment" Validator="MalGanisNecroticEmbraceFueledByTormentCombine" Modifier="0.2" />
@@ -2159,7 +2176,6 @@
   <CEffectApplyBehavior id="MalGanisNecroticEmbraceApplyArmorBehavior">
     <WhichUnit Value="Caster" />
     <Behavior value="MalGanisNecroticEmbraceArmor" />
-    <Chance value="0" />
   </CEffectApplyBehavior>
   <CEffectCreateHealer id="MalGanisNecroticEmbraceFueledByTormentHeal" parent="StormSelfOnlyHealingSpell">
     <RechargeVitalRate value="12" />
@@ -3366,10 +3382,52 @@
     <AbilityModificationArray>
       <Modifications>
         <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="MalGanisNecroticEmbraceApplyArmorBehavior" />
-        <Field value="Chance" />
-        <Value value="1.000000" />
+        <Catalog value="Behavior" />
+        <Entry value="MalGanisNecroticEmbraceArmor" />
+        <Field value="ArmorModification.AllArmorBonus" />
+        <Value value="35.000000" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Behavior" />
+        <Entry value="MalGanisNecroticEmbraceArmor" />
+        <Field value="ArmorModification.ArmorSet[0].ArmorMitigationTable[Ability]" />
+        <Value value="-15.000000" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Behavior" />
+        <Entry value="MalGanisNecroticEmbraceArmor" />
+        <Field value="ArmorModification.ArmorSet[1].ArmorMitigationTable[Ability]" />
+        <Value value="-15.000000" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Behavior" />
+        <Entry value="MalGanisNecroticEmbraceArmor" />
+        <Field value="ArmorModification.ArmorSet[2].ArmorMitigationTable[Ability]" />
+        <Value value="-15.000000" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Behavior" />
+        <Entry value="MalGanisNecroticEmbraceArmor" />
+        <Field value="ArmorModification.ArmorSet[3].ArmorMitigationTable[Ability]" />
+        <Value value="-15.000000" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Behavior" />
+        <Entry value="MalGanisNecroticEmbraceArmor" />
+        <Field value="ArmorModification.ArmorSet[4].ArmorMitigationTable[Ability]" />
+        <Value value="-15.000000" />
+      </Modifications>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Catalog value="Behavior" />
+        <Entry value="MalGanisNecroticEmbraceArmor" />
+        <Field value="ArmorModification.ArmorSet[5].ArmorMitigationTable[Ability]" />
+        <Value value="-15.000000" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>
