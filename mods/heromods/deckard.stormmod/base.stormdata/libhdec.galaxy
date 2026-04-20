@@ -78,7 +78,7 @@ bool libHDEC_gt_DeckardHealingPotionCreatedAddUnitToVisibilityUnitGroup_Func (bo
         return true;
     }
 
-    UnitGroupAdd(libGDHL_gv_updateOnAnyVisibilityChangeUnitGroup, EventUnit());
+    UnitGroupAdd(libGDHL_gv_updateOnAnyVisibilityChangeUnitGroup, EventUnitCreatedUnit());
     return true;
 }
 
