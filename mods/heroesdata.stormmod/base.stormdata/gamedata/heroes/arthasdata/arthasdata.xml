@@ -11,10 +11,14 @@
   <const id="$ArthasArmyOfTheDeadGhoulDecayRate" value="/($ArthasArmyOfTheDeadGhoulHealth $ArthasArmyOfTheDeadGhoulDecayDuration)" evaluateAsExpression="1" />
   <CAbilEffectInstant id="ArthasPathofFrost">
     <Effect value="ArthasPathofFrostCastSet" />
+    <Flags index="ClearLastAttackTargetOutOfRange" value="1" />
+    <Flags index="RequireTargetVision" value="0" />
+    <Flags index="Transient" value="1" />
     <Cost>
       <Cooldown TimeUse="60" />
     </Cost>
     <CmdButtonArray index="Execute" DefaultButtonFace="ArthasPathofFrost" />
+    <UninterruptibleArray index="Cast" value="1" />
   </CAbilEffectInstant>
   <CAbilEffectInstant id="ArthasAntiMagicShell">
     <PrepEffect value="DismountDecloakCasterSet" />
@@ -222,7 +226,7 @@
     <Scale value="2" />
   </CAccumulatorToken>
   <CAccumulatorToken id="ArthasFrostmourneHungersRuneTapTalentHealthAccumulator" parent="BaseTokenAccumulator">
-    <MaxAccumulation value="5000" />
+    <MaxAccumulation value="10000" />
     <ApplicationRule value="Add" />
     <TokenId value="ArthasFrostmourneHungersTokenCounter" />
     <Scale value="10" />
@@ -256,8 +260,8 @@
     <Scale value="4" />
   </CAccumulatorToken>
   <CActorSound id="ArthasPathofFrostLoopSound" parent="SoundContinuous">
-    <On Terms="Behavior.ArthasPathofFrostMount.On" Send="Create" />
-    <On Terms="Behavior.ArthasPathofFrostMount.Off" Send="Destroy" />
+    <On Terms="Behavior.ArthasPathofFrostTimedBehavior.On" Send="Create" />
+    <On Terms="Behavior.ArthasPathofFrostTimedBehavior.Off" Send="Destroy" />
     <On Terms="ActorCreation" Send="SoundSetOffset 1000" />
     <Host Subject="_Unit" />
   </CActorSound>
@@ -757,28 +761,30 @@
     </Modification>
   </CBehaviorBuff>
   <CBehaviorAbility id="ArthasPathofFrostAbility">
-    <Buttons Face="ArthasPathofFrost" Type="AbilCmd" AbilCmd="ArthasPathofFrost,Execute" />
+    <Buttons Face="ArthasPathofFrost" Type="AbilCmd" AbilCmd="ArthasPathofFrost,Execute" UseValidator="CasterNotRooted" />
   </CBehaviorAbility>
-  <CBehaviorBuff id="ArthasPathofFrostMount">
-    <Alignment value="Positive" />
-    <InfoIcon value="Assets\Textures\storm_ui_icon_malthael_onpalehorse.dds" />
+  <CBehaviorBuff id="ArthasPathofFrostMountedController">
+    <RemoveValidatorArray value="Mounted" />
+    <Duration value="5" />
+    <CancelEffect value="ArthasPathofFrostRemoveTimedBehavior" />
+    <Period value="0.375" />
+    <PeriodCount value="14" />
+    <PeriodicEffect value="ArthasPathofFrostPeriodicSet" />
+  </CBehaviorBuff>
+  <CBehaviorBuff id="ArthasPathofFrostTimedBehavior" parent="CarryBehaviorParent">
     <BehaviorCategories index="Restorable" value="1" />
     <BehaviorCategories index="Fast" value="1" />
-    <BehaviorCategories index="Mount" value="1" />
     <DisplayDuration index="Self" value="1" />
     <DisplayDuration index="Ally" value="1" />
     <DisplayDuration index="Enemy" value="1" />
     <Duration value="5" />
-    <InitialEffect value="MountInitialSet" />
-    <FinalEffect value="ArthasPathofFrostMountFinalSet" />
+    <Period value="0.0625" />
+    <PeriodCount value="1" />
+    <PeriodicEffect value="ArthasPathofFrostApplyMountedController" />
+    <FinalEffect value="ArthasPathofFrostTimedFinalSet" />
     <Modification>
-      <StateFlags index="SuppressFidgeting" value="1" />
       <UnifiedMoveSpeedFactor value="0.4" />
-      <AbilLinkDisableArray value="Mount" />
     </Modification>
-    <Period value="0.375" />
-    <PeriodCount value="14" />
-    <PeriodicEffect value="ArthasPathofFrostPeriodicSet" />
   </CBehaviorBuff>
   <CBehaviorUnitTracker id="ArthasArmyoftheDeadUnitTracker">
     <BehaviorFlags index="Permanent" value="1" />
@@ -1077,7 +1083,6 @@
     <RemoveValidatorArray value="CasterNotDead" />
     <RemoveValidatorArray value="NotMounted" />
     <RemoveValidatorArray value="NotMountedCaboose" />
-    <RemoveValidatorArray value="ArthasCasterDoesNotHavePathofFrostMount" />
     <Period value="0.5" />
     <InitialEffect value="ArthasFrozenTempestInitialSet" />
     <PeriodicEffect value="ArthasFrozenTempestSearchSet" />
@@ -1278,9 +1283,10 @@
   <CEffectApplyBehavior id="ArthasPathofFrostApplySlow" parent="StormSlowApply">
     <Behavior value="ArthasPathofFrostSlow" />
   </CEffectApplyBehavior>
-  <CEffectSet id="ArthasPathofFrostMountFinalSet">
+  <CEffectSet id="ArthasPathofFrostTimedFinalSet">
+    <EffectArray value="MountRemoveMountBehaviorSet" />
+    <EffectArray value="ArthasPathofFrostRemoveMountController" />
     <EffectArray value="ArthasPathofFrostSearch" />
-    <EffectArray value="MountFinalPersistent" />
   </CEffectSet>
   <CEffectSet id="ArthasPathofFrostPeriodicSet" />
   <CEffectEnumArea id="ArthasPathofFrostSearch">
@@ -1294,17 +1300,26 @@
     <EffectArray value="ArthasPathofFrostDamage" />
     <EffectArray value="ArthasPathofFrostApplySlow" />
   </CEffectSet>
-  <CEffectRemoveBehavior id="ArthasPathofFrostRemoveMount">
-    <WhichUnit Value="Source" />
-    <BehaviorLink value="ArthasPathofFrostMount" />
+  <CEffectApplyBehavior id="ArthasPathofFrostApplyMountedController">
+    <WhichUnit Value="Caster" />
+    <Behavior value="ArthasPathofFrostMountedController" />
+  </CEffectApplyBehavior>
+  <CEffectRemoveBehavior id="ArthasPathofFrostRemoveTimedBehavior">
+    <BehaviorLink value="ArthasPathofFrostTimedBehavior" />
     <Count value="1" />
   </CEffectRemoveBehavior>
-  <CEffectApplyBehavior id="ArthasPathofFrostApplyMount">
+  <CEffectRemoveBehavior id="ArthasPathofFrostRemoveMountController">
+    <BehaviorLink value="ArthasPathofFrostMountedController" />
+    <Count value="1" />
+  </CEffectRemoveBehavior>
+  <CEffectApplyBehavior id="ArthasPathofFrostApplyTimedBehavior">
     <WhichUnit Value="Caster" />
-    <Behavior value="ArthasPathofFrostMount" />
+    <Behavior value="ArthasPathofFrostTimedBehavior" />
   </CEffectApplyBehavior>
   <CEffectSet id="ArthasPathofFrostCastSet">
-    <EffectArray value="ArthasPathofFrostApplyMount" />
+    <EffectArray value="ArthasPathofFrostApplyTimedBehavior" />
+    <EffectArray value="HeroGenericMountAbilityInitialSetNoCombatValidator" />
+    <ValidatorArray value="CasterNotRooted" />
   </CEffectSet>
   <CEffectModifyUnit id="ArthasArmyoftheDeadCooldownResetModifyChargeCooldown">
     <ImpactUnit Value="Caster" />
@@ -3401,8 +3416,10 @@
     <WhichPlayer Value="Caster" />
     <Value value="ArthasDeathPact" />
   </CValidatorPlayerTalent>
-  <CValidatorUnitCompareBehaviorCount id="ArthasCasterDoesNotHavePathofFrostMount">
-    <Behavior value="ArthasPathofFrostMount" />
+  <CValidatorUnitCompareBehaviorCount id="ArthasSourceHasPathofFrostActive">
+    <Behavior value="ArthasPathofFrostTimedBehavior" />
+    <WhichUnit Value="Source" />
+    <Value value="1" />
   </CValidatorUnitCompareBehaviorCount>
   <CValidatorCompareTrackedUnitsCount id="ArthasHasGTE1ArmyoftheDeadGhoulTracked">
     <Compare value="GE" />

@@ -9,8 +9,15 @@
         </Modification>
     </CBehaviorBuff>
     <CBehaviorBuff id="HeroGenericAbnormalPlaneState">
+        <DisableValidatorArray value="CasterNotMedivhRaven"/>
         <Modification>
             <SightBonus value="-5.5"/>
+            <BehaviorLinkDisableArray value="AbnormalPlaneStateSummon"/>
+        </Modification>
+    </CBehaviorBuff>
+    <CBehaviorBuff id="AbnormalPlaneStateSummon" parent="CarryBehaviorParent">
+        <Modification>
+            <SightBonus value="-3"/>
         </Modification>
     </CBehaviorBuff>
     <CBehaviorBuff id="MedivhTransformRaven">
