@@ -3236,7 +3236,6 @@
     <CombineArray value="HasBucketSwiftStorm" />
     <CombineArray value="HeroNotInCombat" />
     <CombineArray value="CrusaderSourceHasSteedChargeActive" />
-    <CombineArray value="ArthasSourceHasPathofFrostActive" />
   </CValidatorCombine>
   <CValidatorCombine id="CasterEnergyNotFullAndIsManaUser">
     <Type value="And" />

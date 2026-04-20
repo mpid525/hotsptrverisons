@@ -10960,7 +10960,7 @@ void libGame_gf_ShareUnshareVisionOfAlliesForPlayer (bool lp_onOff, int lp_playe
 
     }
     if ((UnitGroupCount(libGDHL_gv_updateOnAnyVisibilityChangeUnitGroup, c_unitCountAlive) >= 1)) {
-        autoB2B49E2C_g = libGDHL_gv_updateOnAnyVisibilityChangeUnitGroup;
+        autoB2B49E2C_g = UnitLastCreatedGroup();
         autoB2B49E2C_u = UnitGroupCount(autoB2B49E2C_g, c_unitCountAll);
         for (;; autoB2B49E2C_u -= 1) {
             autoB2B49E2C_var = UnitGroupUnitFromEnd(autoB2B49E2C_g, autoB2B49E2C_u);

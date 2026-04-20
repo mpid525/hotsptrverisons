@@ -966,7 +966,7 @@ bool libHDVA_gt_DVaDefenseMatrixTracker_Func (bool testConds, bool runActions) {
     // Automatic Variable Declarations
     // Variable Initialization
     lv_damagedUnit = EventUnitDamageSourceUnit();
-    lv_dVaUnit = EventUnitBehaviorCasterUnit();
+    lv_dVaUnit = EventUnitBehaviorChangeCasterUnit();
     lv_dVaPlayer = UnitGetOwner(lv_dVaUnit);
     lv_damageAmount = EventUnitDamageAbsorbed();
 
@@ -987,8 +987,8 @@ bool libHDVA_gt_DVaDefenseMatrixTracker_Func (bool testConds, bool runActions) {
     }
 
     PlayerScoreValueSetFromFixed(lv_dVaPlayer, "DVaDefenseMatrixTotalDamagePrevented", (PlayerScoreValueGetAsFixed(lv_dVaPlayer, "DVaDefenseMatrixTotalDamagePrevented") + lv_damageAmount));
-    if ((UnitFilterMatch(lv_damagedUnit, lv_dVaPlayer, libCore_gv_filtersHeroic) == true)) {
-        PlayerScoreValueSetFromFixed(lv_dVaPlayer, "DVaDefenseMatrixTotalDamagePreventedToHeroes", (PlayerScoreValueGetAsFixed(lv_dVaPlayer, "DVaDefenseMatrixTotalDamagePreventedToHeroes") + lv_damageAmount));
+    if ((UnitFilterMatch(lv_damagedUnit, lv_dVaPlayer, UnitFilter(0, 0, (1 << c_targetFilterHeroic), 0)) == true)) {
+        PlayerScoreValueSetFromFixed(lv_dVaPlayer, "DVaDefenseMatrixTotalDamagePreventedToHeroes", (lv_dVaPlayer + lv_damageAmount));
     }
 
     if (((UnitHasBehavior2(lv_dVaUnit, "DVaMechDefenseMatrixChannelling") == true) || (UnitHasBehavior2(lv_dVaUnit, "DVaDefenseMatrixDummyContinuation") == true))) {

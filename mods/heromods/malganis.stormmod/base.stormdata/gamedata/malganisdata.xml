@@ -1617,7 +1617,7 @@
     <InfoFlags index="Hidden" value="0" />
     <InfoIcon value="assets\textures\storm_ui_icon_malganis_blindbat.dds" />
     <SortIndex value="100" />
-    <Duration value="5.5" />
+    <Duration value="6" />
     <InitialEffect value="MalGanisFelClawsBlindAsABatInitialSet" />
     <FinalEffect value="MalGanisFelClawsBlindAsABatFinalSet" />
     <Modification>
@@ -2785,7 +2785,6 @@
     <CollationId value="" />
     <TokenId value="WillOfTichondriusQuestToken" />
     <ValidatorArray value="TargetIsHero" />
-    <ValidatorArray value="DoesNotHaveFelClawsBlindAsABatActive" />
     <Value value="0.5" />
   </CEffectModifyTokenCount>
   <CHero id="MalGanis">
@@ -2844,9 +2843,9 @@
     <TalentTreeArray Talent="MalGanisFelClawsWillOfTichondrius" Tier="1" Column="1" />
     <TalentTreeArray Talent="MalGanisNecroticEmbraceWingedGuard" Tier="1" Column="2" />
     <TalentTreeArray Talent="MalGanisVampiricTouchTimeToFeed" Tier="1" Column="3" />
-    <TalentTreeArray Talent="MalGanisNecroticEmbraceMightOfSargeras" Tier="2" Column="1" />
-    <TalentTreeArray Talent="MalGanisNecroticEmbraceEchoOfDoom" Tier="2" Column="2" />
-    <TalentTreeArray Talent="MalGanisVampiricTouchVampiricAura" Tier="2" Column="3" />
+    <TalentTreeArray Talent="MalGanisVampiricTouchVampiricAura" Tier="2" Column="1" />
+    <TalentTreeArray Talent="MalGanisNecroticEmbraceMightOfSargeras" Tier="2" Column="2" />
+    <TalentTreeArray Talent="MalGanisNecroticEmbraceEchoOfDoom" Tier="2" Column="3" />
     <TalentTreeArray Talent="MalGanisFelClawsBlackClaws" Tier="3" Column="1" />
     <TalentTreeArray Talent="MalGanisNecroticEmbraceFueledByTorment" Tier="3" Column="2" />
     <TalentTreeArray Talent="MalGanisNightRushSpreadingPlague" Tier="3" Column="3" />
@@ -3649,10 +3648,6 @@
     <Value value="40" />
     <TokenId value="WillOfTichondriusQuestToken" />
   </CValidatorUnitCompareTokenCount>
-  <CValidatorUnitCompareBehaviorCount id="DoesNotHaveFelClawsBlindAsABatActive">
-    <WhichUnit Value="Caster" />
-    <Behavior value="MalGanisFelClawsBlindAsABatBehavior" />
-  </CValidatorUnitCompareBehaviorCount>
   <CValidatorCombine id="MalganisFelClawsHasMaxStacksOfWillOfTichondriusDamageTokenAndHasFelClawsTimerBehavior">
     <Type value="And" />
     <CombineArray value="MalganisHasFelClawsTimerBehaviorWillOfTichondrius" />

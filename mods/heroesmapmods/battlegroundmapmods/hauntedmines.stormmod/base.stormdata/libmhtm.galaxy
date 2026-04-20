@@ -287,21 +287,11 @@ void libMHtM_gf_MMUnderworldChangePlaneForUnit (unit lp_heroUnit, int lp_groundP
 
     if ((libCore_gf_IntegerStoredForUnit(lp_heroUnit, 1) == libMHtM_ge_MMHM_GroundPlane_AboveGround)) {
         libCore_gf_StoreIntegerForUnit(lp_heroUnit, 1, (libMHtM_ge_MMHM_GroundPlane_UnderGround));
-        if ((UnitTypeTestAttribute(UnitGetType(lp_heroUnit), c_unitAttributeSummoned) == false) && (UnitGetType(lp_heroUnit) != "RexxarMisha")) {
-            UnitBehaviorAdd(lp_heroUnit, "HeroGenericAbnormalPlaneState", lp_heroUnit, 1);
-        }
-        else {
-            UnitBehaviorAdd(lp_heroUnit, "AbnormalPlaneStateSummon", lp_heroUnit, 1);
-        }
-        if (((UnitGetType(lp_heroUnit) == "HeroMedivhRaven") || (UnitGetType(lp_heroUnit) == "HeroMedivh"))) {
-            UnitBehaviorAdd(lp_heroUnit, "AbnormalPlaneStateSummon", lp_heroUnit, 1);
-        }
-
+        UnitBehaviorAdd(lp_heroUnit, "HeroGenericAbnormalPlaneState", lp_heroUnit, 1);
     }
     else {
         libCore_gf_StoreIntegerForUnit(lp_heroUnit, 1, (libMHtM_ge_MMHM_GroundPlane_AboveGround));
         UnitBehaviorRemove(lp_heroUnit, "HeroGenericAbnormalPlaneState", 1);
-        UnitBehaviorRemove(lp_heroUnit, "AbnormalPlaneStateSummon", 1);
     }
     libMHtM_gf_MMUnderworldUpdateHeroUnitLighting(lp_heroUnit);
     libGame_gf_SendEventMapHauntedMinesPlayerChangesPlane(UnitGetOwner(lp_heroUnit), lp_heroUnit);
