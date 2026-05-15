@@ -1,1 +1,23 @@
-_temp_
+# ----------------------------
+# Ignore EVERYTHING in mods/
+# ----------------------------
+mods/**
+
+# ----------------------------
+# Re-include allowed file types
+# ----------------------------
+!mods/**/*.xml
+!mods/**/*.txt
+!mods/**/*.galaxy
+!mods/**/*.StormLayout
+!mods/**/*.StormHotkeys
+!mods/**/*.StormStyle
+!mods/**/*.StormCutscene
+!mods/**/*.StormComponents
+!mods/**/*.StormLocale
+!mods/**/*.aitree
+!mods/**/*.xsd
+
+
+# (optional safety) ensure folders are tracked
+!mods/**/

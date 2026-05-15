@@ -288,6 +288,11 @@
   <Catalog path="GameData/Heroes/ButcherData/ButcherSkinData/ButcherClassic21Data/ButcherClassic21Var1Data.xml" />
   <Catalog path="GameData/Heroes/ButcherData/ButcherSkinData/ButcherClassic21Data/ButcherClassic21Var2Data.xml" />
   <Catalog path="GameData/Heroes/ButcherData/ButcherSkinData/ButcherClassic21Data/ButcherClassic21Var3Data.xml" />
+  <Catalog path="GameData/Heroes/ButcherData/ButcherSkinData/ButcherToys21Data/ButcherToys21BaseData.xml" />
+  <Catalog path="GameData/Heroes/ButcherData/ButcherSkinData/ButcherToys21Data/ButcherToys21Var1Data.xml" />
+  <Catalog path="GameData/Heroes/ButcherData/ButcherSkinData/ButcherToys21Data/ButcherToys21Var2Data.xml" />
+  <Catalog path="GameData/Heroes/ButcherData/ButcherSkinData/ButcherToys21Data/ButcherToys21Var3Data.xml" />
+  <Catalog path="GameData/Heroes/ButcherData/ButcherSkinData/ButcherToys21Data/ButcherToys21Var4Data.xml" />
   <Catalog path="GameData/Heroes/ChenData/ChenData.xml" />
   <Catalog path="GameData/Heroes/ChenData/ChenSoundData/ChenBaseSoundData.xml" />
   <Catalog path="GameData/Heroes/ChenData/ChenSoundData/ChenBaseVOData.xml" />
@@ -2002,6 +2007,9 @@
   <Catalog path="GameData/Mounts/MountGoatGuardian21Data/Mount_Ride_GoatGuardian21Var1Data.xml" />
   <Catalog path="GameData/Mounts/MountGoatGuardian21Data/Mount_Ride_GoatGuardian21Var2Data.xml" />
   <Catalog path="GameData/Mounts/MountGoatGuardian21Data/Mount_Ride_GoatGuardian21Var3Data.xml" />
+  <Catalog path="GameData/Mounts/MountMonoWheelMadAxe19Data/Mount_Ridebike_MonoWheelMadAxe19BaseData.xml" />
+  <Catalog path="GameData/Mounts/MountMonoWheelMadAxe19Data/Mount_Ridebike_MonoWheelMadAxe19Var1Data.xml" />
+  <Catalog path="GameData/Mounts/MountMonoWheelMadAxe19Data/Mount_Ridebike_MonoWheelMadAxe19Var2Data.xml" />
   <Catalog path="GameData/Bosses/PlantTerrorData/PlantTerrorData.xml" />
   <Catalog path="GameData/VOSoundData.xml" />
   <Catalog path="GameData/Events/TreasureGoblinData.xml" />
