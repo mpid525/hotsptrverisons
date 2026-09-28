@@ -53,11 +53,6 @@
   <CModel id="HeroXalatathCommon" parent="HeroModelParent">
     <TextureDeclares Prefix="Storm_Hero_Xalatath_" Slot="main" />
     <RequiredAnims value="Assets\Units\Heroes\Storm_Hero_Xalatath_RequiredAnims\Storm_Hero_Xalatath_RequiredAnims.m3a" />
-    <AnimAliases Anim="Walk,A" Alias="Walk,B" />
-    <AnimAliases Anim="Walk,A" Alias="Walk,D" />
-    <AnimAliases Anim="Walk,A" Alias="Walk,E" />
-    <AnimAliases Anim="Walk,A" Alias="Walk,F" />
-    <AnimAliases Anim="Walk,A" Alias="Walk,H" />
     <TextureDeclares Prefix="Storm_Hero_Xalatath_" Slot="main" />
   </CModel>
   <CModel id="HeroXalatath" parent="HeroXalatathCommon">
