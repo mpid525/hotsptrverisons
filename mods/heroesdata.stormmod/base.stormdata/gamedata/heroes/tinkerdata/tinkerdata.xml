@@ -4213,6 +4213,14 @@
   <CTalent id="GazloweXplodiumChargeBombToss">
     <Face value="GazloweXplodiumChargeBombToss" />
     <Abil value="TinkerXplodiumBomb" />
+    <AbilityModificationArray>
+      <Modifications>
+        <Type value="FlatModification" />
+        <Entry value="TinkerXplodiumBomb" />
+        <Field value="Cost.Charge.TimeUse" />
+        <Value value="-3.000000" />
+      </Modifications>
+    </AbilityModificationArray>
   </CTalent>
   <CTalent id="TinkerMasteryQuikReleaseCharge">
     <Face value="TinkerXplodiumChargeKwikReleaseChargeTalent" />

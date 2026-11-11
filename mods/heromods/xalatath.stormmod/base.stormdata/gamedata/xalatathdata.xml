@@ -28,7 +28,7 @@
   <const id="$XalatathVoidAdeptDetonationDamagePerStack" value="20" />
   <const id="$XalatathVoidAdeptDetonationDamageMax" value="*($XalatathVoidAdeptDetonationDamagePerStack $XalatathVoidAdeptQuestMaxStacks)" evaluateAsExpression="1" />
   <const id="$XalatathUnstableCoreDamage" value="75" />
-  <const id="$XalatathVoidStepWeaponBonus" value="0.10" />
+  <const id="$XalatathVoidStepWeaponBonus" value="0.15" />
   <const id="$XalatathCloakOfShadowsSpeedBonus" value="0.5" />
   <const id="$XalatathCloakOfShadowsSpellArmorBonus" value="25" />
   <const id="$XalatathCloakOfShadowsSpellArmorAndMoveSpeedDuration" value="2" />
@@ -45,7 +45,7 @@
   <const id="$XalatathShadowMarkOuterImpactRange" value="2.5" />
   <const id="$XalatathShadowMarkInnerImpactRange" value="1" />
   <const id="$XalatathShadowMarkOuterDamage" value="/($XalatathShadowMarkInnerDamage 2)" evaluateAsExpression="1" />
-  <const id="$XalatathShadowMarkInnerDamage" value="120" />
+  <const id="$XalatathShadowMarkInnerDamage" value="130" />
   <const id="$XalatathVoidVolleyCastTime" value="0.175" />
   <const id="$XalatathVoidVolleyCastBuffer" value="+($XalatathVoidVolleyCastTime 0.125)" evaluateAsExpression="1" />
   <const id="$XalatathVoidVolleyRange" value="8" />
@@ -58,7 +58,7 @@
   <const id="$XalatathVoidVolleyQuestFirstMilestoneStacks" value="20" />
   <const id="$XalatathVoidVolleyQuestSecondMilestoneStacks" value="60" />
   <const id="$XalatathVoidVolleyQuestMaxStacks" value="100" />
-  <const id="$XalatathVoidVolleyTalentQuestDamageBonusPerStack" value="0.01" />
+  <const id="$XalatathVoidVolleyTalentQuestDamageBonusPerStack" value="0.0075" />
   <const id="$XalatathVoidVolleyMinimumRange" value="3" />
   <const id="$XalatathVoidVolleyRangeSplat" value="+($XalatathVoidVolleyRange $XalatathUnitRadius)" evaluateAsExpression="1" />
   <const id="$XalatathVoidVolleyMinimumRangeSplat" value="+($XalatathVoidVolleyMinimumRange $XalatathUnitRadius)" evaluateAsExpression="1" />
@@ -1002,8 +1002,8 @@
     <Scale value="0.550000" />
   </CActorModel>
   <CActorModel id="XalatathDarkHeartRitualInitialImpact" parent="StormModelAnimationStyleOneShot">
-    <On Terms="Effect.XalatathDarkHeartRitualDetonationImpactSet.Start; At Source" Send="Create" />
-    <On Terms="Effect.XalatathDarkHeartRitualDetonationImpactSet.Start; At Source" Send="Create" />
+    <On Terms="Effect.XalatathDarkHeartRitualDetonateSearchArea.Start; At Effect" Send="Create" />
+    <On Terms="Effect.XalatathDarkHeartRitualDetonateSearchArea.Start; At Effect" Send="Create" />
     <Model value="XalatathDarkHeartRitualImpactSplat" />
   </CActorModel>
   <CActorModel id="XalatathDarkHeartRitualImpact" parent="StormModelAnimationStyleOneShotUnit">
@@ -2906,7 +2906,15 @@
     <EffectArray value="XalatathDarkHeartRitualApplyDamageLinkBuff" />
     <EffectArray value="XalatathDarkHeartsProtectionApplyAllySpellArmorSearchBuff" />
     <EffectArray value="XalatathDarkHeartRitualApplyChasingController" />
+    <EffectArray value="XalatathDarkHeartRitualControllerPersistent" />
   </CEffectSet>
+  <CEffectCreatePersistent id="XalatathDarkHeartRitualControllerPersistent">
+    <WhichLocation Value="TargetUnit" />
+    <TimeScaleSource Value="Target" />
+    <CancelEffect value="XalatathDarkHeartRitualDetonateSet" />
+    <ExpireDelay value="$XalatathDarkHeartRitualLifetime" />
+    <PeriodicValidator value="XalatathDarkHeartRitualNoMarkedTargetsInRange" />
+  </CEffectCreatePersistent>
   <CEffectApplyBehavior id="XalatathDarkHeartRitualApplyDamageLinkBuff">
     <Behavior value="XalatathDarkHeartRitualDamageLinkBuff" />
   </CEffectApplyBehavior>
@@ -3047,10 +3055,15 @@
     <WhichLocation Effect="XalatathDarkHeartRitualApplyDamageLinkBuff" Value="TargetUnit" />
   </CEffectCreatePersistent>
   <CEffectSet id="XalatathDarkHeartRitualDetonateSet">
-    <EffectArray value="XalatathUnstableCoreCreateUnit" />
+    <ValidatorArray value="TargetNotDead" />
+    <ValidatorArray value="XalatathDarkHeartRitualTargetDoesNotHaveSuicideDelay" />
     <EffectArray value="XalatathDarkHeartRitualDetonateSearchArea" />
-    <TargetLocationType value="UnitOrPoint" />
+    <EffectArray value="XalatathVoidAdeptTalentModifyToken" />
+    <EffectArray value="XalatathDarkHeartApplySuicideDelay" />
   </CEffectSet>
+  <CEffectApplyBehavior id="XalatathDarkHeartApplySuicideDelay">
+    <Behavior value="XalatathDarkHeartDetonateMissileSuicideDelay" />
+  </CEffectApplyBehavior>
   <CEffectCreatePersistent id="XalatathUnstableCoreCreatePersistent">
     <ValidatorArray value="XalatathHasXalatathUnstableCoreTalent" />
     <WhichLocation Value="SourcePoint" />
@@ -3091,8 +3104,7 @@
     <AreaArray Effect="XalatathDarkHeartRitualDetonationImpactSet">
       <Radius value="$XalatathDarkHeartRitualDetonationRange" />
     </AreaArray>
-    <ExcludeArray Value="Target" />
-    <RevealerParams Duration="0.5" ShapeExpansion="1">
+    <RevealerParams Duration="0.75" ShapeExpansion="1">
       <RevealFlags index="Unfog" value="1" />
     </RevealerParams>
   </CEffectEnumArea>
@@ -3134,7 +3146,6 @@
   </CEffectSwitch>
   <CEffectSet id="XalatathChaseMarkedTargetSet">
     <EffectArray value="XalatathShadowMarkUnitTrackerEnum" />
-    <EffectArray value="XalatathShadowMarkUnitTrackerDetonationSearch" />
   </CEffectSet>
   <CEffectIssueOrder id="XalatathDarkHeartMoveToMarkedTarget">
     <WhichUnit Effect="XalatathChaseTargetSwitch" Value="Source" />
@@ -4193,6 +4204,13 @@
       </Modifications>
       <Modifications>
         <Type value="MultiplyLevelModification" />
+        <Catalog value="Actor" />
+        <Entry value="XalatathDarkHeartRitualInitialImpact" />
+        <Field value="Scale" />
+        <Value value="1.250000" />
+      </Modifications>
+      <Modifications>
+        <Type value="MultiplyLevelModification" />
         <Catalog value="Effect" />
         <Entry value="XalatathDarkHeartRitualDamageLinkPeriodicSearch" />
         <Field value="AreaArray[0].Radius" />
@@ -4402,21 +4420,21 @@
         <Catalog value="Effect" />
         <Entry value="XalatathVoidEruptionV2LaunchMissile" />
         <Field value="ImpactLocation.ProjectionDistanceScale" />
-        <Value value="-3.5" />
+        <Value value="-3.500000" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="XalatathVoidEruptionV2Guide" />
         <Field value="Height" />
-        <Value value="-3.5" />
+        <Value value="-3.500000" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="XalatathVoidEruptionV2ActiveGuide" />
         <Field value="Height" />
-        <Value value="-3.5" />
+        <Value value="-3.500000" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>
@@ -4644,6 +4662,17 @@
     <Mover value="HeroMissileSpeed22Ribbon" />
     <Sight value="2" />
   </CUnit>
+  <CValidatorLocationEnumArea id="XalatathDarkHeartRitualNoMarkedTargetsInRange">
+    <WhichLocation Value="TargetUnit" />
+    <AreaArray Count="0" Validator="XalatathShadowMarkTargetHasOwnDebuff">
+      <Radius value="1" />
+    </AreaArray>
+    <Compare value="Eq" />
+    <SearchFilters value="-;Ally,Neutral,Worker,Missile,Item,Stasis,Dead,Hidden" />
+  </CValidatorLocationEnumArea>
+  <CValidatorUnitCompareBehaviorCount id="XalatathDarkHeartRitualTargetDoesNotHaveSuicideDelay">
+    <Behavior value="XalatathDarkHeartDetonateMissileSuicideDelay" />
+  </CValidatorUnitCompareBehaviorCount>
   <CValidatorUnitCompareBehaviorCount id="XalatathVoidConvergenceCasterHasCasterBehavior">
     <WhichUnit Effect="XalatathVoidConvergenceInitialSet" Value="Caster" />
     <Behavior value="XalatathVoidConvergenceCasterBehavior" />

@@ -11,7 +11,7 @@
   <const id="$XalatathVoidEruptionV2ExplosionMaximumReleaseWindow" value="-($XalatathVoidEruptionV2MaxActualChannelTime $XalatathVoidEruptionV2MinChannelTime)" evaluateAsExpression="1" />
   <const id="$XalatathVoidEruptionV2ExplosionTokenMaxCount" value="floor(/($XalatathVoidEruptionV2ExplosionMaximumReleaseWindow 0.0625))" evaluateAsExpression="1" />
   <const id="$XalatathVoidEruptionV2MissileTravelDistance" value="16.5" />
-  <const id="$XalatathVoidEruptionV2MissileTimeToReachDestination" value="2" />
+  <const id="$XalatathVoidEruptionV2MissileTimeToReachDestination" value="2.25" />
   <const id="$XalatathVoidEruptionV2HarbingersConsumptionOrbitDistance" value="4.5" />
   <const id="$XalatathVoidEruptionV2HarbingersConsumptionOrbitRadiusHalf" value="/($XalatathVoidEruptionV2HarbingersConsumptionOrbitDistance 2)" evaluateAsExpression="1" />
   <const id="$XalatathVoidEruptionV2HarbingersConsumptionOrbitRadiusSqrt3Half" value="*($XalatathVoidEruptionV2HarbingersConsumptionOrbitDistance /(sqrt(3) 2))" evaluateAsExpression="1" />
@@ -44,8 +44,8 @@
   <const id="$XalatathVoidEruptionV2ImpactActorMinAccumulation" value="-(/($XalatathVoidEruptionV2ExplosionMinRadius $XalatathVoidEruptionV2ExplosionMaxRadius) $XalatathVoidEruptionV2ImpactActorStartingScale)" evaluateAsExpression="1" />
   <const id="$XalatathVoidEruptionV2ImpactActorMaxAccumulation" value="-(1 $XalatathVoidEruptionV2ImpactActorStartingScale)" evaluateAsExpression="1" />
   <const id="$XalatathVoidEruptionV2ImpactActorAccumulatorScale" value="/($XalatathVoidEruptionV2ImpactActorMaxAccumulation $XalatathVoidEruptionV2ExplosionTokenMaxCount)" evaluateAsExpression="1" />
-  <const id="$XalatathVoidEruptionV2FlightWarningAreaOpacity" value="0.6" />
-  <const id="$XalatathVoidEruptionV2FlightMinDamagePerSecond" value="360" />
+  <const id="$XalatathVoidEruptionV2FlightWarningAreaOpacity" value="0.15" />
+  <const id="$XalatathVoidEruptionV2FlightMinDamagePerSecond" value="325" />
   <const id="$XalatathVoidEruptionV2FlightChargeMaximumDamageBonus" value="0.75" />
   <const id="$XalatathVoidEruptionV2FlightDamage" value="/($XalatathVoidEruptionV2FlightMinDamagePerSecond /(1 $XalatathVoidEruptionV2FlightDamageCooldown))" evaluateAsExpression="1" />
   <const id="$XalatathVoidEruptionV2FlightDamageTokenScale" value="/($XalatathVoidEruptionV2FlightChargeMaximumDamageBonus $XalatathVoidEruptionV2TokenMaxCount)" evaluateAsExpression="1" />

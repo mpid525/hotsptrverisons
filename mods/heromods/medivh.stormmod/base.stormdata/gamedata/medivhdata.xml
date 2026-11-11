@@ -2138,7 +2138,7 @@
         <Link value="Abil/MedivhPortalMastery" />
         <Location value="Player" />
         <Operation value="Set" />
-        <TimeUse value="16" />
+        <TimeUse value="20" />
       </Cooldown>
     </Cost>
   </CEffectModifyPlayer>
@@ -4005,27 +4005,27 @@
         <Type value="FlatModification" />
         <Entry value="MedivhPortalInstant" />
         <Field value="Cost[0].Cooldown.TimeUse" />
-        <Value value="-4.000000" />
+        <Value value="-5.000000" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Entry value="MedivhPortal2" />
         <Field value="Cost[0].Cooldown.TimeUse" />
-        <Value value="-4.000000" />
+        <Value value="-5.000000" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Effect" />
         <Entry value="MedivhPortalCooldown" />
         <Field value="Cost[0].CooldownTimeUse" />
-        <Value value="-4.000000" />
+        <Value value="-5.000000" />
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
         <Catalog value="Effect" />
         <Entry value="MedivhPortalPortalMasteryTalentModifyPlayerCooldown" />
         <Field value="Cost[0].Cooldown.TimeUse" />
-        <Value value="-4.000000" />
+        <Value value="-5.000000" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>

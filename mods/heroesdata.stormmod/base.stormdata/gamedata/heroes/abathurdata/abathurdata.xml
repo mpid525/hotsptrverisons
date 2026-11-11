@@ -3424,9 +3424,11 @@
   </CEffectSwitch>
   <CEffectDamage id="AbathurSymbioteStabDamage" parent="StormSpell">
     <Amount value="119" />
+    <MultiplicativeModifierArray index="Needlespine" Validator="HasAbathurMasteryNeedlespine" Modifier="0.2" />
   </CEffectDamage>
   <CEffectDamage id="AbathurSymbioteStabDamageHivemind" parent="StormSpell">
     <Amount value="59.5" />
+    <MultiplicativeModifierArray index="Needlespine" Validator="HasAbathurMasteryNeedlespine" Modifier="0.2" />
   </CEffectDamage>
   <CEffectLaunchMissile id="AbathurSymbioteStabLaunchMissile">
     <Marker>
@@ -4742,94 +4744,10 @@
       </Modifications>
       <Modifications>
         <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamage" />
-        <Field value="AttributeFactor[Creep]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamage" />
-        <Field value="AttributeFactor[Merc]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamage" />
-        <Field value="AttributeFactor[Structure]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamage" />
-        <Field value="AttributeFactor[Minion]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamage" />
-        <Field value="AttributeFactor[Summoned]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamage" />
-        <Field value="AttributeFactor[Heroic]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
         <Catalog value="Actor" />
         <Entry value="AbathurSymbioteHivemindStabGuideA" />
         <Field value="Height" />
         <Value value="1.750000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamageHivemind" />
-        <Field value="AttributeFactor[Creep]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamageHivemind" />
-        <Field value="AttributeFactor[Merc]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamageHivemind" />
-        <Field value="AttributeFactor[Structure]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamageHivemind" />
-        <Field value="AttributeFactor[Minion]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamageHivemind" />
-        <Field value="AttributeFactor[Summoned]" />
-        <Value value="0.200000" />
-      </Modifications>
-      <Modifications>
-        <Type value="FlatModification" />
-        <Catalog value="Effect" />
-        <Entry value="AbathurSymbioteStabDamageHivemind" />
-        <Field value="AttributeFactor[Heroic]" />
-        <Value value="0.200000" />
       </Modifications>
     </AbilityModificationArray>
   </CTalent>
