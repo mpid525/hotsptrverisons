@@ -348,12 +348,17 @@
     <On Terms="Effect.XalatathVoidEruptionV2CancelMissileSet.Start" Send="AnimClear Spell" />
     <On Terms="Effect.XalatathVoidEruptionV2LaunchMissile.Start" Send="AnimPlay Spell Spell,D,End 0 -1.000000 -1.000000 1.000000 AsTimeScale" />
     <On Terms="Behavior.XalatathVoidEruptionV2CasterBehavior.On; !ValidatePlayer XalatathHasXalatathOrbitalEruptionTalent" Send="Create XalatathVoidEruptionV2ActiveGuide" />
+    <On Terms="Behavior.XalatathVoidEruptionV2CasterBehavior.On; ValidatePlayer XalatathHasXalatathOrbitalEruptionTalent" Send="Create XalatathVoidEruptionV2ActiveQuadHarbingers" />
     <On Terms="Behavior.XalatathVoidEruptionV2CasterBehavior.Off" Target="XalatathVoidEruptionV2ActiveGuide" Send="Destroy" />
+    <On Terms="Behavior.XalatathVoidEruptionV2CasterBehavior.Off" Target="XalatathVoidEruptionV2ActiveQuadHarbingers" Send="Destroy" />
     <On Terms="Behavior.XalatathVoidEruptionV2CasterBehavior.On; IsActorLocalPlayer; !ValidatePlayer XalatathHasXalatathOrbitalEruptionTalent" Send="Create XalatathVoidEruptionV2ActiveGuideRegion" />
     <On Terms="Behavior.XalatathVoidEruptionV2CasterBehavior.Off" Target="XalatathVoidEruptionV2ActiveGuideRegion" Send="Destroy" />
     <On Terms="Behavior.XalatathVoidEruptionV2CasterBehavior.On; !ValidatePlayer XalatathHasXalatathOrbitalEruptionTalent" Send="Create XalatathVoidEruptionV2ActiveImpactGuide" />
+    <On Terms="Behavior.XalatathVoidEruptionV2CasterBehavior.On; ValidatePlayer XalatathHasXalatathOrbitalEruptionTalent" Send="Create XalatathVoidEruptionV2ActiveImpactHarbingers" />
     <On Terms="Behavior.XalatathVoidEruptionV2CasterBehavior.Off" Target="XalatathVoidEruptionV2ActiveImpactGuide" Send="Destroy" />
+    <On Terms="Behavior.XalatathVoidEruptionV2CasterBehavior.Off" Target="XalatathVoidEruptionV2ActiveImpactHarbingers" Send="Destroy" />
     <On Terms="Behavior.XalatathVoidEruptionV2CancelNotAvailable.Off" Target="XalatathVoidEruptionV2ActiveImpactGuide" Send="Signal ScaleStart" />
+    <On Terms="Behavior.XalatathVoidEruptionV2CancelNotAvailable.Off" Target="XalatathVoidEruptionV2ActiveImpactHarbingers" Send="Signal ScaleStart" />
     <On Terms="Behavior.XalatathVoidEruptionV2CasterBehavior.On; !ValidatePlayer XalatathHasXalatathOrbitalEruptionTalent" Send="Create XalatathVoidEruptionV2ActiveImpactGuideRegion" />
     <On Terms="Behavior.XalatathVoidEruptionV2CasterBehavior.Off" Target="XalatathVoidEruptionV2ActiveImpactGuideRegion" Send="Destroy" />
     <On Terms="Behavior.XalatathVoidEruptionV2CancelNotAvailable.Off" Target="XalatathVoidEruptionV2ActiveImpactGuideRegion" Send="Signal ScaleStart" />
@@ -417,7 +422,6 @@
   <CActorRange id="XalatathVoidStepRange" parent="StormRangeAbilPlusSplat" abil="XalatathVoidStep" />
   <CActorSplat id="XalatathVoidStepRangeSplat" parent="StormRangeSplat">
     <Scale value="$XalatathVoidStepRangeScale" />
-    <FogVisibility value="Hidden" />
   </CActorSplat>
   <CActorTriangle id="XalatathVoidStepTargetGuide">
     <Aliases value="_GuideVisual" />
@@ -433,6 +437,7 @@
     <On Terms="ActorCreation" Send="SetTintColor 225,160,25 0.000000 OneShot BaseTint" />
     <HostSiteOps Ops="SOpMoveForwardBy5Dot5" />
     <Scale value="0.809000" />
+    <ModelFlags index="AlwaysVisibleToCreator" value="1" />
   </CActorTriangle>
   <CActorSiteOpLocalOffset id="SOpMoveForwardBy5Dot5">
     <LocalOffset Y="-5.100000" />
@@ -496,6 +501,7 @@
     <FogVisibility value="Hidden" />
     <HostSiteOps Ops="SOpTargetPointStationary SOpForwardCasterPointInverted XalatathVoidStepTargetSplatDecoupledOffset SOp2DRotation" HoldPosition="1" HoldRotation="1" />
     <Scale value="0.809000" />
+    <ModelFlags index="AlwaysVisibleToCreator" value="1" />
   </CActorModel>
   <CActorModel id="XalatathVoidStepOutModel" parent="StormModelAnimationStyleOneShot">
     <Flags index="VisionTestCenterOnly" value="1" />
@@ -541,9 +547,7 @@
   </CActorUnit>
   <CActorModel id="XalatathVoidConvergencePortalPlacement" parent="StormPlacementModel">
     <Filter index="Ally" value="1" />
-    <On Terms="ActorCreation" Send="Create XalatathVoidConvergenceCursorSplat" />
     <On Terms="ActorDestruction" Send="Destroy Immediate" />
-    <On Terms="ActorDestruction" Target="XalatathVoidConvergenceCursorSplat" Send="Destroy Immediate" />
     <Model value="XalatathVoidConvergencePortalPlacement" />
     <HostSiteOps Ops="SOpBasicScopeFollow" />
   </CActorModel>
@@ -560,12 +564,10 @@
   </CActorModel>
   <CActorSplat id="XalatathVoidConvergenceCursorSplat" parent="StormGuideVisualCircle" abil="XalatathVoidConvergence">
     <Model value="XalatathVoidConvergencePortalCursorSplat" />
-    <FogVisibility value="Hidden" />
   </CActorSplat>
   <CActorRange id="XalatathVoidConvergenceRange" parent="StormRangeAbilPlusSplat" abil="XalatathVoidConvergence" />
   <CActorSplat id="XalatathVoidConvergenceRangeSplat" parent="StormRangeSplat">
     <Scale value="8.687500" />
-    <FogVisibility value="Hidden" />
   </CActorSplat>
   <CActorModel id="XalatathVoidMinionWeaponFX" parent="StormModelAddition">
     <HostSiteOps Ops="SOpAttachWeaponRight" />
@@ -698,16 +700,13 @@
   </CActorRange>
   <CActorSplat id="XalatathVoidVolleyRangeSplat" parent="StormRangeSplat">
     <Scale value="$XalatathVoidVolleyRangeSplat" />
-    <FogVisibility value="Hidden" />
   </CActorSplat>
   <CActorSplat id="XalatathVoidVolleyInnerRangeSplat" parent="StormRangeSplat">
     <Scale value="$XalatathVoidVolleyMinimumRangeSplat" />
-    <FogVisibility value="Hidden" />
   </CActorSplat>
   <CActorRange id="XalatathVoidVolleyInnerRange" parent="StormRangeAbilPlusSplat" abil="XalatathVoidVolley" />
   <CActorSplat id="XalatathVoidVolleyCursorSplat" parent="StormGuideVisualCircle" abil="XalatathVoidVolley">
     <Model value="XalatathShadowMarkCursorSplat" />
-    <FogVisibility value="Hidden" />
     <Aliases value="_GuideVisual" />
     <Aliases value="_Scalable" />
     <On Terms="ActorCreation" Send="SetTintColor 186,132,26" />
@@ -819,11 +818,12 @@
   <CActorRange id="XalatathDarkHeartRitualRange" parent="StormRangeAbilPlusSplat" abil="XalatathDarkHeartRitual" />
   <CActorSplat id="XalatathDarkHeartRitualRangeSplat" parent="StormRangeSplat">
     <Scale value="$XalatathDarkHeartRitualThrowRange" />
-    <FogVisibility value="Hidden" />
   </CActorSplat>
   <CActorSplat id="XalatathDarkHeartRitualCursorSplat" parent="StormAOECursorSplat">
+    <Filter index="Ally" value="1" />
+    <Filter index="Neutral" value="1" />
+    <Filter index="Enemy" value="1" />
     <Scale value="3.250000" />
-    <FogVisibility value="Hidden" />
     <Aliases value="_GuideVisual" />
     <Aliases value="_Scalable" />
     <On Terms="ActorCreation" Send="SetTintColor 186,132,26" />
@@ -955,6 +955,7 @@
     <On Terms="Signal.*.Death" Send="AnimPlay Death Death" />
     <On Terms="AnimDone; AnimName Death" Send="Destroy" />
     <On Terms="ActorCreation" Send="Create XalatathUnstableCoreBirthSound" />
+    <On Terms="ActorCreation; !ValidateCreationEffect XalatathHasXalatathAnchoredCoreTalent" Send="SetScale 0.800000" />
   </CActorModel>
   <CActorSound id="XalatathUnstableCoreLoopSound" parent="SoundContinuous">
     <On Terms="Effect.XalatathUnstableCoreCreatePersistent.Start" Send="Create" />
@@ -1122,6 +1123,7 @@
     <Scale value="2.500000" />
     <FogVisibility value="Hidden" />
     <Flags index="VisionTestCenterOnly" value="1" />
+    <ModelFlags index="AlwaysVisibleToCreator" value="1" />
   </CActorModel>
   <CActorModel id="XalatathShadowMarkMarkWarningEnemy" parent="StormModelAnimationStyleContinuous">
     <Filter index="All" value="1" />
@@ -1214,11 +1216,9 @@
   </CActorRange>
   <CActorSplat id="XalatathShadowMarkRangeSplat" parent="StormRangeSplat">
     <Scale value="$XalatathShadowMarkRange" />
-    <FogVisibility value="Hidden" />
   </CActorSplat>
   <CActorSplat id="XalatathShadowMarkCursorSplat" parent="StormGuideVisualCircle" abil="XalatathShadowMark">
     <Model value="XalatathShadowMarkCursorSplat" />
-    <FogVisibility value="Hidden" />
   </CActorSplat>
   <CActorAction id="XalatathShadowMarkAttack" parent="RangedHeroAttack" effectImpact="XalatathShadowMarkSearchSet" effectLaunch="XalatathShadowMarkLaunchMissile">
     <On Terms="Effect.XalatathShadowMarkLaunchMissileLaunchOffset.Start; At Caster" Send="Create" />
@@ -3858,13 +3858,6 @@
       <Modifications>
         <Catalog value="Effect" />
         <Entry value="XalatathDarkHeartRitualDetonationDamage" />
-        <Field value="Amount" />
-        <Value value="0.040000" />
-        <AffectedByOverdrive value="1" />
-      </Modifications>
-      <Modifications>
-        <Catalog value="Effect" />
-        <Entry value="XalatathDarkHeartDetonateBonusDamage" />
         <Field value="Amount" />
         <Value value="0.040000" />
         <AffectedByOverdrive value="1" />

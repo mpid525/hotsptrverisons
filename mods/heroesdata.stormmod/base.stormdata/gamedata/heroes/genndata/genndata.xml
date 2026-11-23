@@ -1628,18 +1628,12 @@
   <CEffectModifyUnit id="GreymaneHumanMeleeImpactDummy" />
   <CEffectModifyUnit id="GreymaneWeaponImpactDummy" />
   <CEffectModifyUnit id="GreymaneWorgenWeaponImpactDummy" />
-  <CEffectSwitch id="GreymaneDisengageHeroicUseSwitch">
+  <CEffectModifyUnit id="GreymaneDisengageHeroicUseModifyCooldown">
     <ValidatorArray value="GreymaneNotInWorgenForm" />
-    <CaseArray Validator="GreymaneHasDarkflightDisengageRunningWild" Effect="DisengageHeroicUseModifyCooldownRunningWild" />
-    <CaseDefault value="DisengageHeroicUseModifyCooldown" />
-  </CEffectSwitch>
-  <CEffectModifyUnit id="DisengageHeroicUseModifyCooldown">
     <ImpactUnit Value="Caster" />
-    <Cost Abil="GreymaneDisengage,Execute" CooldownOperation="Set" CooldownTimeUse="5" />
-  </CEffectModifyUnit>
-  <CEffectModifyUnit id="DisengageHeroicUseModifyCooldownRunningWild">
-    <ImpactUnit Value="Caster" />
-    <Cost Abil="GreymaneDisengage,Execute" CooldownOperation="Set" CooldownTimeUse="4" />
+    <Cost Abil="GreymaneDisengage,Execute" CooldownOperation="Set">
+      <Fraction Cooldown="1" />
+    </Cost>
   </CEffectModifyUnit>
   <CEffectApplyBehavior id="GreymaneInnerBeastInsatiableApply">
     <WhichUnit Value="Caster" />
@@ -1743,7 +1737,9 @@
   </CEffectApplyBehavior>
   <CEffectModifyUnit id="GreymaneDarkflightMountModifyCooldown">
     <ValidatorArray value="Mounted" />
-    <Cost Abil="GreymaneDarkflight,Execute" CooldownOperation="Set" CooldownTimeUse="5" />
+    <Cost Abil="GreymaneDarkflight,Execute" CooldownOperation="Set">
+      <Fraction Cooldown="1" />
+    </Cost>
   </CEffectModifyUnit>
   <CEffectSet id="GreymaneGoForTheThroatKillSet">
     <EffectArray value="GreymaneGoForTheThroatModifyPersistent" />
@@ -2386,14 +2382,14 @@
     <EffectArray value="GreymaneGoForTheThroatBaseImpactSet" />
   </CEffectSet>
   <CEffectSet id="GreymaneGoForTheThroatCastSet">
-    <EffectArray value="GreymaneDisengageHeroicUseSwitch" />
+    <EffectArray value="GreymaneDisengageHeroicUseModifyCooldown" />
     <EffectArray value="GreymaneGoForTheThroatWorgenFormApplySwitch" />
     <EffectArray value="GreymaneGoForTheThroatApplyDeathResponseBehavior" />
     <EffectArray value="GreymaneGoForTheThroatRangeSwitch" />
   </CEffectSet>
   <CEffectSet id="GreymaneGoForTheThroatFreeCastCastSet">
     <EffectArray value="GreymaneGoForTheThroatResetPlayerCooldown" />
-    <EffectArray value="GreymaneDisengageHeroicUseSwitch" />
+    <EffectArray value="GreymaneDisengageHeroicUseModifyCooldown" />
     <EffectArray value="GreymaneWorgenFormApplySet" />
     <EffectArray value="GreymaneGoForTheThroatApplyDeathResponseBehavior" />
     <EffectArray value="GreymaneGoForTheThroatRangeSwitch" />

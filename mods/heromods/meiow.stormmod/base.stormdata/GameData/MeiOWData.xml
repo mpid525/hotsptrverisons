@@ -71,7 +71,7 @@
       <Cooldown TimeUse="$MeiOWIcingCooldown" />
     </Cost>
     <MoveLocation ProjectionDistanceScale="11" />
-    <CastIntroTime value="0.5" />
+    <CastIntroTime value="0.0625" />
     <CursorEffect value="MeiOWIcingSearch" />
     <CmdButtonArray index="Execute" DefaultButtonFace="MeiOWIcing">
       <Flags index="AllowSelfCast" value="0" />
@@ -1175,7 +1175,7 @@
     <RemoveValidatorArray value="CasterNotRooted" />
     <RemoveValidatorArray value="CasterNotSilenced" />
     <RemoveValidatorArray value="CasterNotPushPull" />
-    <Duration value="0.875" />
+    <Duration value="0.9375" />
     <FinalEffect value="MeiOWIcingDashBuffFinalSet" />
     <Modification AccelerationBonus="-975">
       <StateFlags index="SuppressAttack" value="1" />

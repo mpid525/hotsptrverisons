@@ -1818,6 +1818,7 @@
   <CEffectSet id="StukovMassiveShoveShovedBehaviorFinalSet">
     <EffectArray value="StukovMassiveShoveForceRemoveShovingBehavior" />
     <EffectArray value="StukovMassiveShoveRemoveKnockbackProbes" />
+    <EffectArray value="StukovMassiveShoveDestroyPlacementCheckPersistent" />
     <EffectArray value="StukovMassiveShoveRemoveSegmentSpawningBehavior" />
     <EffectArray value="StukovMassiveShoveSlowApplyBehavior" />
   </CEffectSet>

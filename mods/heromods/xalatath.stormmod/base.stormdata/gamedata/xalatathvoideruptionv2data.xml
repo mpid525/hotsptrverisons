@@ -27,6 +27,7 @@
   <const id="$XalatathVoidEruptionV2OrbitRotationalOffsetC" value="+($XalatathVoidEruptionV2OrbitRotationalOffsetB 120)" evaluateAsExpression="1" />
   <const id="$XalatathVoidEruptionV2OrbitNumberOfRotations" value="1.25" />
   <const id="$XalatathVoidEruptionV2OrbitRevPeriod" value="/(+($XalatathVoidEruptionV2MaxActualChannelTime $XalatathVoidEruptionV2MissileTimeToReachDestination) $XalatathVoidEruptionV2OrbitNumberOfRotations)" evaluateAsExpression="1" />
+  <const id="$XalatathVoidEruptionV2OrbitRotationPerSecond" value="/(360 $XalatathVoidEruptionV2OrbitRevPeriod)" evaluateAsExpression="1" />
   <const id="$XalatathVoidEruptionV2HarbingersConsumptionMissileTravelDistance" value="-($XalatathVoidEruptionV2MissileTravelDistance $XalatathVoidEruptionV2ChargeForwardOffset)" evaluateAsExpression="1" />
   <const id="$XalatathVoidEruptionV2FlightMinRadius" value="1" />
   <const id="$XalatathVoidEruptionV2FlightMaxRadius" value="4" />
@@ -46,7 +47,7 @@
   <const id="$XalatathVoidEruptionV2ImpactActorAccumulatorScale" value="/($XalatathVoidEruptionV2ImpactActorMaxAccumulation $XalatathVoidEruptionV2ExplosionTokenMaxCount)" evaluateAsExpression="1" />
   <const id="$XalatathVoidEruptionV2FlightWarningAreaOpacity" value="0.15" />
   <const id="$XalatathVoidEruptionV2FlightMinDamagePerSecond" value="325" />
-  <const id="$XalatathVoidEruptionV2FlightChargeMaximumDamageBonus" value="0.75" />
+  <const id="$XalatathVoidEruptionV2FlightChargeMaximumDamageBonus" value="0.80" />
   <const id="$XalatathVoidEruptionV2FlightDamage" value="/($XalatathVoidEruptionV2FlightMinDamagePerSecond /(1 $XalatathVoidEruptionV2FlightDamageCooldown))" evaluateAsExpression="1" />
   <const id="$XalatathVoidEruptionV2FlightDamageTokenScale" value="/($XalatathVoidEruptionV2FlightChargeMaximumDamageBonus $XalatathVoidEruptionV2TokenMaxCount)" evaluateAsExpression="1" />
   <const id="$XalatathVoidEruptionV2ExplosionDamage" value="320" />
@@ -370,48 +371,119 @@
     <VisibleTo index="Enemy" value="1" />
     <FogVisibility value="Hidden" />
   </CActorModel>
-  <CActorModel id="XalatathVoidEruptionV2HarbingersConsumptionActiveImpactGuide">
+  <CActorQuad id="XalatathVoidEruptionV2ActiveQuadHarbingers">
     <Aliases value="_TimeStopAffectedActor" />
-    <Aliases value="_GuideVisualVoidEruptionV2Impact" />
+    <Aliases value="_GuideVisual" />
     <Aliases value="_Scalable" />
-    <Filter index="Ally" value="1" />
-    <Filter index="Enemy" value="1" />
-    <Inherits index="Visibility" value="0" />
     <On Terms="StatusOn.*.TimeStopPaused" Send="PauseScale" />
     <On Terms="StatusOff.*.TimeStopPaused" Send="PauseScale 0" />
-    <On Terms="Signal.*.ScaleStart" Target="_GuideVisualVoidEruptionV2OrbitImpact" Send="Signal ScaleStart" />
     <On Terms="ActorCreation" Send="SetTintColor 225,160,25 0.000000 OneShot BaseTint" />
-    <On Terms="ActorDestruction" Target="_GuideVisualVoidEruptionV2OrbitImpact" Send="Destroy" />
-    <On Terms="ActorCreation" Send="Create XalatathVoidEruptionV2HarbingersConsumptionActiveImpactGuideA" />
-    <On Terms="ActorCreation" Send="Create XalatathVoidEruptionV2HarbingersConsumptionActiveImpactGuideB" />
-    <On Terms="ActorCreation" Send="Create XalatathVoidEruptionV2HarbingersConsumptionActiveImpactGuideC" />
+    <On Terms="ActorDestruction" Target="XalatathVoidEruptionV2StormWarningQuadLaunchFantasy" Send="Destroy" />
+    <On Terms="ActorDestruction" Target="XalatathVoidEruptionV2StormWarningQuadCenterFantasy" Send="Destroy" />
+    <On Terms="ActorDestruction" Target="XalatathVoidEruptionV2StormWarningQuadImpactFantasy" Send="Destroy" />
     <On Terms="ActorOrphan" Send="Destroy" />
     <On Terms="UnitDeath" Send="Destroy" />
     <Host Subject="_Unit" />
-    <HostSiteOps Ops="XalatathVoidEruptionV2LaunchImpactOffsetHarbingersConsumption" />
-    <Model value="Invisible" />
-  </CActorModel>
-  <CActorModel id="XalatathVoidEruptionV2HarbingersConsumptionActiveImpactGuideA">
-    <Aliases value="_TimeStopAffectedActor" />
-    <Aliases value="_GuideVisualVoidEruptionV2OrbitImpact" />
-    <Aliases value="_Scalable" />
+    <LaunchActor value="XalatathVoidEruptionV2StormWarningQuadLaunchFantasy" />
+    <LaunchHeight value="1.000000" />
+    <CenterActor value="XalatathVoidEruptionV2StormWarningQuadCenterFantasy" />
+    <CenterHeight value="1.000000" />
+    <ImpactActor value="XalatathVoidEruptionV2StormWarningQuadImpactFantasy" />
+    <ImpactHeight value="1.000000" />
+    <Quad value="-0.500000,-1.000000,0.500000,0.000000" />
+    <Height value="$XalatathVoidEruptionV2HarbingersConsumptionMissileTravelDistance" />
+    <Width value="$XalatathVoidEruptionV2GuideMinWidth" />
+    <QuadFlags index="PreserveProportionsDuringWidthScaling" value="1" />
+    <QuadFlags index="RespectWidthScaling" value="1" />
+  </CActorQuad>
+  <CActorModel id="XalatathVoidEruptionV2ActiveImpactHarbingers">
     <Filter index="Ally" value="1" />
+    <Filter index="Neutral" value="1" />
     <Filter index="Enemy" value="1" />
-    <Inherits index="Visibility" value="0" />
+    <On Terms="ActorOrphan" Send="Destroy" />
+    <On Terms="UnitDeath" Send="Destroy" />
+    <On Terms="ActorCreation" Send="Create XalatathVoidEruptionV2HarbingersGuideImpact1" />
+    <On Terms="ActorCreation" Send="Create XalatathVoidEruptionV2HarbingersGuideImpact2" />
+    <On Terms="ActorCreation" Send="Create XalatathVoidEruptionV2HarbingersGuideImpact3" />
+    <On Terms="ActorCreation" Target="XalatathVoidEruptionV2HarbingersGuideImpact1" Send="SetTintColor 225,160,25 0.000000 OneShot BaseTint" />
+    <On Terms="ActorCreation" Target="XalatathVoidEruptionV2HarbingersGuideImpact1" Send="HostSiteOpsSet ::Host {SOp2DRotation XalatathVoidEruptionV2HostRotator1 SOp2DRotation XalatathVoidEruptionV2OrbitOffset}" />
+    <On Terms="ActorCreation" Target="XalatathVoidEruptionV2HarbingersGuideImpact2" Send="SetTintColor 225,160,25 0.000000 OneShot BaseTint" />
+    <On Terms="ActorCreation" Target="XalatathVoidEruptionV2HarbingersGuideImpact2" Send="HostSiteOpsSet ::Host {SOp2DRotation XalatathVoidEruptionV2HostRotator2 SOp2DRotation XalatathVoidEruptionV2OrbitOffset}" />
+    <On Terms="ActorCreation" Target="XalatathVoidEruptionV2HarbingersGuideImpact3" Send="SetTintColor 225,160,25 0.000000 OneShot BaseTint" />
+    <On Terms="ActorCreation" Target="XalatathVoidEruptionV2HarbingersGuideImpact3" Send="HostSiteOpsSet ::Host {SOp2DRotation XalatathVoidEruptionV2HostRotator3 SOp2DRotation XalatathVoidEruptionV2OrbitOffset}" />
+    <On Terms="ActorDestruction" Target="XalatathVoidEruptionV2HarbingersGuideImpact1" Send="Destroy Immediate" />
+    <On Terms="ActorDestruction" Target="XalatathVoidEruptionV2HarbingersGuideImpact2" Send="Destroy Immediate" />
+    <On Terms="ActorDestruction" Target="XalatathVoidEruptionV2HarbingersGuideImpact3" Send="Destroy Immediate" />
+    <On Terms="Signal.*.ScaleStart" Target="XalatathVoidEruptionV2HarbingersGuideImpact1" Send="Signal ScaleStart" />
+    <On Terms="Signal.*.ScaleStart" Target="XalatathVoidEruptionV2HarbingersGuideImpact2" Send="Signal ScaleStart" />
+    <On Terms="Signal.*.ScaleStart" Target="XalatathVoidEruptionV2HarbingersGuideImpact3" Send="Signal ScaleStart" />
+    <Host Subject="_Unit" />
+    <HostSiteOps Ops="SOp2DRotation XalatathVoidEruptionV2LaunchImpactOffsetHarbingersConsumption SOpForwardNorth" />
+    <Model value="Invisible" />
+    <ModelFlags index="AlwaysVisibleToCreator" value="1" />
+  </CActorModel>
+  <CActorSiteOpRotator id="XalatathVoidEruptionV2HostRotator1">
+    <Type value="AccumulateAndSetRotation" />
+    <Rate value="$XalatathVoidEruptionV2OrbitRotationPerSecond" />
+    <InitialAngle value="$XalatathVoidEruptionV2OrbitRotationalOffsetA" />
+    <LocalAxis value="0,0,-1" />
+  </CActorSiteOpRotator>
+  <CActorSiteOpRotator id="XalatathVoidEruptionV2HostRotator2">
+    <Type value="AccumulateAndSetRotation" />
+    <Rate value="$XalatathVoidEruptionV2OrbitRotationPerSecond" />
+    <InitialAngle value="$XalatathVoidEruptionV2OrbitRotationalOffsetB" />
+    <LocalAxis value="0,0,-1" />
+  </CActorSiteOpRotator>
+  <CActorSiteOpRotator id="XalatathVoidEruptionV2HostRotator3">
+    <Type value="AccumulateAndSetRotation" />
+    <Rate value="$XalatathVoidEruptionV2OrbitRotationPerSecond" />
+    <InitialAngle value="$XalatathVoidEruptionV2OrbitRotationalOffsetC" />
+    <LocalAxis value="0,0,-1" />
+  </CActorSiteOpRotator>
+  <CActorModel id="XalatathVoidEruptionV2HarbingersGuideImpact1" parent="StormModelAnimationStyleContinuous">
+    <Filter index="Ally" value="1" />
+    <Filter index="Neutral" value="1" />
+    <Filter index="Enemy" value="1" />
+    <Inherits index="Visibility" value="1" />
+    <Host Subject="::Creator" />
+    <Model value="XalatathVoidEruptionV2CursorSplat" />
+    <Aliases value="_TimeStopAffectedActor" />
+    <Aliases value="_GuideVisualVoidEruptionV2Impact" />
+    <On Terms="ActorCreation" Send="SetScale $XalatathVoidEruptionV2ExplosionMinRadius" />
+    <On Terms="Signal.*.ScaleStart" Send="SetScale $XalatathVoidEruptionV2ExplosionMaxRadius $XalatathVoidEruptionV2ExplosionMaximumReleaseWindow" />
     <On Terms="StatusOn.*.TimeStopPaused" Send="PauseScale" />
     <On Terms="StatusOff.*.TimeStopPaused" Send="PauseScale 0" />
-    <On Terms="Signal.*.ScaleStart" Send="SetScale $XalatathVoidEruptionV2ExplosionMaxRadius $XalatathVoidEruptionV2ExplosionMaximumReleaseWindow" />
-    <On Terms="ActorCreation" Send="SetTintColor 225,160,25 0.000000 OneShot BaseTint" />
+    <ModelFlags index="AlwaysVisibleToCreator" value="1" />
+  </CActorModel>
+  <CActorModel id="XalatathVoidEruptionV2HarbingersGuideImpact2" parent="StormModelAnimationStyleContinuous">
+    <Filter index="Ally" value="1" />
+    <Filter index="Neutral" value="1" />
+    <Filter index="Enemy" value="1" />
+    <Inherits index="Visibility" value="1" />
     <Host Subject="::Creator" />
-    <HostSiteOps Ops="SOpShadow SOpAttachCenter SOp2DRotation XalatathVoidEruptionV2OrbitOffset" />
     <Model value="XalatathVoidEruptionV2CursorSplat" />
-    <FogVisibility value="Visible" />
+    <Aliases value="_TimeStopAffectedActor" />
+    <Aliases value="_GuideVisualVoidEruptionV2Impact" />
+    <On Terms="ActorCreation" Send="SetScale $XalatathVoidEruptionV2ExplosionMinRadius" />
+    <On Terms="Signal.*.ScaleStart" Send="SetScale $XalatathVoidEruptionV2ExplosionMaxRadius $XalatathVoidEruptionV2ExplosionMaximumReleaseWindow" />
+    <On Terms="StatusOn.*.TimeStopPaused" Send="PauseScale" />
+    <On Terms="StatusOff.*.TimeStopPaused" Send="PauseScale 0" />
+    <ModelFlags index="AlwaysVisibleToCreator" value="1" />
   </CActorModel>
-  <CActorModel id="XalatathVoidEruptionV2HarbingersConsumptionActiveImpactGuideB" parent="XalatathVoidEruptionV2HarbingersConsumptionActiveImpactGuideA">
-    <HostSiteOps Ops="SOpShadow SOpAttachCenter SOp2DRotation SOp60 SOp60 XalatathVoidEruptionV2OrbitOffset" />
-  </CActorModel>
-  <CActorModel id="XalatathVoidEruptionV2HarbingersConsumptionActiveImpactGuideC" parent="XalatathVoidEruptionV2HarbingersConsumptionActiveImpactGuideA">
-    <HostSiteOps Ops="SOpShadow SOpAttachCenter SOp2DRotation SOp60 SOp60 SOp60 SOp60 XalatathVoidEruptionV2OrbitOffset" />
+  <CActorModel id="XalatathVoidEruptionV2HarbingersGuideImpact3" parent="StormModelAnimationStyleContinuous">
+    <Filter index="Ally" value="1" />
+    <Filter index="Neutral" value="1" />
+    <Filter index="Enemy" value="1" />
+    <Inherits index="Visibility" value="1" />
+    <Host Subject="::Creator" />
+    <Model value="XalatathVoidEruptionV2CursorSplat" />
+    <Aliases value="_TimeStopAffectedActor" />
+    <Aliases value="_GuideVisualVoidEruptionV2Impact" />
+    <On Terms="ActorCreation" Send="SetScale $XalatathVoidEruptionV2ExplosionMinRadius" />
+    <On Terms="Signal.*.ScaleStart" Send="SetScale $XalatathVoidEruptionV2ExplosionMaxRadius $XalatathVoidEruptionV2ExplosionMaximumReleaseWindow" />
+    <On Terms="StatusOn.*.TimeStopPaused" Send="PauseScale" />
+    <On Terms="StatusOff.*.TimeStopPaused" Send="PauseScale 0" />
+    <ModelFlags index="AlwaysVisibleToCreator" value="1" />
   </CActorModel>
   <CActorSound id="XalatathVoidEruptionV2MissileSound" parent="SoundContinuous">
     <Sound value="Xalatath_VoidEruption_Missile" />
@@ -587,7 +659,6 @@
       <AbilClassDisableArray index="CAbilEffectInstant" value="1" />
       <AbilClassDisableArray index="CAbilEffectTarget" value="1" />
       <AbilClassDisableArray index="CAbilMove" value="1" />
-      <AbilClassDisableArray index="CAbilCancel" value="1" />
       <AbilClassDisableArray index="CAbilStop" value="1" />
       <AbilLinkEnableArray value="XalatathVoidEruptionV2Cancel" />
       <AbilLinkEnableArray value="XalatathVoidEruptionV2" />
@@ -612,7 +683,6 @@
       <AbilClassDisableArray index="CAbilEffectInstant" value="1" />
       <AbilClassDisableArray index="CAbilEffectTarget" value="1" />
       <AbilClassDisableArray index="CAbilMove" value="1" />
-      <AbilClassDisableArray index="CAbilCancel" value="1" />
       <AbilClassDisableArray index="CAbilStop" value="1" />
       <AbilLinkEnableArray value="XalatathVoidEruptionV2" />
       <AbilLinkEnableArray value="XalatathVoidEruptionV2Cancel" />
@@ -1078,7 +1148,7 @@
     <ValidatorArray value="XalatathHasXalatathOrbitalEruptionTalent" />
     <ValidatorArray value="TargetIsHero" />
     <ImpactUnit Value="Caster" />
-    <Cost Abil="XalatathVoidEruption,Execute" CooldownOperation="Add" CooldownTimeUse="-$XalatathVoidEruptionV2HarbingersConsumptionCooldownReductionPerHeroHit" />
+    <Cost Abil="XalatathVoidEruptionV2,Execute" CooldownOperation="Add" CooldownTimeUse="-$XalatathVoidEruptionV2HarbingersConsumptionCooldownReductionPerHeroHit" />
   </CEffectModifyUnit>
   <CEffectCreatePersistent id="XalatathVoidEruptionV2HarbingersConsumptionOffsetLaunchCreatePersistent">
     <PeriodicEffectArray value="XalatathVoidEruptionV2HarbingersConsumptionCreateUnit" />

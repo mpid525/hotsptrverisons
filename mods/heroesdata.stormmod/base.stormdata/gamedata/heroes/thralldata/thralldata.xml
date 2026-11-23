@@ -15,7 +15,7 @@
     <const id="$ThrallEchooftheElementsMilestone1Stacks" value="20"/>
     <const id="$ThrallEchooftheElementsMilestone2Stacks" value="50"/>
     <const id="$ThrallEchooftheElementsMilestoneMaxStacks" value="125"/>
-    <const id="$ThrallEchooftheElementsStackLossOnDeath" value="8"/>
+    <const id="$ThrallEchooftheElementsStackLossOnDeath" value="5"/>
     <const id="$ThrallEchooftheElementsMilestone1StacksPlusDeathLossAmount" value="+($ThrallEchooftheElementsMilestone1Stacks $ThrallEchooftheElementsStackLossOnDeath)" evaluateAsExpression="1"/>
     <const id="$ThrallEchooftheElementsMilestone2StacksPlusDeathLossAmount" value="+($ThrallEchooftheElementsMilestone2Stacks $ThrallEchooftheElementsStackLossOnDeath)" evaluateAsExpression="1"/>    
     <const id="$ThrallThunderstormDamageModifier" value="0.3"/>
@@ -4368,12 +4368,12 @@
     </CValidatorCombine>
     <CValidatorUnitCompareTokenCount id="HasEchooftheElementsNoStacks">
         <WhichUnit Value="Caster"/>
-        <Compare value="EQ"/>
+        <Compare value="Eq"/>
         <TokenId value="ThrallEchooftheElementsTokenCounter"/>
     </CValidatorUnitCompareTokenCount>
     <CValidatorUnitCompareTokenCount id="HasEchooftheElementsExactFirstMilestone">
         <WhichUnit Value="Caster"/>
-        <Compare value="EQ"/>
+        <Compare value="Eq"/>
         <Value value="$ThrallEchooftheElementsMilestone1Stacks"/>
         <TokenId value="ThrallEchooftheElementsTokenCounter"/>
     </CValidatorUnitCompareTokenCount>
@@ -4396,7 +4396,7 @@
     </CValidatorUnitCompareTokenCount>
     <CValidatorUnitCompareTokenCount id="HasEchooftheElementsExactSecondMilestone">
         <WhichUnit Value="Caster"/>
-        <Compare value="EQ"/>
+        <Compare value="Eq"/>
         <Value value="$ThrallEchooftheElementsMilestone2Stacks"/>
         <TokenId value="ThrallEchooftheElementsTokenCounter"/>
     </CValidatorUnitCompareTokenCount>

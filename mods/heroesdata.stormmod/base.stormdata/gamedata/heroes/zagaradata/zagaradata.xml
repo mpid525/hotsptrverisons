@@ -2677,6 +2677,7 @@
     <ImpactUnitValidator value="TargetIsStasisOrNotInvulnerable" />
     <Amount value="94" />
     <MultiplicativeModifierArray index="PackInstinct" Validator="ZagaraPackInstinctTalentProcCombine" Modifier="$ZagaraPackInstinctModifier" Crit="1" />
+    <MultiplicativeModifierArray index="TyrantMaw" Validator="ZagaraHasTyrantMaw" Modifier="$ZagaraTyrantMawModifier" />
   </CEffectDamage>
   <CEffectCreatePersistent id="ZagaraDevouringMawCCPersistent">
     <WhichLocation Value="TargetUnit" />

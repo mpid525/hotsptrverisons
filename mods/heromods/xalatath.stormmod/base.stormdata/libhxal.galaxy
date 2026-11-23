@@ -204,6 +204,7 @@ bool libHXAL_gt_HeroXalatathVoidEruptionPlayerClicked_Func (bool testConds, bool
 
     // Automatic Variable Declarations
     // Variable Initialization
+    lv_playerID = EventPlayer();
     lv_heroUnit = libGame_gv_players[lv_playerID].lv_heroUnit;
 
     // Conditions
@@ -224,7 +225,7 @@ bool libHXAL_gt_HeroXalatathVoidEruptionPlayerClicked_Func (bool testConds, bool
     }
 
     if ((UnitGetType(libGame_gv_players[lv_playerID].lv_heroUnit) == "HeroAbathur") && (UnitHasBehavior2(libGame_gv_players[lv_playerID].lv_activeVehicle, "XalatathVoidEruptionV2CasterBehavior") == true)) {
-        UnitIssueOrder(libGame_gv_players[lv_playerID].lv_heroUnit, OrderTargetingPoint(AbilityCommand("XalatathVoidEruptionV2Cancel", 0), Point(EventMouseClickedPosXWorld(), EventMouseClickedPosYWorld())), c_orderQueueReplace);
+        UnitIssueOrder(libGame_gv_players[lv_playerID].lv_activeVehicle, OrderTargetingPoint(AbilityCommand("XalatathVoidEruptionV2Cancel", 0), Point(EventMouseClickedPosXWorld(), EventMouseClickedPosYWorld())), c_orderQueueReplace);
     }
 
     return true;
